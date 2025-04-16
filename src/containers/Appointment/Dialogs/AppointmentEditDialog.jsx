@@ -6,19 +6,16 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import { useFormik } from 'formik';
-import * as React from 'react';
+import {useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 
 import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import { DigitalClock } from '@mui/x-date-pickers/DigitalClock';
-import { TimeClock } from '@mui/x-date-pickers/TimeClock';
 
-import { AsyncCreateAppointment } from '../AppointmentSlice';
-
+import { AsyncCreateAppointment,AsyncEditAppointment } from '../AppointmentSlice';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 function handleError(schema, name) {
 
     if (schema.touched[name] && schema.errors[name]) {
@@ -33,84 +30,66 @@ export default function AppointmentEditDialog(props) {
     const dispatch = useDispatch()
     const { open, handleClose, isUpdate, model } = props
     const { editInProgress, errorMessage } = useSelector((state) => state.appointment)
+    const { name } = useSelector((state) => state.login)
 
-    const schema = useFormik({
-        initialValues: {
-            patientID: (isUpdate) ? model?.patientID : "",
-            date: (isUpdate) ? model?.date : dayjs('2025-04-17'),
-            time: (isUpdate) ? model?.time : dayjs('15:30'),
-            status: (isUpdate) ? model?.status : null,
-        },
-        enableReinitialize: true,
-        validationSchema: Yup.object({
-            patientID: Yup.number()
-                .required("Required."),
-            date: Yup.date(),
-            time: Yup.date(),
-            status: Yup.string(),
+    const [dateTime,setDateTime] = useState(isUpdate ? dayjs(model.date) :dayjs("2025-04-03 T10:30"))
+    const [status,setStatus] = useState(isUpdate ? model.status : "Pending")
 
-        }),
-        onSubmit: (values, { resetForm }) => {
-
-            const data = {
-                patientID: values.patientID,
-                date: values.date,
-                time: values.time,
-                status: values.status,
-            }
-
-            if (!isUpdate) {
-
-            } else {
-
-            }
+    const handleDateTimeChange = (newDateTime) => {
+        setDateTime(dayjs(newDateTime))
+    }
+    
+    const handleSubmit = () =>
+    {
+        console.log(dateTime)
+        if (isUpdate)
+        {
+            dispatch(AsyncEditAppointment(model._id,dateTime,dateTime,status))
+        }else{
+            dispatch(AsyncCreateAppointment(dateTime,dateTime))
         }
-    })
-
-    const handleTimeChange = (newTime) => {
-        
-        schema.setFieldValue("time", newTime)
-        schema.setFieldTouched("time", true, false)
-    }
-
-    const handleDateChange = (newDate) => {
-        console.log(newDate)
-        schema.setFieldValue("date", newDate.$d)
-        schema.setFieldTouched("date", true, false)
+        handleClose()
     }
     
-    
 
-    return <Dialog open={open} onClose={handleClose} maxWidth="xl">
-        <form onSubmit={schema.handleSubmit}>
+    return <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
             <DialogTitle>{isUpdate ? "Update appointment" : "Create appointment"}</DialogTitle>
             <DialogContent>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <Grid container sx={{alignItems:"center"}}>
-                    <DateCalendar onChange={handleDateChange} value={schema.values.date} disablePast />
-                    <TimeClock  onChange={handleTimeChange} value={schema.values.time} disablePast maxTime={dayjs('T15:30')} minTime={dayjs('T8:00')} ampm={false} views={['hours',"minutes"]} minutesStep={15} defaultValue={dayjs('2022-04-17T15:30')} />                    
+                <Grid spacing={2} container sx={{alignItems:"center"}}>
+                    <Grid item size={12}>
+                        <TextField fullWidth
+                                value={name}
+                                disabled
+                                margin="dense"
+                                name="Name"
+                                label="Name"
+                                type="select"
+                            />
+                    </Grid >
+                    <Grid item container sx={{alignItems:"center"}} size={12}>
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DateTimePicker sx={{width:"100%"}} ampm={false} reduceAnimations onChange={handleDateTimeChange} orientation="landscape" disablePast actionBar={<></>} value={dateTime} />
+                            </LocalizationProvider>
+                    </Grid>
+                    <Grid item size={12}>
+                        <Autocomplete
+                            options={["Pending","Cancelled"]}
+                            value={status}
+                            disabled={!isUpdate}
+                            disablePortal
+                            fullWidth
+                            renderInput={(params)=>{                        
+                                return <TextField fullWidth
+                                    {...params}
+                                    margin="dense"
+                                    name="Status"
+                                    label="Status"
+                                    type="select"
+                                />
+                            }}
+                            />
+                    </Grid>
                 </Grid>
-
-                </LocalizationProvider>
-                
-                <Autocomplete
-                    options={["waiting","done"]}
-                    readOnly
-                    defaultValue="waiting"
-                    disabled
-                    value={schema.values.status}
-                    disablePortal
-                    fullWidth
-                    renderInput={(params)=>{                        
-                        return <TextField fullWidth
-                            {...params}
-                            margin="dense"
-                            name="Status"
-                            label="Status"
-                            type="select"
-                        />
-                    }}
-                />
                 {errorMessage && <Grid item xs={12}>
                     <FormHelperText error>
                         {errorMessage}
@@ -122,11 +101,9 @@ export default function AppointmentEditDialog(props) {
                     disabled={editInProgress}
                     onClick={() => {
                         handleClose()
-                        schema.resetForm()
                     }}
                 >{"Cancel"}</Button>
-                <Button type="submit" disabled={editInProgress}>{"Save"}</Button>
+                <Button type="submit" onClick={handleSubmit} disabled={editInProgress}>{"Save"}</Button>
             </DialogActions>
-        </form>
     </Dialog>
 }
