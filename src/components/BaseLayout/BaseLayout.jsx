@@ -3,12 +3,14 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-import { Typography,AppBar,Box,Drawer,IconButton,List,ListItem,ListItemIcon,ListItemText,Toolbar,Chip,Divider,Badge,Avatar } from '@mui/material';
+import { Typography,AppBar,Box,Drawer,IconButton,List,ListItem,ListItemButton,ListItemIcon,ListItemText,Toolbar,Chip,Divider,Badge,Avatar } from '@mui/material';
 import BiotechIcon from '@mui/icons-material/Biotech';
 import CssBaseline from '@mui/material/CssBaseline';
 import * as React from 'react';
 import { Link } from "react-router-dom";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { logout } from '../../containers/Login/LoginSlice';
 
 const drawerWidth = 300;
 
@@ -36,6 +38,8 @@ function BaseLayout(props) {
     const { window } = props;
     const container = window !== undefined ? () => window().document.body : undefined;
 
+    const dispatch = useDispatch()
+
     const {name,email,role} = useSelector((state) => state.login)
 
     const { links, onLogoutClicked, dir, otherActionButtons } = props
@@ -49,6 +53,10 @@ function BaseLayout(props) {
 
     const handleDrawerDesktopToggle = () => {
         setDesktopOpen(!desktopOpen)
+    }
+
+    const handleLogout=()=>{
+        dispatch(logout())
     }
 
     const drawer = (
@@ -65,12 +73,12 @@ function BaseLayout(props) {
                     </ListItem>
                 })}
                 <Divider/>
-                <ListItem sx={{paddingRight:5,paddingLeft:3}} button >
+                <ListItemButton onClick={handleLogout} sx={{paddingRight:5,paddingLeft:3}}  >
                         <ListItemIcon>
                             <LogoutIcon/>
                         </ListItemIcon>
                     <ListItemText sx={{ textAlign: "left" }} primary="Log out" />
-                </ListItem>
+                </ListItemButton>
             </List>
             
         </div>
