@@ -1,7 +1,7 @@
 import { Container, Typography,Grid,TextField,Box,Paper,Button } from "@mui/material"
 import * as Yup from 'yup';
 import { useState } from "react";
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useFormik } from "formik"
 
 
@@ -22,6 +22,8 @@ export default function Settings ()
 {
 
     const dispatch = useDispatch()
+
+    const {name} = useSelector((state)=>state.login)
 
     const [changePasswordMessage, setChangePasswordMessage] = useState({})
 
@@ -69,6 +71,21 @@ export default function Settings ()
                     <Box p={2}>
                         <form onSubmit={changePasswordSchema.handleSubmit}>
                             <Grid container  spacing={2}>
+                                <Grid container item size={12} alignItems="center">
+                                    <Grid item size={4}>
+                                        <Typography textAlign="left" variant="subtitle1" gutterBottom component="div">
+                                            {"Name"}
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item size={8}>
+                                        <TextField
+                                            name="name"
+                                            value = {name}
+                                            disabled
+                                            size="small"
+                                            fullWidth />
+                                    </Grid>
+                                </Grid>
                                 <Grid container item size={12} alignItems="center">
                                     <Grid item size={4}>
                                         <Typography textAlign="left" variant="subtitle1" gutterBottom component="div">

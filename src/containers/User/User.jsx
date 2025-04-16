@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Typography,InputLabel,TextField,Box,Select,IconButton,InputAdornment,Paper,Table,TableContainer,TableCell,TableRow,TableBody,TableHead,MenuItem,FormControl,ListItemText,Toolbar,Chip,Divider,Badge,Avatar } from '@mui/material';
+import { Typography,InputLabel,TextField,Box,Select,IconButton,InputAdornment,Paper,Table,TableContainer,TableCell,TableRow,TableBody,TableHead,MenuItem,FormControl,ListItemText,Toolbar,Chip,Divider,Badge,Avatar, Container } from '@mui/material';
 
 import PersonIcon from '@mui/icons-material/Person';
 import SearchIcon from '@mui/icons-material/Search';
@@ -8,6 +8,8 @@ import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { AsyncGetUsers } from './UserSlice';
 import { useDispatch, useSelector } from 'react-redux';
+
+import dayjs from 'dayjs';
 
 
 export default function User(){
@@ -38,7 +40,8 @@ export default function User(){
     },[users])
 
     return (
-        <Box sx={{ mt: 3 ,paddingLeft:3,paddingRight:3 }}>
+      <Container>
+        <Box sx={{ mt: 3  }}>
           <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
             <Typography variant="h5" component="h2" fontWeight="bold">
               User Management
@@ -90,6 +93,7 @@ export default function User(){
               </TableHead>
               <TableBody>
                 {filterdUsers.map((user) => {
+                  const formattedDate = dayjs(user.createdAt).format("DD-MM-YY HH:mm");
                   return (
                     <TableRow key={user.id} hover>
                       <TableCell>
@@ -107,7 +111,7 @@ export default function User(){
                       </TableCell>
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{user.p_phoneNum}</TableCell>
-                      <TableCell>{user.createdAt}</TableCell>
+                      <TableCell>{formattedDate}</TableCell>
                       <TableCell align="right">
                         <IconButton size="small">
                           <MoreVertIcon fontSize="small" />
@@ -120,5 +124,6 @@ export default function User(){
             </Table>
           </TableContainer>
         </Box>
+      </Container>
       )
 }
