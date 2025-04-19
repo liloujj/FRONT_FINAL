@@ -1,6 +1,4 @@
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import SearchIcon from '@mui/icons-material/Search';
-import EditIcon from '@mui/icons-material/Edit';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import MarkunreadIcon from '@mui/icons-material/Markunread';
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
@@ -8,20 +6,21 @@ import { Typography,InputLabel,Badge,Container,TextField,Box,Select,IconButton,F
 import { useDispatch,useSelector } from "react-redux";
 import { AsyncGetNotifications,AsyncReadNotification,AsyncReadAllNotifications } from "./NotificationSlice";
 import { useEffect,useState } from "react";
-
+import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 
 export function Notification()
 {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const {notifications} = useSelector((state)=>state.notification)
 
     useEffect(()=>{
         dispatch(AsyncGetNotifications())
     },[dispatch])
     return (
-        <IconButton color="inherit" sx={{ position: "relative" }}>
+        <IconButton onClick={()=>navigate("/notifications")}color="inherit" sx={{ position: "relative" }}>
             <Badge badgeContent={notifications.filter((element)=>element.read===false).length} color="error">
                 <NotificationsIcon />
             </Badge>

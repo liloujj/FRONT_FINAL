@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 import { routes } from '../../containers/routes';
 import BaseLayout from "../BaseLayout/BaseLayout";
+import ActivateAcount from '../../containers/Login/ActivateAcount';
 
 function BaseApp(props) {
     const dispatch = useDispatch()
@@ -19,7 +20,7 @@ function BaseApp(props) {
                 //dispatch(logout())
             }}>
             <Routes>
-                <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                <Route path="/" element={<Navigate to="/appointments" replace />} />
                 {routes.filter((item)=> item.role === "Any" || item.role === role).map((route, index) => (
                     <Route
                         key={index}

@@ -8,19 +8,44 @@ import './App.css';
 import Login from './containers/Login/Login';
 import Signup from "./containers/Login/SignUp";
 import ActivateAcount from "./containers/Login/ActivateAcount";
+import ForgetPassword from "./containers/Login/ForgetPassword";
 import { useState } from "react";
 import BaseApp from "./components/BaseApp/BaseApp";
 import {Notification} from "./containers/Notification/Notification";
 import { Toaster } from "react-hot-toast";
+import {
+    BrowserRouter, Route, Routes,Redirect,
+    useNavigate,Navigate
+} from "react-router-dom";
+
+function NotFound()
+{
+  const navigate = useNavigate()
+
+  return(
+    navigate("/login")
+  )
+}
 
 function App() {
   const {mode,isAuthenticated,} = useSelector((state) => state.login)
 
   return (
+
     <div className="App">
+      {!isAuthenticated &&
+      <BrowserRouter>
+        <Routes>
+          <Route path="/activate-account/:token" Component={ActivateAcount} />
+          <Route path="/login" Component={Login} />
+          <Route path="/signup" Component={Signup} />
+          <Route path="/forget-password" Component={ForgetPassword} />
+          <Route path="*" element={<Navigate to="/login" />} />
+        </Routes>
+      </BrowserRouter>
+
+      }
       {isAuthenticated && <BaseApp otherActionButtons={[<Notification/>]}/>}
-      {(!isAuthenticated && mode == "login") && <Login/>}
-      {(!isAuthenticated && mode == "signup") && <Signup/>}
       <Toaster position="botton-left" />
     </div>
   );

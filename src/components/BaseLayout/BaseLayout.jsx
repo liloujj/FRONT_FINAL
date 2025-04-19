@@ -9,7 +9,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import * as React from 'react';
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-
+import { useNavigate } from 'react-router-dom';
 import { logout } from '../../containers/Login/LoginSlice';
 
 const drawerWidth = 300;
@@ -38,6 +38,7 @@ function BaseLayout(props) {
     const { window } = props;
     const container = window !== undefined ? () => window().document.body : undefined;
 
+    const navigate = useNavigate()
     const dispatch = useDispatch()
 
     const {name,email,role} = useSelector((state) => state.login)
@@ -57,6 +58,7 @@ function BaseLayout(props) {
 
     const handleLogout=()=>{
         dispatch(logout())
+        navigate("/login")
     }
 
     const drawer = (
@@ -110,7 +112,6 @@ function BaseLayout(props) {
                         />
                     </Box>
                     <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                        
                         {otherActionButtons}
                         <Box sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}>
                             <Avatar sx={(theme)=>({ bgcolor: theme.palette.primary.light, width: 32, height: 32 })}>

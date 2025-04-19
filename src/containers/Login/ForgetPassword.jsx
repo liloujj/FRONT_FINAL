@@ -6,17 +6,15 @@ import {
   Card,
   CardContent,
   Link as MuiLink,
-  Paper,
   InputAdornment,
   useMediaQuery,
   useTheme,
 } from "@mui/material"
-import PasswordIcon from '@mui/icons-material/Password';
-import { ChevronRight } from "lucide-react"
+import { ChevronRight,Mail } from "lucide-react"
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch } from "react-redux"
-import { useParams } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 
 function handleError(schema, name) {
@@ -28,20 +26,18 @@ function handleError(schema, name) {
     return null
 }
 
-export default function ActivateAcount() {
+export default function ForgetPassword() {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
 
-  const {token} = useParams() 
+  const navigate = useNavigate()
 
   const dispatch = useDispatch()
 
   const schema = useFormik({
     initialValues: { code: ''},
     validationSchema: Yup.object({
-        code: Yup.number().required("Required.")
-        .min(6, 'Must be exactly 6 digits')
-        .max(6, 'Must be exactly 6 digits'),
+        email: Yup.string().required("Required.")
     }),
     onSubmit: (values) => {
 
@@ -77,50 +73,50 @@ export default function ActivateAcount() {
         >
           <CardContent sx={{ p: 4 }}>
             <Typography variant="h5" fontWeight={700} color="#1e293b" sx={{ mb: 3 }}>
-              Activate your account
+              Set your email  
             </Typography>
             <Box component="form" onSubmit={schema.handleSubmit}>
               <Box sx={{ mb: 2.5 }}>
                 <TextField
-                  error={!!handleError(schema, "code")}
-                  id="code"
-                  type="code"
-                  placeholder="code"
-                  value={schema.values.code}
-                  onChange={schema.handleChange}
-                  onBlur={schema.handleBlur}
-                  helperText={handleError(schema, "code")}
-                  required
-                  fullWidth
-                  InputProps={{
+                    error={!!handleError(schema, "id")}
+                    id="email"
+                    type="email"
+                    placeholder="your@email.com"
+                    value={schema.values.id}
+                    onChange={schema.handleChange}
+                    onBlur={schema.handleBlur}
+                    helperText={handleError(schema, "id")}
+                    required
+                    fullWidth
+                    InputProps={{
                     startAdornment: (
-                      <InputAdornment position="start">
-                        <PasswordIcon size={18} color="#94a3b8" />
-                      </InputAdornment>
+                        <InputAdornment position="start">
+                        <Mail size={18} color="#94a3b8" />
+                        </InputAdornment>
                     ),
                     sx: {
-                      borderRadius: 1,
-                      "&:focus-within": {
+                        borderRadius: 1,
+                        "&:focus-within": {
                         "& .MuiOutlinedInput-notchedOutline": {
-                          borderColor: "#14b8a6",
-                          boxShadow: "0 0 0 2px rgba(20, 184, 166, 0.2)",
+                            borderColor: "#14b8a6",
+                            boxShadow: "0 0 0 2px rgba(20, 184, 166, 0.2)",
                         },
-                      },
+                        },
                     },
-                  }}
-                  sx={{
+                    }}
+                    sx={{
                     "& .MuiOutlinedInput-root": {
-                      "& fieldset": {
+                        "& fieldset": {
                         borderColor: "#e2e8f0",
-                      },
-                      "&:hover fieldset": {
+                        },
+                        "&:hover fieldset": {
                         borderColor: "#cbd5e1",
-                      },
-                      "&.Mui-focused fieldset": {
+                        },
+                        "&.Mui-focused fieldset": {
                         borderColor: "#14b8a6",
-                      },
+                        },
                     },
-                  }}
+                    }}
                 />
               </Box>
               <Button
@@ -143,10 +139,32 @@ export default function ActivateAcount() {
                 }}
               >
                 <Box component="span" sx={{ mr: 1 }}>
-                  Activate
+                  Send
                 </Box>
                 <ChevronRight size={18} />
               </Button>
+            <Typography
+                align="left"
+                sx={{
+                  mt:2,
+                  fontSize: "0.875rem",
+                  color: "#64748b",
+                }}>
+                Go back to 
+                <Button
+                  onClick={()=>{navigate("/login")}}
+                  variant="text"
+                  sx={{
+                    color: "#14b8a6",
+                    textDecoration: "none",
+                    "&:hover": {
+                      textDecoration: "underline",
+                    },
+                  }}
+                >
+                  Log In
+                </Button>
+              </Typography>
             </Box>
           </CardContent>
         </Card>

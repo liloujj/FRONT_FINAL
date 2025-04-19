@@ -34,11 +34,41 @@ export function editPersonalData(name,password) {
     }
 }
 
-export function signup()
+export function signup(name,email,password,phoneNum,address,role)
 {
     return async(dispatch) =>
     {
         dispatch(loading())
+        try {
+            const response = await axios.post(
+                "/user/signup",
+                {
+                    name,
+                    email,
+                    password,
+                    phoneNum,
+                    address,
+                    role
+                },
+            )
+            const { token} = response.data.token
+            toast("Check your email")
+            //sessionStorage.setItem("userId", user_id)
+
+        } catch (e) {
+            const response = e.response
+            if (response && response.status === 400) {
+                const error = response.data.error
+                dispatch(handleError({ error }))
+            }else if(response && response.status === 500)
+                {
+                    toast("User already exist")  
+                }
+            else {
+                const error = "Something went wrong, Try again"
+                dispatch(handleError({ error }))
+            }
+        }
     }
 }
 

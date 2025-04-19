@@ -19,6 +19,7 @@ import {
 import { Brain, Stethoscope, Scan, ChevronRight, FileText } from "lucide-react"
 import { Toaster, toast } from "react-hot-toast"
 import { configLoginMode } from "./LoginSlice"
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from "react-redux"
 
 export default function Signup() {
@@ -32,6 +33,7 @@ export default function Signup() {
     specialization: "",
     schedule: "",
   })
+  const navigate = useNavigate()
   const [file, setFile] = useState(null)
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
@@ -39,7 +41,8 @@ export default function Signup() {
   const dispatch = useDispatch()
   const handleSwitchToSignUp = ()=>
   {
-    dispatch(configLoginMode("login"))
+    //dispatch(configLoginMode("login")) to remove
+    navigate("/login")
   }
 
   const handleChange = (e) => {

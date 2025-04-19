@@ -18,7 +18,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { login } from "./LoginSlice"
 import { useDispatch } from "react-redux"
-
+import { useNavigate } from 'react-router-dom';
 import { configLoginMode } from "./LoginSlice";
 
 function handleError(schema, name) {
@@ -32,13 +32,15 @@ function handleError(schema, name) {
 
 export default function Login() {
   const theme = useTheme()
+  const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
 
   const dispatch = useDispatch()
 
   const handleSwitchToSignUp = ()=>
   {
-    dispatch(configLoginMode("signup"))
+    //dispatch(configLoginMode("signup")) to remove
+    navigate("/signup")
   }
 
   const schema = useFormik({
@@ -199,17 +201,38 @@ export default function Login() {
                 </Box>
                 <ChevronRight size={18} />
               </Button>
-
               <Typography
                 align="center"
                 sx={{
-                  mt: 2.5,
+                  mt:2,
+                  fontSize: "0.875rem",
+                  color: "#64748b",
+                }}>
+                Did you forget your password?
+                <Button
+                  onClick={()=>{navigate("/forget-password")}}
+                  variant="text"
+                  sx={{
+                    color: "#14b8a6",
+                    textDecoration: "none",
+                    "&:hover": {
+                      textDecoration: "underline",
+                    },
+                  }}
+                >
+                  Forgot password
+                </Button>
+              </Typography>
+              <Typography
+                align="center"
+                sx={{
                   fontSize: "0.875rem",
                   color: "#64748b",
                 }}
               >
                 Don't have an account?{" "}
                 <Button
+                  variant="text"
                   onClick={()=>handleSwitchToSignUp()}
                   sx={{
                     color: "#14b8a6",
