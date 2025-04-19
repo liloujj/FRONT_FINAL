@@ -1,7 +1,63 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { BASE_URL } from "../../configs"
 import axios from "../../helpers/axios"
+import toast from "react-hot-toast"
 
+export function AsyncRejectDoctor(doctor_id) {
+    return async (dispatch) => {
+        dispatch(loading())
+
+        try {
+            const response = await axios.put(
+                `/admin/reject-doctor/${doctor_id}`,
+                {
+                    baseURL: BASE_URL,
+                }
+                
+            )
+            toast("Doctor has been rejected")
+            
+            dispatch(rejectDoctor())
+        } catch (e) {
+            const response = e.response
+            if (response && response.status === 400) {
+                const error = response.data.error
+                dispatch(handleError({ error }))
+            } else {
+                const error = "Something went wrong, Try again"
+                dispatch(handleError({ error }))
+            }
+        }
+    }
+}
+
+export function AsyncActivateDoctor(doctor_id) {
+    return async (dispatch) => {
+        dispatch(loading())
+
+        try {
+            const response = await axios.put(
+                `/admin/activate-doctor/${doctor_id}`,
+                {
+                    baseURL: BASE_URL,
+                }
+            )
+            console.log(response)
+            toast("Doctor has been activated")
+
+            dispatch(activateDoctor())
+        } catch (e) {
+            const response = e.response
+            if (response && response.status === 400) {
+                const error = response.data.error
+                dispatch(handleError({ error }))
+            } else {
+                const error = "Something went wrong, Try again"
+                dispatch(handleError({ error }))
+            }
+        }
+    }
+}
 
 export function AsyncGetUsers() {
     return async (dispatch) => {
@@ -15,6 +71,7 @@ export function AsyncGetUsers() {
                 }
             )
             const users = response.data.users
+            console.log(users)
             dispatch(setUsers(users))
 
         } catch (e) {
@@ -49,6 +106,30 @@ const userSlice = createSlice({
             state.users = action.payload
             state.inProgress = false
         },
+        rejectDoctor(state,action)
+        {
+            state.users.some((user, index) => {
+                if (user._id === action.payload) {
+                    state.users[index] = { ...state.users[index], isActive:false }
+                    return true
+                }
+
+                return false
+            })
+            state.inProgress = false
+        },
+        activateDoctor(state,action)
+        {
+            state.users.some((user, index) => {
+                if (user._id === action.payload) {
+                    state.users[index] = { ...state.users[index], isActive:true }
+                    return true
+                }
+
+                return false
+            })
+            state.inProgress = false
+        },
         handleError(state, action) {
             const { error } = action.payload
             state.errorMessage = error
@@ -57,5 +138,5 @@ const userSlice = createSlice({
     },
 })
 
-const { handleError, loading,setUsers} = userSlice.actions
+const { handleError, loading,setUsers,activateDoctor,rejectDoctor} = userSlice.actions
 export const reducer = userSlice.reducer

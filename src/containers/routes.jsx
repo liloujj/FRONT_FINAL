@@ -7,6 +7,9 @@ import User from './User/User';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Settings from './Settings/Settings';
 
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import { NotificationTable } from './Notification/Notification';
+
 export const routes = [
     {
         path: "/apointments",
@@ -20,6 +23,12 @@ export const routes = [
         icon: <GroupIcon />,
         component: <User />,
         role : "Admin",
+    },{
+        path: "/notifications",
+        title: "Notifications",
+        icon: <NotificationsIcon />,
+        component: <NotificationTable />,
+        role : "Any",
     },
     {
         path: "/settings",

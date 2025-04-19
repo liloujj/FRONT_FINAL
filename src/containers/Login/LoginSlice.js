@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { BASE_URL } from "../../configs"
 import axios from "../../helpers/axios"
-
+import toast from "react-hot-toast"
 
 export function editPersonalData(name,password) {
     return async (dispatch) => {
@@ -25,11 +25,20 @@ export function editPersonalData(name,password) {
             if (response && response.status === 400) {
                 const error = response.data.error
                 dispatch(handleError({ error }))
-            } else {
+            }
+            else {
                 const error = "Something went wrong, Try again"
                 dispatch(handleError({ error }))
             }
         }
+    }
+}
+
+export function signup()
+{
+    return async(dispatch) =>
+    {
+        dispatch(loading())
     }
 }
 
@@ -48,8 +57,8 @@ export function login(email, password) {
                     baseURL: BASE_URL,
                 }
             )
-            console.log(response.data)
             const { token} = response.data.token
+            toast("Logged")
             dispatch(setPersonalData(response.data.user))
 
             sessionStorage.setItem("token", token)
@@ -62,7 +71,11 @@ export function login(email, password) {
             if (response && response.status === 400) {
                 const error = response.data.error
                 dispatch(handleError({ error }))
-            } else {
+            }else if(response && response.status === 401)
+                {
+                    toast("Email or password are incorrect, try again")  
+                }
+            else {
                 const error = "Something went wrong, Try again"
                 dispatch(handleError({ error }))
             }

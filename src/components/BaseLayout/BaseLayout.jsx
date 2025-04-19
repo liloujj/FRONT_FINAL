@@ -110,11 +110,8 @@ function BaseLayout(props) {
                         />
                     </Box>
                     <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                        <IconButton color="inherit" sx={{ position: "relative" }}>
-                            <Badge  color="error">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>
+                        
+                        {otherActionButtons}
                         <Box sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}>
                             <Avatar sx={(theme)=>({ bgcolor: theme.palette.primary.light, width: 32, height: 32 })}>
                                 <PersonIcon fontSize="small" />

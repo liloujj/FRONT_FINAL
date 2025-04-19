@@ -1,4 +1,3 @@
-import { useState } from "react"
 import {
   Box,
   Typography,
@@ -12,11 +11,10 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material"
-import { Mail, Lock, ChevronRight } from "lucide-react"
-import { Toaster, toast } from "react-hot-toast"
+import PasswordIcon from '@mui/icons-material/Password';
+import { ChevronRight } from "lucide-react"
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { login } from "./LoginSlice"
 import { useDispatch } from "react-redux"
 
 import { configLoginMode } from "./LoginSlice";
@@ -30,25 +28,21 @@ function handleError(schema, name) {
     return null
 }
 
-export default function Login() {
+export default function ActivateAcount() {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
 
   const dispatch = useDispatch()
 
-  const handleSwitchToSignUp = ()=>
-  {
-    dispatch(configLoginMode("signup"))
-  }
-
   const schema = useFormik({
-    initialValues: { email: '', password: '' },
+    initialValues: { code: ''},
     validationSchema: Yup.object({
-        email: Yup.string().required("Required."),
-        password: Yup.string().required("Required.")
+        code: Yup.number().required("Required.")
+        .min(6, 'Must be exactly 6 digits')
+        .max(6, 'Must be exactly 6 digits'),
     }),
     onSubmit: (values) => {
-        dispatch(login(values.email, values.password))
+
     }
     })
 
@@ -63,7 +57,6 @@ export default function Login() {
         background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
       }}
     >
-      {/* Form Section */}
       <Box
         sx={{
           display: "flex",
@@ -82,26 +75,25 @@ export default function Login() {
         >
           <CardContent sx={{ p: 4 }}>
             <Typography variant="h5" fontWeight={700} color="#1e293b" sx={{ mb: 3 }}>
-              Log in to your account
+              Activate your account
             </Typography>
-
             <Box component="form" onSubmit={schema.handleSubmit}>
               <Box sx={{ mb: 2.5 }}>
                 <TextField
-                  error={!!handleError(schema, "id")}
-                  id="email"
-                  type="email"
-                  placeholder="your@email.com"
-                  value={schema.values.id}
+                  error={!!handleError(schema, "code")}
+                  id="code"
+                  type="code"
+                  placeholder="code"
+                  value={schema.values.code}
                   onChange={schema.handleChange}
                   onBlur={schema.handleBlur}
-                  helperText={handleError(schema, "id")}
+                  helperText={handleError(schema, "code")}
                   required
                   fullWidth
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <Mail size={18} color="#94a3b8" />
+                        <PasswordIcon size={18} color="#94a3b8" />
                       </InputAdornment>
                     ),
                     sx: {
@@ -129,52 +121,6 @@ export default function Login() {
                   }}
                 />
               </Box>
-
-              <Box sx={{ mb: 3 }}>
-                <TextField
-                  error={!!handleError(schema, "password")}
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={schema.values.password}
-                  onChange={schema.handleChange}
-                  onBlur={schema.handleBlur}
-                  required
-                  fullWidth
-                  helperText={handleError(schema, "password")}
-
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Lock size={18} color="#94a3b8" />
-                      </InputAdornment>
-                    ),
-                    sx: {
-                      borderRadius: 1,
-                      "&:focus-within": {
-                        "& .MuiOutlinedInput-notchedOutline": {
-                          borderColor: "#14b8a6",
-                          boxShadow: "0 0 0 2px rgba(20, 184, 166, 0.2)",
-                        },
-                      },
-                    },
-                  }}
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": {
-                        borderColor: "#e2e8f0",
-                      },
-                      "&:hover fieldset": {
-                        borderColor: "#cbd5e1",
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "#14b8a6",
-                      },
-                    },
-                  }}
-                />
-              </Box>
-
               <Button
                 type="submit"
                 variant="contained"
@@ -195,33 +141,10 @@ export default function Login() {
                 }}
               >
                 <Box component="span" sx={{ mr: 1 }}>
-                  Log in
+                  Activate
                 </Box>
                 <ChevronRight size={18} />
               </Button>
-
-              <Typography
-                align="center"
-                sx={{
-                  mt: 2.5,
-                  fontSize: "0.875rem",
-                  color: "#64748b",
-                }}
-              >
-                Don't have an account?{" "}
-                <Button
-                  onClick={()=>handleSwitchToSignUp()}
-                  sx={{
-                    color: "#14b8a6",
-                    textDecoration: "none",
-                    "&:hover": {
-                      textDecoration: "underline",
-                    },
-                  }}
-                >
-                  Sign up
-                </Button>
-              </Typography>
             </Box>
           </CardContent>
         </Card>

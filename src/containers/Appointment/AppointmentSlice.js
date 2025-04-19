@@ -1,6 +1,61 @@
 import { createSlice } from "@reduxjs/toolkit"
 import axios from "../../helpers/axios"
+import toast from "react-hot-toast"
 
+export function AsyncAdminApproveAppointment(id) {
+    return async (dispatch) => {
+        dispatch(fetching())
+
+        try {
+            const response = await axios.put(
+                `/admin/appointments/approve/${id}`,
+            )
+            const data = {
+                id:id,
+                status:"Approved"
+            }
+            console.log(response)
+            toast("Appointment has been approved")
+            dispatch(doWithAppointment(data))
+        } catch (e) {
+            const response = e.response
+            if (response && response.status === 400) {
+                const error = response.data.error
+                dispatch(handleErrors({ error }))
+            } else {
+                const error = "Something went wrong, Try again"
+                dispatch(handleErrors({ error }))
+            }
+        }
+    }
+}
+
+export function AsyncAdminRefuseAppointment(id) {
+    return async (dispatch) => {
+        dispatch(fetching())
+
+        try {
+            const response = await axios.put(
+                `/admin/appointments/refuse/${id}`,
+            )
+            const data = {
+                id:id,
+                status:"Refused"
+            }
+            toast("Appointment has been refused")
+            dispatch(doWithAppointment(data))
+        } catch (e) {
+            const response = e.response
+            if (response && response.status === 400) {
+                const error = response.data.error
+                dispatch(handleErrors({ error }))
+            } else {
+                const error = "Something went wrong, Try again"
+                dispatch(handleErrors({ error }))
+            }
+        }
+    }
+}
 
 export function AsyncDeleteAppointment(id) {
     return async (dispatch) => {
@@ -10,8 +65,12 @@ export function AsyncDeleteAppointment(id) {
             const response = await axios.delete(
                 `/patient/cancel-appointment/${id}`,
             )
-            console.log(response)
-            dispatch(cancelAppointment(id))
+            const data = {
+                id:id,
+                status:"Cancelled"
+            }
+            toast("Appointment has been cancelled")
+            dispatch(doWithAppointment(data))
 
         } catch (e) {
             const response = e.response
@@ -40,6 +99,7 @@ export function AsyncEditAppointment(id,date,time,status) {
             )
             console.log(response)
             const appointment = response.data.data
+            toast("Appointment has been rescheduled")
             dispatch(editAppointment(appointment))
 
         } catch (e) {
@@ -69,6 +129,7 @@ export function AsyncCreateAppointment(date,time) {
             )
             console.log(response)
             const appointment = response.data.appointment
+            toast("Appointment has been created")
             dispatch(addAppointment(appointment))
 
         } catch (e) {
@@ -162,10 +223,10 @@ const appointmentSlice = createSlice({
             state.appointments =[...state.appointments.filter((appointment) => appointment._id !== action.payload)]
             state.fetchingInProgress = false
         },
-        cancelAppointment(state, action) {
+        doWithAppointment(state, action) {
             state.appointments.some((appointment, index) => {
-                if (appointment._id === action.payload) {
-                    state.appointments[index] = { ...state.appointments[index], status:"Cancelled" }
+                if (appointment._id === action.payload.id) {
+                    state.appointments[index] = { ...state.appointments[index], status:action.payload.status }
                     return true
                 }
 
@@ -173,7 +234,6 @@ const appointmentSlice = createSlice({
             })
             state.editInProgress = false
         },
-        
         editAppointment(state, action) {
             console.log(action.payload)
             state.appointments.some((appointment, index) => {
@@ -194,5 +254,5 @@ const appointmentSlice = createSlice({
     },
 })
 
-const { fetching, setAppointments,handleErrors,addAppointment,deleteAppointment,editing,editAppointment,cancelAppointment} = appointmentSlice.actions
+const { fetching, setAppointments,handleErrors,addAppointment,deleteAppointment,editing,editAppointment,doWithAppointment} = appointmentSlice.actions
 export const reducer = appointmentSlice.reducer

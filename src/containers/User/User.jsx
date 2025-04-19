@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { Typography,InputLabel,TextField,Box,Select,IconButton,InputAdornment,Paper,Table,TableContainer,TableCell,TableRow,TableBody,TableHead,MenuItem,FormControl,ListItemText,Toolbar,Chip,Divider,Badge,Avatar, Container } from '@mui/material';
-
+import DoneIcon from '@mui/icons-material/Done';
+import CloseIcon from '@mui/icons-material/Close';
 import PersonIcon from '@mui/icons-material/Person';
 import SearchIcon from '@mui/icons-material/Search';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import { AsyncGetUsers } from './UserSlice';
+import { AsyncGetUsers,AsyncActivateDoctor,AsyncRejectDoctor } from './UserSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 import dayjs from 'dayjs';
@@ -29,6 +29,16 @@ export default function User(){
         }else{
             setFilterdUsers(users)
         }
+    }
+
+    const handleActivateDoctor = (doctor_id)=>
+    {
+      dispatch(AsyncActivateDoctor(doctor_id))
+    }
+
+    const handleRejectDoctor=(doctor_id)=>
+    {
+      dispatch(AsyncRejectDoctor(doctor_id))
     }
 
     useEffect(()=>{
@@ -88,6 +98,7 @@ export default function User(){
                   <TableCell>Email</TableCell>
                   <TableCell>Phone</TableCell>
                   <TableCell>Join Date</TableCell>
+                  <TableCell>Status</TableCell>
                   <TableCell align="right">Actions</TableCell>
                 </TableRow>
               </TableHead>
@@ -112,7 +123,13 @@ export default function User(){
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{user.p_phoneNum}</TableCell>
                       <TableCell>{formattedDate}</TableCell>
+                      <TableCell>{user.role === "Doctor" && <Chip color={user.isActive ?"success" :"error"} label={user.isActive ?"Enabled" :"Disabeld"}></Chip>}</TableCell>
                       <TableCell align="right">
+                        {user.role==="Doctor" && 
+                          <IconButton onClick={()=>{user.isActive ?handleRejectDoctor(user._id) :handleActivateDoctor(user._id)}}>
+                            {user.isActive ?<CloseIcon/> :<DoneIcon/>}
+                          </IconButton>
+                        }
                         <IconButton size="small">
                           <MoreVertIcon fontSize="small" />
                         </IconButton>

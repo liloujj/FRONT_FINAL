@@ -1,18 +1,17 @@
 import { useEffect,useState } from 'react';
 import { Typography,InputLabel,Container,TextField,Box,Select,IconButton,Fab,InputAdornment,Paper,Table,TableContainer,TableCell,TableRow,TableBody,TableHead,MenuItem,FormControl,ListItemText,Toolbar,Chip,Divider,Badge,Avatar, Button } from '@mui/material';
 
+import DoneIcon from '@mui/icons-material/Done';
+import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from "@mui/icons-material/Add"
 import PersonIcon from '@mui/icons-material/Person';
 import SearchIcon from '@mui/icons-material/Search';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
-import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import EditIcon from '@mui/icons-material/Edit';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import { AsyncGetAppointments,AsyncGetPatientAppointments,AsyncDeleteAppointment } from './AppointmentSlice';
+import { AsyncGetAppointments,AsyncGetPatientAppointments,AsyncDeleteAppointment,AsyncAdminApproveAppointment,AsyncAdminRefuseAppointment } from './AppointmentSlice';
 import { AsyncGetUsers } from '../User/UserSlice';
 import { useDispatch, useSelector } from 'react-redux';
-
 
 import AppointmentEditDialog from './Dialogs/AppointmentEditDialog';
 import dayjs from 'dayjs';
@@ -77,13 +76,22 @@ export default function Appointment(){
 
     }
 
+    const handleAdminRefuseAppointment = (id) =>
+    {
+      dispatch(AsyncAdminRefuseAppointment(id))
+    }
+
+    const handleAdminApproveAppointment = (id)=>{
+      dispatch(AsyncAdminApproveAppointment(id))
+    }
+
     useEffect(()=>{
         if (role==="Patient")
         {
           dispatch(AsyncGetPatientAppointments())
         }else if (role==="Admin"){
-          dispatch(AsyncGetAppointments())
           dispatch(AsyncGetUsers())
+          dispatch(AsyncGetAppointments())
         }else{
           dispatch(AsyncGetAppointments())
         }
@@ -106,6 +114,9 @@ export default function Appointment(){
                 Appointment Management
             </Typography>
             <Box sx={{ display: "flex", gap: 2 }}>
+              {role==="Patient" &&
+                <Button onClick={handleOpenDialog} variant="contained"> New appointment</Button>
+              }
               <FormControl size="small" sx={{ minWidth: 150 }}>
                 <InputLabel id="user-filter-label">User Type</InputLabel>
                 <Select
@@ -136,9 +147,6 @@ export default function Appointment(){
                   ),
                 }}
               />
-              {role==="Patient" &&
-                <Button onClick={handleOpenDialog} variant="contained"> New appointment</Button>
-              }
             </Box>
           </Box>
     
@@ -156,9 +164,11 @@ export default function Appointment(){
                 {filterdAppointments.map((appointment) => {
                   const formattedDate = dayjs(appointment.date).format("DD-MM-YY HH:mm");
                   let user;
+                  console.log(users)
                   if (role==="Admin")
                   {
-                    user = users.filter((element)=>element._id =appointment.patientID)
+                    const users_list = users.filter((element)=>element._id ===appointment.patientID)
+                    user = users_list.length === 1 ? users_list[0] : null
                   }
                   else{
                     user = {name,role}
@@ -184,19 +194,32 @@ export default function Appointment(){
                       </TableCell>
                       <TableCell>{appointment.status}</TableCell>
                       <TableCell align="right">
-                        {appointment.status !== "Cancelled" &&
+                        {(role === "Admin" && appointment.status === "Pending") &&
+                            <IconButton onClick={()=>handleAdminApproveAppointment(appointment._id)}  size="small">
+                              <DoneIcon  fontSize="small" />
+                            </IconButton>
+                        }
+                        {(role === "Admin" && appointment.status === "Pending") &&
+                          <IconButton onClick={()=>handleAdminRefuseAppointment(appointment._id)}  size="small">
+                            <CloseIcon  fontSize="small" />
+                          </IconButton>
+                        }
+                        {((appointment.status !== "Refused" && appointment.status !== "Approved") && appointment.status !== "Cancelled") &&
                           <IconButton onClick={()=>{handleDeleteAppointment(appointment._id)}} size="small">
                             <DeleteIcon fontSize="small" />
                           </IconButton>
                         }
-                        <IconButton onClick={()=>
-                          {
-                            handleOpenUpdateDialog()
-                            setModel(appointment)
-                          }
-                        } size="small">
-                          <EditIcon  fontSize="small" />
-                        </IconButton>
+                        {(appointment.status !== "Refused" && appointment.status !== "Approved")
+                          &&
+                          <IconButton onClick={()=>
+                            {
+                              handleOpenUpdateDialog()
+                              setModel(appointment)
+                            }
+                          } size="small">
+                            <EditIcon  fontSize="small" />
+                          </IconButton>
+                        }
                       </TableCell>
                     </TableRow>
                   )
