@@ -14,7 +14,6 @@ export function AsyncAdminApproveAppointment(id) {
                 id:id,
                 status:"Approved"
             }
-            console.log(response)
             toast("Appointment has been approved")
             dispatch(doWithAppointment(data))
         } catch (e) {
@@ -97,7 +96,6 @@ export function AsyncEditAppointment(id,date,time,status) {
                     status,
                 }
             )
-            console.log(response)
             const appointment = response.data.data
             toast("Appointment has been rescheduled")
             dispatch(editAppointment(appointment))
@@ -127,7 +125,6 @@ export function AsyncCreateAppointment(date,time) {
                     time,
                 }
             )
-            console.log(response)
             const appointment = response.data.appointment
             toast("Appointment has been created")
             dispatch(addAppointment(appointment))
@@ -154,7 +151,6 @@ export function AsyncGetAppointments() {
                 "/admin/appointments",
             )
             const appointments = response.data.appointments
-            console.log(appointments)
             dispatch(setAppointments(appointments))
 
         } catch (e) {
@@ -179,7 +175,6 @@ export function AsyncGetPatientAppointments() {
                 "/patient/appointments",
             )
             const appointments = response.data.appointments
-            console.log(appointments)
             dispatch(setAppointments(appointments))
 
         } catch (e) {
@@ -236,7 +231,6 @@ const appointmentSlice = createSlice({
             state.editInProgress = false
         },
         editAppointment(state, action) {
-            console.log(action.payload)
             state.appointments.some((appointment, index) => {
                 if (appointment._id === action.payload._id) {
                     state.appointments[index] = { ...state.appointments[index], ...action.payload }

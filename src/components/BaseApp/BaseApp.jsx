@@ -5,12 +5,14 @@ import {
 } from "react-router-dom";
 import { routes } from '../../containers/routes';
 import BaseLayout from "../BaseLayout/BaseLayout";
-import ActivateAcount from '../../containers/Login/ActivateAcount';
+import Document from '../../containers/Document/Document';
+import io from 'socket.io-client';
 
 function BaseApp(props) {
     const dispatch = useDispatch()
     const {role} = useSelector((state)=>state.login)
     const { dir, otherActionButtons } = props
+    
     return <BrowserRouter basename={process.env.PUBLIC_URL}>
         <BaseLayout
             dir={dir}
@@ -30,6 +32,7 @@ function BaseApp(props) {
                     />
 
                 ))}
+                <Route path='/document/:document_id' element={<Document/>} />
             </Routes>
         </BaseLayout>
     </BrowserRouter>

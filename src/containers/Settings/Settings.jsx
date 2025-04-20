@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { useFormik } from "formik"
 
+import { editPersonalData } from "../Login/LoginSlice";
 
 function changePasswordAsync(){
     console.log("Password")
@@ -41,7 +42,7 @@ export default function Settings ()
             }),
         }),
         onSubmit: (values) => {
-            dispatch(changePasswordAsync(values, () => {
+            dispatch(editPersonalData(values, () => {
                 // success
                 setChangePasswordMessage({
                     message: "The password changed with success",

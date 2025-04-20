@@ -10,7 +10,20 @@ import Settings from './Settings/Settings';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { NotificationTable } from './Notification/Notification';
 
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import Dashboard from './Dashboard/Dashboard';
+
+import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
+import Scan from './Scan/Scan';
+
 export const routes = [
+    {
+        path: "/dashboard",
+        title: "Dashboard",
+        icon: <DashboardIcon />,
+        component: <Dashboard />,
+        role : "Admin",
+    },
     {
         path: "/apointments",
         title: "Apointments",
@@ -23,7 +36,14 @@ export const routes = [
         icon: <GroupIcon />,
         component: <User />,
         role : "Admin",
-    },{
+    }
+    ,{
+        path: "/scans",
+        title: "Scans",
+        icon: <DocumentScannerIcon />,
+        component: <Scan />,
+        role : "Patient",
+    },,{
         path: "/notifications",
         title: "Notifications",
         icon: <NotificationsIcon />,

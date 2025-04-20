@@ -39,7 +39,6 @@ export default function Appointment(){
     const [filterdAppointments,setFilterdAppointments]= useState(appointments)
 
     const handleFilter = (value) =>{
-        
         if (value !== "All")
         {
             const data = appointments.filter((item)=> item.status === value)
@@ -133,6 +132,9 @@ export default function Appointment(){
                   <MenuItem value="All">All Appointments</MenuItem>
                   <MenuItem value="Pending">Pending</MenuItem>
                   <MenuItem value="Cancelled">Cancelled</MenuItem>
+                  <MenuItem value="Approved">Approved</MenuItem>
+                  <MenuItem value="Refused">Refused</MenuItem>
+
                 </Select>
               </FormControl>
               <TextField
@@ -164,7 +166,6 @@ export default function Appointment(){
                 {filterdAppointments.map((appointment) => {
                   const formattedDate = dayjs(appointment.date).format("DD-MM-YY HH:mm");
                   let user;
-                  console.log(users)
                   if (role==="Admin")
                   {
                     const users_list = users.filter((element)=>element._id ===appointment.patientID)

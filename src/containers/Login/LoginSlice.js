@@ -17,7 +17,6 @@ export function editPersonalData(name,password) {
                     baseURL: BASE_URL,
                 }
             )
-            console.log(response.data)
             dispatch(setPersonalData(response.data.user))
 
         } catch (e) {
@@ -46,7 +45,6 @@ export function AsyncActivateUser(token,activationCode,action)
                     token
                 }
             )
-            console.log(response)
             action()
             toast("Account has been created")
 
@@ -75,7 +73,6 @@ export function AsyncSignUp(data,action)
     {
         dispatch(loading())
         try {
-            console.log(data)
             const response = await axios.post(
                 "/user/signup",
                 JSON.stringify(data)

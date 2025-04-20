@@ -55,7 +55,6 @@ export function AsyncGetNotifications() {
                 "/notification",
             )
             const notifications = response.data.notifications
-            console.log(notifications)
             dispatch(setNotifications(notifications))
 
         } catch (e) {
