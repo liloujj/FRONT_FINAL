@@ -16,7 +16,8 @@ import { ChevronRight } from "lucide-react"
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch } from "react-redux"
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { AsyncActivateUser } from "./LoginSlice";
 
 
 function handleError(schema, name) {
@@ -34,17 +35,23 @@ export default function ActivateAcount() {
 
   const {token} = useParams() 
 
+  const navigate = useNavigate()
+
   const dispatch = useDispatch()
+
+  const handleGoLogin = () =>
+  {
+    navigate("/login");
+  }
 
   const schema = useFormik({
     initialValues: { code: ''},
     validationSchema: Yup.object({
         code: Yup.number().required("Required.")
-        .min(6, 'Must be exactly 6 digits')
-        .max(6, 'Must be exactly 6 digits'),
+
     }),
     onSubmit: (values) => {
-
+      dispatch(AsyncActivateUser(token,values.code,handleGoLogin))
     }
     })
 

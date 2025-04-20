@@ -154,6 +154,7 @@ export function AsyncGetAppointments() {
                 "/admin/appointments",
             )
             const appointments = response.data.appointments
+            console.log(appointments)
             dispatch(setAppointments(appointments))
 
         } catch (e) {

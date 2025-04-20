@@ -16,11 +16,11 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material"
-import { Brain, Stethoscope, Scan, ChevronRight, FileText } from "lucide-react"
+import { Stethoscope, Scan, ChevronRight, FileText } from "lucide-react"
 import { Toaster, toast } from "react-hot-toast"
-import { configLoginMode } from "./LoginSlice"
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from "react-redux"
+import { AsyncSignUp } from "./LoginSlice";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -58,6 +58,15 @@ export default function Signup() {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0])
     }
+  }
+
+  const handleGoActiv = (token) =>
+  {
+    navigate(`/activate-account/${token}`);
+  }
+
+  const handleSignUp = ()=>{
+    dispatch(AsyncSignUp(formData,handleGoActiv))
   }
 
   const handleSubmit = async (e) => {
@@ -115,7 +124,7 @@ export default function Signup() {
                 Create Your Account
               </Typography>
 
-              <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              <Box component="form"  sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                 <TextField
                   name="name"
                   placeholder="Full Name"
@@ -395,6 +404,7 @@ export default function Signup() {
                 <Button
                   type="submit"
                   variant="contained"
+                  onClick={()=>{handleSignUp()}}
                   sx={{
                     mt: 1,
                     py: 1.5,

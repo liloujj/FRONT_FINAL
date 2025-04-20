@@ -34,25 +34,55 @@ export function editPersonalData(name,password) {
     }
 }
 
-export function signup(name,email,password,phoneNum,address,role)
+export function AsyncActivateUser(token,activationCode,action)
+{
+    return async(dispatch) =>{
+        dispatch(loading())
+        try {
+            const response = await axios.post(
+                "/user/activate-account",
+                {
+                    activationCode,
+                    token
+                }
+            )
+            console.log(response)
+            action()
+            toast("Account has been created")
+
+        } catch (e) {
+            const response = e.response
+            if (response && response.status === 400) {
+                const error = response.data.error
+                dispatch(handleError({ error }))
+            }if(response && response.status === 500){
+                if (response.data.error)
+                {
+                    toast(response.data.error)
+                }
+            }
+            else {
+                const error = "Something went wrong, Try again"
+                dispatch(handleError({ error }))
+            }
+        }
+    }
+}
+
+export function AsyncSignUp(data,action)
 {
     return async(dispatch) =>
     {
         dispatch(loading())
         try {
+            console.log(data)
             const response = await axios.post(
                 "/user/signup",
-                {
-                    name,
-                    email,
-                    password,
-                    phoneNum,
-                    address,
-                    role
-                },
+                JSON.stringify(data)
             )
             const { token} = response.data.token
             toast("Check your email")
+            action(token)
             //sessionStorage.setItem("userId", user_id)
 
         } catch (e) {

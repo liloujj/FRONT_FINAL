@@ -17,7 +17,7 @@ export function AsyncRejectDoctor(doctor_id) {
             )
             toast("Doctor has been rejected")
             
-            dispatch(rejectDoctor())
+            dispatch(rejectDoctor(doctor_id))
         } catch (e) {
             const response = e.response
             if (response && response.status === 400) {
@@ -42,10 +42,9 @@ export function AsyncActivateDoctor(doctor_id) {
                     baseURL: BASE_URL,
                 }
             )
-            console.log(response)
             toast("Doctor has been activated")
 
-            dispatch(activateDoctor())
+            dispatch(activateDoctor(doctor_id))
         } catch (e) {
             const response = e.response
             if (response && response.status === 400) {
@@ -71,7 +70,6 @@ export function AsyncGetUsers() {
                 }
             )
             const users = response.data.users
-            console.log(users)
             dispatch(setUsers(users))
 
         } catch (e) {
