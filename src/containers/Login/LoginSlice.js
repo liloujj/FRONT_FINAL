@@ -3,6 +3,79 @@ import { BASE_URL } from "../../configs"
 import axios from "../../helpers/axios"
 import toast from "react-hot-toast"
 
+export function AsyncResetPassword(token,newPassword,action) {
+    return async (dispatch) => {
+        dispatch(loading())
+        try {
+            const response = await axios.put(
+                "/user/pass_reset",
+                {
+                    newPassword,
+                    token,
+                },
+            )
+            if (response && response.status ===200)
+            {
+                toast(response.data.message)
+                action()
+            }
+            dispatch(endFetching())
+
+        } catch (e) {
+            const response = e.response
+            if (response && response.status === 400) {
+                const error = response.data.error
+                dispatch(handleError({ error }))
+            }
+            else {
+                const error = "Something went wrong, Try again"
+                toast(error)
+                dispatch(handleError({ error }))
+            }
+        }
+    }
+}
+
+export function AsyncInitResetPassword(email,action) {
+    return async (dispatch) => {
+        dispatch(loading())
+        try {
+            const response = await axios.put(
+                "/user/pass_recovery",
+                {
+                    email,
+                },
+            )
+            if (response && response.status ===200)
+            {
+                const token = response.data.token
+                action(token)
+            }
+            dispatch(endFetching())
+
+        } catch (e) {
+            const response = e.response
+            if (response && response.status === 400) {
+                const error = response.data.error
+                dispatch(handleError({ error }))
+            }
+
+            else if (response && response.status === 404)
+            {
+                const error = response.data.error
+                toast("There is no user with this email")
+                dispatch(handleError({ error }))
+
+            }
+            else {
+                const error = "Something went wrong, Try again"
+                toast(error)
+                dispatch(handleError({ error }))
+            }
+        }
+    }
+}
+
 export function editPersonalData(name,password) {
     return async (dispatch) => {
         dispatch(loading())
@@ -88,12 +161,16 @@ export function AsyncSignUp(data,action)
                 const error = response.data.error
                 dispatch(handleError({ error }))
             }else if(response && response.status === 500)
-                {
-                    toast("User already exist")  
-                }
+            {
+                const error = response.data.error
+                dispatch(handleError({ error }))
+                toast("User already exist") 
+            }
             else {
                 const error = "Something went wrong, Try again"
                 dispatch(handleError({ error }))
+                toast(error) 
+
             }
         }
     }
@@ -135,6 +212,7 @@ export function login(email, password) {
             else {
                 const error = "Something went wrong, Try again"
                 dispatch(handleError({ error }))
+                toast(error)  
             }
         }
     }
@@ -152,6 +230,7 @@ export function logout() {
             sessionStorage.clear()
             dispatch(removePersonalData())
             dispatch(out())
+            toast("Logged out")
 
         } catch (e) {
             const response = e.response
@@ -229,6 +308,12 @@ const loginSlice = createSlice({
         out(state) {
             state.isAuthenticated = false
         },
+        endFetching(state)
+        {
+            state.inProgress = false
+            state.errorMessage = null
+        }
+        ,
         handleError(state, action) {
             const { error } = action.payload
             state.errorMessage = error
@@ -237,5 +322,5 @@ const loginSlice = createSlice({
     },
 })
 
-const { handleError, loading, logged, out,setPersonalData,setSignUpMode,setLoginMode,removePersonalData } = loginSlice.actions
+const { handleError, loading, logged, out,setPersonalData,setSignUpMode,setLoginMode,removePersonalData,endFetching } = loginSlice.actions
 export const reducer = loginSlice.reducer

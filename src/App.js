@@ -9,7 +9,7 @@ import Login from './containers/Login/Login';
 import Signup from "./containers/Login/SignUp";
 import ActivateAcount from "./containers/Login/ActivateAcount";
 import ForgetPassword from "./containers/Login/ForgetPassword";
-import { useState } from "react";
+import ResetPassword from "./containers/Login/ResetPassword";
 import BaseApp from "./components/BaseApp/BaseApp";
 import {Notification} from "./containers/Notification/Notification";
 import { Toaster } from "react-hot-toast";
@@ -40,6 +40,7 @@ function App() {
           <Route path="/login" Component={Login} />
           <Route path="/signup" Component={Signup} />
           <Route path="/forget-password" Component={ForgetPassword} />
+          <Route path="/reset-passwrod/:token" Component={ResetPassword}/>
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </BrowserRouter>

@@ -10,12 +10,15 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material"
-import { ChevronRight,Mail } from "lucide-react"
+import PasswordIcon from '@mui/icons-material/Password';
+import LockResetIcon from '@mui/icons-material/LockReset';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom";
-import { AsyncInitResetPassword } from "./LoginSlice";
+import { useParams } from "react-router-dom";
+
+import { AsyncResetPassword } from "./LoginSlice";
 
 function handleError(schema, name) {
 
@@ -26,25 +29,25 @@ function handleError(schema, name) {
     return null
 }
 
-export default function ForgetPassword() {
+export default function ResetPassword() {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
 
   const navigate = useNavigate()
-
+  const {token} = useParams() 
   const dispatch = useDispatch()
 
-  const handleOnSuccess =(token)=>
+  const handleOnSuccess =()=>
   {
-    navigate(`/reset-passwrod/${token}`)
+    navigate("/login")
   }
   const schema = useFormik({
-    initialValues: { email: ''},
+    initialValues: { password: ''},
     validationSchema: Yup.object({
-        email: Yup.string().required("Required.")
+        password: Yup.string().required("Required.")
     }),
     onSubmit: (values) => {
-      dispatch(AsyncInitResetPassword(values.email,handleOnSuccess))
+        dispatch(AsyncResetPassword(token,values.password,handleOnSuccess))
     }
     })
 
@@ -77,25 +80,25 @@ export default function ForgetPassword() {
         >
           <CardContent sx={{ p: 4 }}>
             <Typography variant="h5" fontWeight={700} color="#1e293b" sx={{ mb: 3 }}>
-              Set your email  
+              Reset your password
             </Typography>
             <Box component="form" onSubmit={schema.handleSubmit}>
               <Box sx={{ mb: 2.5 }}>
                 <TextField
-                    error={!!handleError(schema, "email")}
-                    id="email"
-                    type="email"
-                    placeholder="your@email.com"
-                    value={schema.values.email}
+                    error={!!handleError(schema, "password")}
+                    id="password"
+                    type="password"
+                    placeholder="Password"
+                    value={schema.values.id}
                     onChange={schema.handleChange}
                     onBlur={schema.handleBlur}
-                    helperText={handleError(schema, "email")}
+                    helperText={handleError(schema, "password")}
                     required
                     fullWidth
                     InputProps={{
                     startAdornment: (
                         <InputAdornment position="start">
-                        <Mail size={18} color="#94a3b8" />
+                            <PasswordIcon size={18} color="#94a3b8" />
                         </InputAdornment>
                     ),
                     sx: {
@@ -143,32 +146,10 @@ export default function ForgetPassword() {
                 }}
               >
                 <Box component="span" sx={{ mr: 1 }}>
-                  Send
+                  Reset
                 </Box>
-                <ChevronRight size={18} />
+                <LockResetIcon size={18} />
               </Button>
-            <Typography
-                align="left"
-                sx={{
-                  mt:2,
-                  fontSize: "0.875rem",
-                  color: "#64748b",
-                }}>
-                Go back to 
-                <Button
-                  onClick={()=>{navigate("/login")}}
-                  variant="text"
-                  sx={{
-                    color: "#14b8a6",
-                    textDecoration: "none",
-                    "&:hover": {
-                      textDecoration: "underline",
-                    },
-                  }}
-                >
-                  Log In
-                </Button>
-              </Typography>
             </Box>
           </CardContent>
         </Card>
