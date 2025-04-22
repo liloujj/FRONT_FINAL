@@ -66,7 +66,15 @@ export default function Signup() {
   }
 
   const handleSignUp = ()=>{
-    dispatch(AsyncSignUp(formData,handleGoActiv))
+    dispatch(AsyncSignUp(
+      formData.name,
+      formData.email, 
+      formData.password, 
+      formData.phoneNum, 
+      formData.address, 
+      formData.role 
+      ,handleGoActiv
+    ))
   }
 
   const handleSubmit = async (e) => {

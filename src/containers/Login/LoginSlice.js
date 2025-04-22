@@ -140,7 +140,7 @@ export function AsyncActivateUser(token,activationCode,action)
     }
 }
 
-export function AsyncSignUp(data,action)
+export function AsyncSignUp(name, email, password, phoneNum, address, role ,action)
 {
     return async(dispatch) =>
     {
@@ -148,7 +148,10 @@ export function AsyncSignUp(data,action)
         try {
             const response = await axios.post(
                 "/user/signup",
-                JSON.stringify(data)
+                {
+                    name,
+                    email,password,phoneNum,address,role
+                }
             )
             const { token} = response.data.token
             toast("Check your email")
