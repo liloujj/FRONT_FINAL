@@ -102,6 +102,7 @@ const userSlice = createSlice({
         },
         setUsers(state,action){
             state.users = action.payload
+            state.users.reverse()
             state.inProgress = false
         },
         rejectDoctor(state,action)

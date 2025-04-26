@@ -43,19 +43,20 @@ export function NotificationTable(){
 
     const handleFilter = (value) =>{
         
+        let data = notifications;
+        
         if (value !== "All")
         {
-            let data ;
             if (value === "Read")
             {
-                data = notifications.filter((item)=> item.read === true)
+                data = data.filter((item)=> item.read === true)
             }else if (value === "Unread")
             {
-                data = notifications.filter((item)=> item.read === false)
+                data = data.filter((item)=> item.read === false)
             }
             setFilterdNotifications(data)
         }else{
-            setFilterdNotifications(notifications)
+            setFilterdNotifications(data)
         }
     }
 
@@ -118,14 +119,14 @@ export function NotificationTable(){
               </TableHead>
               <TableBody>
                 {filterdNotifications.map((notification) => {
-                  const formattedDate = dayjs(notification.createdAt).format("DD-MM-YY HH:mm");                  
+                  const date = dayjs(notification.createdAt).format("DD-MM-YY HH:mm");  
                   return (
                     <TableRow key={notification._id} hover>
                       <TableCell>
                         {notification.content} 
                       </TableCell>
                       <TableCell>
-                            {formattedDate}
+                            {date}
                       </TableCell>
                       <TableCell align="right">
                         <IconButton onClick={()=>{handleReadNotification(notification._id)}} size="small">

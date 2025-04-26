@@ -89,6 +89,7 @@ const notificationSlice = createSlice({
         },
         setNotifications(state, action) {
             state.notifications = action.payload
+            state.notifications.reverse()
             state.fetchingInProgress = false
         },
         readAllNotifications(state){

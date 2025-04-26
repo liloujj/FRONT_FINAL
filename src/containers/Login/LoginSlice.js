@@ -76,27 +76,34 @@ export function AsyncInitResetPassword(email,action) {
     }
 }
 
-export function editPersonalData(name,password) {
+export function editPersonalData(password,newPassword,onSuccess) {
     return async (dispatch) => {
         dispatch(loading())
         try {
             const response = await axios.put(
                 "/user/informations",
                 {
-                    name,
                     password,
+                    newPassword
                 },
                 {
                     baseURL: BASE_URL,
                 }
             )
-            dispatch(setPersonalData(response.data.user))
+            //dispatch(setPersonalData(response.data.user))
+            onSuccess()
+            toast("Password changed")
 
         } catch (e) {
             const response = e.response
             if (response && response.status === 400) {
-                const error = response.data.error
+                const error = response.data.message
                 dispatch(handleError({ error }))
+            }else if (response && response.status === 401)
+            {
+                const error = response.data.message
+                dispatch(handleError({error}))
+                toast(error)
             }
             else {
                 const error = "Something went wrong, Try again"
@@ -140,22 +147,41 @@ export function AsyncActivateUser(token,activationCode,action)
     }
 }
 
-export function AsyncSignUp(name, email, password, phoneNum, address, role ,action)
+export function AsyncSignUp(name, email, password, phoneNum, address, role,specialization,schedule,file)
 {
     return async(dispatch) =>
     {
         dispatch(loading())
+        const rawData = {name,email,password,phoneNum,address,role}
+        const formData = new FormData();
+
+        if (file) {
+          formData.append('file', file);
+          formData.append("name",name)
+          formData.append("email",email)
+          formData.append("password",password)
+          formData.append("phoneNum",phoneNum)
+          formData.append("address",address)
+          formData.append("role",role)
+          formData.append("specialization",specialization)
+          formData.append("schedule",schedule)
+        }
+        console.log(formData)
+        
+        const headers = file ? {
+            'Content-Type': 'multipart/form-data',
+          } : {};
+
         try {
             const response = await axios.post(
                 "/user/signup",
-                {
-                    name,
-                    email,password,phoneNum,address,role
-                }
+                file ? formData : rawData
+                ,
+                {headers}
             )
             const { token} = response.data.token
             toast("Check your email")
-            action(token)
+            //action(token)
             //sessionStorage.setItem("userId", user_id)
 
         } catch (e) {

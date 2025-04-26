@@ -15,12 +15,25 @@ import {
   FormHelperText,
   useMediaQuery,
   useTheme,
+  Autocomplete,
 } from "@mui/material"
 import { Stethoscope, Scan, ChevronRight, FileText } from "lucide-react"
 import { Toaster, toast } from "react-hot-toast"
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from "react-redux"
 import { AsyncSignUp } from "./LoginSlice";
+
+import { useFormik } from "formik";
+import * as Yup from 'yup';
+
+function handleError(schema, name) {
+
+  if (schema.touched[name] && schema.errors[name]) {
+      return schema.errors[name]
+  }
+
+  return null
+}
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -33,6 +46,7 @@ export default function Signup() {
     specialization: "",
     schedule: "",
   })
+
   const navigate = useNavigate()
   const [file, setFile] = useState(null)
   const theme = useTheme()
@@ -45,37 +59,45 @@ export default function Signup() {
     navigate("/login")
   }
 
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
 
-  const handleSelectChange = (e) => {
-    setFormData((prev) => ({ ...prev, role: e.target.value }))
-  }
 
-  const handleFileChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0])
-    }
-  }
 
   const handleGoActiv = (token) =>
   {
-    navigate(`/activate-account/${token}`);
+    //navigate(`/activate-account/${token}`);
   }
 
-  const handleSignUp = ()=>{
-    dispatch(AsyncSignUp(
-      formData.name,
-      formData.email, 
-      formData.password, 
-      formData.phoneNum, 
-      formData.address, 
-      formData.role 
-      ,handleGoActiv
-    ))
-  }
+  const schema = useFormik({
+    initialValues: { name:'',email: '', password: '',phoneNum:'',address:'',role:'Patient',specialization:'',schedule:'',file:null },
+    validationSchema: Yup.object({
+        name:Yup.string().required("Required."),
+        email: Yup.string().required("Required."),
+        password: Yup.string().required("Required."),
+        phoneNum:Yup.string().required("Required."),
+        address:Yup.string().required("Required."),
+        role:Yup.string().required("Required."),
+        specialization:Yup.string().notRequired(),
+        schedule:Yup.string().notRequired(),
+        file:Yup.mixed().notRequired()
+    }),
+    onSubmit: (values) => {
+      console.log("Test")
+      dispatch(AsyncSignUp(
+        values.name,
+        values.email, 
+        values.password, 
+        values.phoneNum, 
+        values.address, 
+        values.role,
+        values.specialization,
+        values.schedule,
+        values.file
+      ))}
+  })
+
+  const handleFormikFileChange = (event) => {
+    schema.setFieldValue('file', event.currentTarget.files[0]);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -132,12 +154,15 @@ export default function Signup() {
                 Create Your Account
               </Typography>
 
-              <Box component="form"  sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              <Box component="form" onSubmit={schema.handleSubmit}  sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                 <TextField
                   name="name"
                   placeholder="Full Name"
-                  value={formData.name}
-                  onChange={handleChange}
+                  error={!!handleError(schema, "name")}
+                  helperText={handleError(schema, "name")}
+                  value={schema.values.name}
+                  onChange={schema.handleChange}
+                  onBlur={schema.handleBlur}
                   required
                   fullWidth
                   sx={{
@@ -157,8 +182,11 @@ export default function Signup() {
                   name="email"
                   type="email"
                   placeholder="Email"
-                  value={formData.email}
-                  onChange={handleChange}
+                  error={!!handleError(schema, "email")}
+                  helperText={handleError(schema, "email")}
+                  value={schema.values.email}
+                  onChange={schema.handleChange}
+                  onBlur={schema.handleBlur}
                   required
                   fullWidth
                   sx={{
@@ -178,8 +206,11 @@ export default function Signup() {
                   name="password"
                   type="password"
                   placeholder="Password"
-                  value={formData.password}
-                  onChange={handleChange}
+                  error={!!handleError(schema, "password")}
+                  helperText={handleError(schema, "password")}
+                  value={schema.values.password}
+                  onChange={schema.handleChange}
+                  onBlur={schema.handleBlur}
                   required
                   fullWidth
                   sx={{
@@ -198,8 +229,11 @@ export default function Signup() {
                 <TextField
                   name="phoneNum"
                   placeholder="Phone Number"
-                  value={formData.phoneNum}
-                  onChange={handleChange}
+                  error={!!handleError(schema, "phoneNum")}
+                  helperText={handleError(schema, "phoneNum")}
+                  value={schema.values.phoneNum}
+                  onChange={schema.handleChange}
+                  onBlur={schema.handleBlur}
                   required
                   fullWidth
                   sx={{
@@ -218,8 +252,11 @@ export default function Signup() {
                 <TextField
                   name="address"
                   placeholder="Address"
-                  value={formData.address}
-                  onChange={handleChange}
+                  error={!!handleError(schema, "address")}
+                  helperText={handleError(schema, "address")}
+                  value={schema.values.address}
+                  onChange={schema.handleChange}
+                  onBlur={schema.handleBlur}
                   required
                   fullWidth
                   sx={{
@@ -237,11 +274,11 @@ export default function Signup() {
                 />
 
                   <FormControl fullWidth>
-
-                    <Select
-                      labelId="role-label"
-                      value={formData.role}
-                      onChange={handleSelectChange}
+                    <Autocomplete
+                      onChange={(even, value, reason) => {
+                          schema.setFieldValue("role", value)
+                      }}
+                      defaultChecked="Patient"
                       sx={{
                         borderRadius: 2,
                         bgcolor: "white",
@@ -256,12 +293,23 @@ export default function Signup() {
                           boxShadow: "0 0 0 2px rgba(20, 184, 166, 0.2)",
                         },
                       }}
-                    >
-                      <MenuItem value="Patient">Patient</MenuItem>
-                      <MenuItem value="Doctor">Doctor</MenuItem>
-                    </Select>
-
-                    {formData.role === "Doctor" && (
+                      disablePortal
+                      fullWidth
+                      options={["Patient","Doctor"]}
+                      defaultValue={schema.values.role}
+                      renderInput={(params) => {
+                          return <TextField
+                              {...params}
+                              margin="dense"
+                              name="role"
+                              label={"Role"}
+                              onBlur={schema.handleBlur}
+                              error={Boolean(handleError(schema, "role"))}
+                              helperText={handleError(schema, "role")}
+                              value={schema.values.role} />
+                      }}
+                    />
+                    {schema.values.role === "Doctor" && (
                       <Box
                         sx={{
                           mt: 2,
@@ -287,13 +335,16 @@ export default function Signup() {
                     )}
                   </FormControl>
 
-                {formData.role === "Doctor" && (
+                {schema.values.role === "Doctor" && (
                   <>
                     <TextField
                       name="specialization"
                       placeholder="Specialization"
-                      value={formData.specialization}
-                      onChange={handleChange}
+                      value={schema.values.specialization}
+                      onChange={schema.handleChange}
+                      onBlur={schema.handleBlur}
+                      error={!!handleError(schema, "specialization")}
+                      helperText={handleError(schema, "specialization")}
                       required
                       fullWidth
                       sx={{
@@ -312,8 +363,11 @@ export default function Signup() {
                     <TextField
                       name="schedule"
                       placeholder="Schedule"
-                      value={formData.schedule}
-                      onChange={handleChange}
+                      value={schema.values.schedule}
+                      onChange={schema.handleChange}
+                      onBlur={schema.handleBlur}
+                      error={!!handleError(schema, "schedule")}
+                      helperText={handleError(schema, "schedule")}
                       required
                       fullWidth
                       sx={{
@@ -372,7 +426,7 @@ export default function Signup() {
                           <input
                             id="medical-document"
                             type="file"
-                            onChange={handleFileChange}
+                            onChange={handleFormikFileChange}
                             style={{ display: "none" }}
                             accept=".pdf,.jpg,.jpeg,.png"
                             required
@@ -398,9 +452,9 @@ export default function Signup() {
                           >
                             Select Document
                           </Button>
-                          {file && (
+                          {schema.values.file && (
                             <Typography sx={{ fontSize: "0.75rem", color: "#059669", mt: 1 }}>
-                              {file.name} selected
+                              {schema.values.file.name} selected
                             </Typography>
                           )}
                         </Box>
@@ -412,7 +466,6 @@ export default function Signup() {
                 <Button
                   type="submit"
                   variant="contained"
-                  onClick={()=>{handleSignUp()}}
                   sx={{
                     mt: 1,
                     py: 1.5,

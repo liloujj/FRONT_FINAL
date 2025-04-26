@@ -91,13 +91,13 @@ export default function Login() {
               <Box sx={{ mb: 2.5 }}>
                 <TextField
                   error={!!handleError(schema, "id")}
+                  helperText={handleError(schema, "id")}
                   id="email"
                   type="email"
                   placeholder="your@email.com"
                   value={schema.values.id}
                   onChange={schema.handleChange}
                   onBlur={schema.handleBlur}
-                  helperText={handleError(schema, "id")}
                   required
                   fullWidth
                   InputProps={{

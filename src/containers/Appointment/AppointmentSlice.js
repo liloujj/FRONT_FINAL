@@ -209,6 +209,7 @@ const appointmentSlice = createSlice({
         },
         setAppointments(state, action) {
             state.appointments = action.payload
+            state.appointments.reverse()
             state.fetchingInProgress = false
         },
         addAppointment(state,action){

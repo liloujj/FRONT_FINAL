@@ -33,16 +33,10 @@ export default function Settings ()
         validationSchema: Yup.object({
             password: Yup.string().required("Required."),
             new_password: Yup.string().required("Required."),
-            confirm_new_password: Yup.string().when("new_password", {
-                is: value => value && value.length > 0,
-                then: Yup.string().oneOf(
-                    [Yup.ref("new_password")],
-                    "Both password need to be the same"
-                )
-            }),
+            confirm_new_password: Yup.string().required("Required")
         }),
         onSubmit: (values) => {
-            dispatch(editPersonalData(values, () => {
+            dispatch(editPersonalData(values.password,values.new_password, () => {
                 // success
                 setChangePasswordMessage({
                     message: "The password changed with success",
