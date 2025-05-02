@@ -7,6 +7,8 @@ import { useEffect } from "react"
 import { Box } from "@mui/system"
 import ChatContactList from "../ChatContactList/ChatContactList"
 
+import { useSelector } from "react-redux"
+
 
 export default function ChatSideBar(props) {
 
@@ -15,6 +17,8 @@ export default function ChatSideBar(props) {
     const [elements, setElements] = useState([])
     const [selectedConversation, setSelectedConversation] = useState(null)
     const [openContactList, setOpenContactList] = useState(false)
+    const  {role,name,id} = useSelector((state)=>state.login)
+
 
     const handleSearchInputChange = (event) => {
         setSearchText(event.target.value)
@@ -27,7 +31,7 @@ export default function ChatSideBar(props) {
                 const user = element.conversation_users.find((user) => {
                     return user.id !== element.current_user.id
                 })
-                const fullName = `${user.first_name?.toLowerCase()} ${user.last_name?.toLowerCase()}`
+                const fullName = `${user.name?.toLowerCase()} ${user.last_name?.toLowerCase()}`
                 return fullName?.search(text) !== -1
             })
             setElements(newElements)
@@ -49,8 +53,8 @@ export default function ChatSideBar(props) {
     }
 
     useEffect(() => {
-        setElements(conversations)
-    }, [conversations])
+        setElements(users)
+    }, [users])
 
     return (
         <Box display="flex" flexDirection="column" sx={{ height: "100%" }}>
@@ -90,16 +94,16 @@ export default function ChatSideBar(props) {
             }}>
                 {elements.length > 0 &&
                     <List disablePadding={true}>
-                        {elements?.map((conversation, index) => {
+                        {elements?.filter((element)=>element._id !== id).map((user, index) => {
                             return (
                                 <ChatConversation
-                                    key={conversation.id}
-                                    conversation={conversation}
+                                    key={user.id}
+                                    user={user}
                                     selected={selectedConversation === index}
                                     clicked={() => {
                                         setSelectedConversation(index)
                                         if (onConversationSelect) {
-                                            onConversationSelect(conversation)
+                                            onConversationSelect(user)
                                         }
                                     }} />
                             )

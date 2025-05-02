@@ -297,7 +297,7 @@ const initialState = {
     name:null,
     email:null,
     role:null,
-    id:null,
+    c:null,
 
 }
 
@@ -324,7 +324,7 @@ const loginSlice = createSlice({
             state.name = action.payload.name
             state.email = action.payload.email
             state.role = action.payload.role
-            state.id = action.payload.id
+            state.id = action.payload._id
             state.inProgress=false
         },
         removePersonalData(state){

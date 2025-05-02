@@ -17,7 +17,7 @@ export default function ChatContactList(props) {
         const value = event.target.value
         if (!!value) {
             const newElements = users.filter((user) => {
-                const fullName = `${user.first_name?.toLowerCase()} ${user.last_name?.toLowerCase()}`
+                const fullName = `${user.name?.toLowerCase()}`
                 return fullName?.search(value) !== -1
             })
             setElements(newElements)
@@ -71,15 +71,15 @@ export default function ChatContactList(props) {
         </DialogTitle>
         <DialogContent>
             {elements.map((user) => {
-                return <ListItem key={user.id} button onClick={handleSelectedUser(user)}>
+                return <ListItem key={user._id} button onClick={handleSelectedUser(user)}>
                     <ListItemAvatar>
                         {
-                            user?.avatar_url ?
-                                <Avatar src={user.avatar_url} /> :
-                                <Avatar>{user.first_name[0]}{user.last_name[0]}</Avatar>
+                            user?.avatar ?
+                                <Avatar src={user.avatar} /> :
+                                <Avatar>{user.name[0]}</Avatar>
                         }
                     </ListItemAvatar>
-                    <ListItemText primary={`${user.first_name} ${user.last_name}`} />
+                    <ListItemText primary={`${user.name}`} />
                 </ListItem>
             })}
         </DialogContent>

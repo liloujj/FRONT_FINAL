@@ -17,7 +17,7 @@ import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 import Scan from './Scan/Scan';
 
 import MessageIcon from '@mui/icons-material/Message';
-import { MessageTable } from './Message/Message';
+import Chat from './Message/Message';
 
 export const routes = [
     {
@@ -57,8 +57,8 @@ export const routes = [
         path: "/messages",
         title: "Messages",
         icon: <MessageIcon />,
-        component: <MessageTable />,
-        role : "Admin",
+        component: <Chat />,
+        role : "Any",
     },
     {
         path: "/settings",

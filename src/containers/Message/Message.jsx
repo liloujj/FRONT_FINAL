@@ -1,42 +1,78 @@
 import { Container } from "@mui/material"
+import { io } from 'socket.io-client';
 import { Box } from "@mui/system"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { clearMessages, createConversationAsync, createMessageAsync, fetchContactsAsync, fetchConversationsAsync, fetchMessagesByConversationAsync, updateMessageAsync } from "./ChatSlice"
 import ChatContent from "./Components/ChatContent/ChatContent"
 import ChatInput from "./Components/ChatInput/ChatInput"
 import ChatSideBar from "./Components/ChatSideBar/ChatSideBar"
+import { SOCKET_IO_ORIGIN } from "../../configs";
+import { AsyncGetUsers } from "../User/UserSlice"
+import { fetchConversationsAsync,fetchMessagesAsync,appendMessage } from "./ChatSlice"
 
 export default function Chat() {
 
     const dispatch = useDispatch()
 
-    const { users, conversations, messages } = useSelector((state) => state.chat)
+    const { conversations, messages } = useSelector((state) => state.chat)
+    const  {users} = useSelector((state)=>state.user)
+
     const [selectedConversation, setSelectedConversation] = useState(null)
     const [updateMessages, setUpdateMessages] = useState(false)
+    const  {role,name,id} = useSelector((state)=>state.login)
+    
+
+    const [socket, setSocket] = useState(null);
+  
+    useEffect(() => {
+      const newSocket = io(SOCKET_IO_ORIGIN);
+      setSocket(newSocket);
+      
+
+      return () => {
+        newSocket.disconnect();
+      };
+    }, []);
+  
+    const sendMessage = (message) => {
+      if (message && socket) {
+        socket.emit('send-message', message);
+      }
+    };
+
 
     const handleSendMessage = (message) => {
+
         const data = {
+            patientId:selectedConversation._id,
             content: message,
-            user_id: selectedConversation.current_user.id,
-            conversation_id: selectedConversation.id
+            sender:role ==="Admin"?"admin":"patient",
+            senderType:role ==="Admin"?"admin":"patient",
         }
-        //dispatch(createMessageAsync(data))
-        //dispatch(fetchConversationsAsync())
+        sendMessage(data)
+        dispatch(appendMessage(data))
     }
 
     const handleSelectConversation = (conversation) => {
         setSelectedConversation(conversation)
+        dispatch(fetchMessagesAsync(conversation._id))
+        const patientId = conversation._id
+        if (socket)
+        {
+            socket.emit("admin-join",{id,patientId});
+
+            socket.on(`conversation-${patientId}`, (msg) => {
+                console.log(msg)
+            });
+        }
         //dispatch(clearMessages())
         //dispatch(fetchMessagesByConversationAsync(conversation.id))
     }
 
     const handleSelectContact = (user) => {
-        // This works because we don't have group chat,
-        // later change this when we support group chat.
         const filteredConversations = conversations.filter((conversation) => {
             const condition1 = conversation.current_user.id !== user.id
-            const condition2 = conversation.conversation_users.map((user) => user.id).indexOf(user.id) !== -1
+            const condition2 = conversation.conversation_users.map((user) => user.id).indexOf(user._id) !== -1
 
             return condition1 && condition2
         })
@@ -57,22 +93,23 @@ export default function Chat() {
     }
 
     useEffect(() => {
+        dispatch(AsyncGetUsers())
+        dispatch(fetchConversationsAsync())
+        
         //dispatch(clearMessages())
-        //dispatch(fetchContactsAsync())
-        //dispatch(fetchConversationsAsync())
+
     }, [dispatch])
 
     useEffect(() => {
         if (selectedConversation) {
             messages.forEach((message) => {
-                if (message.user_id !== selectedConversation.current_user.id && message.status === "MessageStatus.UNREAD") {
+                if (message.patientId !== selectedConversation._id && message.status === "UNREAD") {
                     setUpdateMessages(true)
                     //dispatch(updateMessageAsync(message.id, { status: "READ" }))
                 }
             })
         }
     }, [messages, selectedConversation, dispatch])
-
 
     return (
         <Container>
