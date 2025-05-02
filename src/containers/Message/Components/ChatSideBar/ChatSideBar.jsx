@@ -58,33 +58,7 @@ export default function ChatSideBar(props) {
 
     return (
         <Box display="flex" flexDirection="column" sx={{ height: "100%" }}>
-            <Box sx={{ marginBottom: 2 }} display="flex" flexDirection="row">
-                <FormControl variant="outlined" fullWidth={true}>
-                    <OutlinedInput
-                        fullWidth={true}
-                        type="text"
-                        value={searchText}
-                        onChange={handleSearchInputChange}
-                        onKeyUp={handleSearchInputKeyUp}
-                        size="small"
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton
-                                    disabled={true}
-                                    aria-label="search"
-                                    edge="end"
-                                >
-                                    <SearchIcon />
-                                </IconButton>
-                            </InputAdornment>
-                        }
-                        placeholder="Type to search..."
-                    />
-                </FormControl>
-                <IconButton sx={{ ml: 1 }} onClick={handleAddConversationButtonClicked}>
-                    <AddIcon />
-                </IconButton>
-            </Box>
+            
             <Box border="solid 1px #ddd" flexGrow="10" sx={{
                 overflowY: "scroll",
                 scrollbarWidth: "none",

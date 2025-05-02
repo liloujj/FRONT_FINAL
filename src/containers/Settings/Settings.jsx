@@ -1,10 +1,12 @@
-import { Container, Typography,Grid,TextField,Box,Paper,Button } from "@mui/material"
+import { Container, Typography,Grid,TextField,Box,Paper,Button,Select,MenuItem,InputAdornment } from "@mui/material"
 import * as Yup from 'yup';
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { useFormik } from "formik"
 
 import { editPersonalData } from "../Login/LoginSlice";
+import { useTranslation } from "react-i18next";
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
 function changePasswordAsync(){
     console.log("Password")
@@ -25,21 +27,27 @@ export default function Settings ()
     const dispatch = useDispatch()
 
     const {name} = useSelector((state)=>state.login)
-
+    const {t,i18n } = useTranslation()
     const [changePasswordMessage, setChangePasswordMessage] = useState({})
+
+    const [lang,setLang] = useState("en")
+
+    const handleChangeLanguage = (lng) => {
+        i18n.changeLanguage(lng);
+    };
 
     const changePasswordSchema = useFormik({
         initialValues: { password: '', new_password: '', confirm_new_password: '' },
         validationSchema: Yup.object({
-            password: Yup.string().required("Required."),
-            new_password: Yup.string().required("Required."),
-            confirm_new_password: Yup.string().required("Required")
+            password: Yup.string().required(t("Required.")),
+            new_password: Yup.string().required(t("Required.")),
+            confirm_new_password: Yup.string().required(t("Required."))
         }),
         onSubmit: (values) => {
             dispatch(editPersonalData(values.password,values.new_password, () => {
                 // success
                 setChangePasswordMessage({
-                    message: "The password changed with success",
+                    message: t("The password changed with success"),
                     type: "success"
                 })
 
@@ -59,7 +67,7 @@ export default function Settings ()
     return (<Container >
                 <Box mt={3}>
                     <Typography textAlign="left" variant="h5" component="h2" fontWeight="bold" gutterBottom >
-                        {"Change password admin"}
+                        {t("Change password")}
                     </Typography>
                 </Box>
                 <Paper sx={{marginTop:4}} >
@@ -69,7 +77,7 @@ export default function Settings ()
                                 <Grid container item size={12} alignItems="center">
                                     <Grid item size={4}>
                                         <Typography textAlign="left" variant="subtitle1" gutterBottom component="div">
-                                            {"Name"}
+                                            {t("Name")}
                                         </Typography>
                                     </Grid>
                                     <Grid item size={8}>
@@ -84,7 +92,7 @@ export default function Settings ()
                                 <Grid container item size={12} alignItems="center">
                                     <Grid item size={4}>
                                         <Typography textAlign="left" variant="subtitle1" gutterBottom component="div">
-                                            {"Password"}
+                                            {t("Password")}
                                         </Typography>
                                     </Grid>
                                     <Grid item size={8}>
@@ -103,7 +111,7 @@ export default function Settings ()
                                 <Grid container item size={12} alignItems="center">
                                     <Grid item size={4}>
                                         <Typography textAlign="left" variant="subtitle1" gutterBottom component="div">
-                                            {"New password"}
+                                            {t("New password")}
                                         </Typography>
                                     </Grid>
                                     <Grid item size={8}>
@@ -122,7 +130,7 @@ export default function Settings ()
                                 <Grid container item size={12} alignItems="center">
                                     <Grid item  size={4}>
                                         <Typography textAlign="left" variant="subtitle1" gutterBottom component="div">
-                                            {"Confirm new password"}
+                                            {t("Confirm new password")}
                                         </Typography>
                                     </Grid>
                                     <Grid item size={8}>
@@ -144,11 +152,42 @@ export default function Settings ()
                                         disableElevation
                                         type="submit"
                                         disabled={changePasswordSchema.isSubmitting}>
-                                        {"Submit"}
+                                        {t("Submit")}
                                     </Button>
                                 </Grid>
                             </Grid>
                         </form>
+                    </Box>
+                </Paper>
+                <Box mt={3}>
+                    <Typography textAlign="left" variant="h5" component="h2" fontWeight="bold" gutterBottom >
+                        {t("Change language")}
+                    </Typography>
+                </Box>
+                <Paper sx={{marginTop:4}}>
+                    <Box p={2} >
+                        <Grid container  spacing={2}>
+                            <Grid container item size={12} alignItems="center">
+                                <Grid item size={4}>
+                                    <Typography textAlign="left" variant="subtitle1" gutterBottom component="div">
+                                        {t("Language")}
+                                    </Typography>
+                                </Grid>
+                                <Grid item size={8}>
+                                    <Select
+                                        onChange={(e)=>handleChangeLanguage(e.target.value)}
+                                        fullWidth
+                                        labelId="language-filter-label"
+                                        defaultValue={i18n.language}
+                                        label={t("Language")}
+                                        >
+                                        <MenuItem value="en">{t("English")}</MenuItem>
+                                        <MenuItem value="fr">{t("French")}</MenuItem>
+
+                                    </Select>
+                                </Grid>
+                            </Grid>
+                        </Grid>
                     </Box>
                 </Paper>
     </Container>)

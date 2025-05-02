@@ -16,6 +16,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import { AsyncCreateAppointment,AsyncEditAppointment } from '../AppointmentSlice';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+
+import { useTranslation } from "react-i18next";
+
 function handleError(schema, name) {
 
     if (schema.touched[name] && schema.errors[name]) {
@@ -34,6 +37,7 @@ export default function AppointmentEditDialog(props) {
 
     const [dateTime,setDateTime] = useState(isUpdate ? dayjs(model.date) :dayjs("2025-04-03 T10:30"))
     const [status,setStatus] = useState(isUpdate ? model.status : "Pending")
+    const {t} = useTranslation()
 
     const handleDateTimeChange = (newDateTime) => {
         setDateTime(dayjs(newDateTime))
@@ -53,7 +57,7 @@ export default function AppointmentEditDialog(props) {
     
 
     return <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
-            <DialogTitle>{isUpdate ? "Update appointment" : "Create appointment"}</DialogTitle>
+            <DialogTitle>{isUpdate ? t("Update appointment") : t("Create appointment")}</DialogTitle>
             <DialogContent>
                 <Grid spacing={2} container sx={{alignItems:"center"}}>
                     <Grid item size={12}>
@@ -62,7 +66,7 @@ export default function AppointmentEditDialog(props) {
                                 disabled
                                 margin="dense"
                                 name="Name"
-                                label="Name"
+                                label={t("Name")}
                                 type="select"
                             />
                     </Grid >
@@ -83,7 +87,7 @@ export default function AppointmentEditDialog(props) {
                                     {...params}
                                     margin="dense"
                                     name="Status"
-                                    label="Status"
+                                    label={t("Status")}
                                     type="select"
                                 />
                             }}
@@ -102,8 +106,8 @@ export default function AppointmentEditDialog(props) {
                     onClick={() => {
                         handleClose()
                     }}
-                >{"Cancel"}</Button>
-                <Button type="submit" onClick={handleSubmit} disabled={editInProgress}>{"Save"}</Button>
+                >{t("Cancel")}</Button>
+                <Button type="submit" onClick={handleSubmit} disabled={editInProgress}>{t("Save")}</Button>
             </DialogActions>
     </Dialog>
 }

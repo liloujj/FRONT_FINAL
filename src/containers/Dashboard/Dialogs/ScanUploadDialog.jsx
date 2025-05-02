@@ -12,6 +12,9 @@ import {  FileText } from "lucide-react"
 import { useDispatch, useSelector } from 'react-redux';
 import { AsyncUploadScan } from "../DashboardActions";
 
+import { useTranslation } from "react-i18next";
+
+
 import * as Yup from 'yup';
 
 export default function ScanUploadDialog(props) {
@@ -27,6 +30,8 @@ export default function ScanUploadDialog(props) {
           setFile(e.target.files[0])
         }
     }
+
+    const {t} = useTranslation()
 
     const handleSubmit = () =>
     {
@@ -44,7 +49,7 @@ export default function ScanUploadDialog(props) {
 
 
     return (<Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
-            <DialogTitle>Upload scan</DialogTitle>
+            <DialogTitle>{t("Upload scan")}</DialogTitle>
             <DialogContent>
                 <Grid spacing={2} container sx={{alignItems:"center"}}>
                     <Grid item size={12}>
@@ -64,7 +69,7 @@ export default function ScanUploadDialog(props) {
                                 {...params}
                                 margin="dense"
                                 name="patient"
-                                label="Patient"
+                                label={t("Patient")}
                             />
                         }}
                     />
@@ -101,10 +106,10 @@ export default function ScanUploadDialog(props) {
                                 >
                                 <FileText color="#94a3b8" size={32} />
                                 <Typography sx={{ fontSize: "0.875rem", fontWeight: 500, color: "#334155" }}>
-                                    Upload Medical Scan
+                                    {t("Upload Medical Scan")}
                                 </Typography>
                                 <Typography sx={{ fontSize: "0.75rem", color: "#94a3b8" }}>
-                                    PDF, JPG or PNG (max. 5MB)
+                                    {t("PDF, JPG or PNG (max. 5MB)")}
                                 </Typography>
                                 <input
                                     id="scan-document"
@@ -119,11 +124,11 @@ export default function ScanUploadDialog(props) {
                                     onClick={() => document.getElementById("scan-document")?.click()}
                                     
                                 >
-                                    Select Document
+                                    {t("Select Document")}
                                 </Button>
                                 {file && (
                                     <Typography sx={{ fontSize: "0.75rem", color: "#059669", mt: 1 }}>
-                                    {file.name} selected
+                                    {file.name} {t("selected")}
                                     </Typography>
                                 )}
                                 </Box>
@@ -137,8 +142,8 @@ export default function ScanUploadDialog(props) {
                     onClick={() => {
                         handleClose()
                     }}
-                >{"Cancel"}</Button>
-                <Button type="submit" onClick={()=>handleSubmit()} >{"Save"}</Button>
+                >{t("Cancel")}</Button>
+                <Button type="submit" onClick={()=>handleSubmit()} >{t("Save")}</Button>
             </DialogActions>
     </Dialog>)
 }

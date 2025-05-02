@@ -10,6 +10,9 @@ import { SOCKET_IO_ORIGIN } from "../../configs";
 import { AsyncGetUsers } from "../User/UserSlice"
 import { fetchConversationsAsync,fetchMessagesAsync,appendMessage } from "./ChatSlice"
 
+import { useTranslation } from "react-i18next";
+
+
 export default function Chat() {
 
     const dispatch = useDispatch()
@@ -21,7 +24,8 @@ export default function Chat() {
     const [updateMessages, setUpdateMessages] = useState(false)
     const  {role,name,id} = useSelector((state)=>state.login)
     
-
+    const {t} = useTranslation()
+    
     const [socket, setSocket] = useState(null);
   
     useEffect(() => {
@@ -55,8 +59,12 @@ export default function Chat() {
 
     const handleSelectConversation = (conversation) => {
         setSelectedConversation(conversation)
-        dispatch(fetchMessagesAsync(conversation._id))
-        const patientId = conversation._id
+        let patientId = id
+        if (role === "Admin")
+        {
+            patientId = conversation._id
+        }
+        dispatch(fetchMessagesAsync(patientId))
         if (socket)
         {
             socket.emit("admin-join",{id,patientId});

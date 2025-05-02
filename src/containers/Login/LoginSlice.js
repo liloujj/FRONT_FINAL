@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit"
 import { BASE_URL } from "../../configs"
 import axios from "../../helpers/axios"
 import toast from "react-hot-toast"
+import { t } from "i18next";
 
 export function AsyncResetPassword(token,newPassword,action) {
     return async (dispatch) => {
@@ -28,7 +29,7 @@ export function AsyncResetPassword(token,newPassword,action) {
                 dispatch(handleError({ error }))
             }
             else {
-                const error = "Something went wrong, Try again"
+                const error = t("Something went wrong, Try again")
                 toast(error)
                 dispatch(handleError({ error }))
             }
@@ -63,12 +64,12 @@ export function AsyncInitResetPassword(email,action) {
             else if (response && response.status === 404)
             {
                 const error = response.data.error
-                toast("There is no user with this email")
+                toast(t("There is no user with this email"))
                 dispatch(handleError({ error }))
 
             }
             else {
-                const error = "Something went wrong, Try again"
+                const error = t("Something went wrong, Try again")
                 toast(error)
                 dispatch(handleError({ error }))
             }
@@ -92,7 +93,7 @@ export function editPersonalData(password,newPassword,onSuccess) {
             )
             //dispatch(setPersonalData(response.data.user))
             onSuccess()
-            toast("Password changed")
+            toast(t("Password changed"))
 
         } catch (e) {
             const response = e.response
@@ -106,7 +107,7 @@ export function editPersonalData(password,newPassword,onSuccess) {
                 toast(error)
             }
             else {
-                const error = "Something went wrong, Try again"
+                const error = t("Something went wrong, Try again")
                 dispatch(handleError({ error }))
             }
         }
@@ -126,7 +127,7 @@ export function AsyncActivateUser(token,activationCode,action)
                 }
             )
             action()
-            toast("Account has been created")
+            toast(t("Account has been created"))
 
         } catch (e) {
             const response = e.response
@@ -140,7 +141,7 @@ export function AsyncActivateUser(token,activationCode,action)
                 }
             }
             else {
-                const error = "Something went wrong, Try again"
+                const error = t("Something went wrong, Try again")
                 dispatch(handleError({ error }))
             }
         }
@@ -180,7 +181,7 @@ export function AsyncSignUp(name, email, password, phoneNum, address, role,speci
                 {headers}
             )
             const { token} = response.data.token
-            toast("Check your email")
+            toast(t("Check your email"))
             //action(token)
             //sessionStorage.setItem("userId", user_id)
 
@@ -189,14 +190,9 @@ export function AsyncSignUp(name, email, password, phoneNum, address, role,speci
             if (response && response.status === 400) {
                 const error = response.data.error
                 dispatch(handleError({ error }))
-            }else if(response && response.status === 500)
-            {
-                const error = response.data.error
-                dispatch(handleError({ error }))
-                toast("User already exist") 
             }
             else {
-                const error = "Something went wrong, Try again"
+                const error = t("Something went wrong, Try again")
                 dispatch(handleError({ error }))
                 toast(error) 
 
@@ -221,7 +217,7 @@ export function login(email, password) {
                 }
             )
             const { token} = response.data.token
-            toast("Logged")
+            toast(t("Logged"))
             dispatch(setPersonalData(response.data.user))
 
             sessionStorage.setItem("token", token)
@@ -236,10 +232,10 @@ export function login(email, password) {
                 dispatch(handleError({ error }))
             }else if(response && response.status === 401)
                 {
-                    toast("Email or password are incorrect, try again")  
+                    toast(t("Email or password are incorrect, try again"))  
                 }
             else {
-                const error = "Something went wrong, Try again"
+                const error = t("Something went wrong, Try again")
                 dispatch(handleError({ error }))
                 toast(error)  
             }
@@ -259,7 +255,7 @@ export function logout() {
             sessionStorage.clear()
             dispatch(removePersonalData())
             dispatch(out())
-            toast("Logged out")
+            toast(t("Logged out"))
 
         } catch (e) {
             const response = e.response
@@ -267,7 +263,7 @@ export function logout() {
                 const error = response.data.error
                 dispatch(handleError({ error }))
             } else {
-                const error = "Something went wrong, Try again"
+                const error = t("Something went wrong, Try again")
                 dispatch(handleError({ error }))
             }
         }

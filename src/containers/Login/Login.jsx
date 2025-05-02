@@ -21,6 +21,8 @@ import { useDispatch } from "react-redux"
 import { useNavigate } from 'react-router-dom';
 import { configLoginMode } from "./LoginSlice";
 
+import { useTranslation } from "react-i18next";
+
 function handleError(schema, name) {
 
     if (schema.touched[name] && schema.errors[name]) {
@@ -34,6 +36,8 @@ export default function Login() {
   const theme = useTheme()
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
+
+  const { t } = useTranslation()
 
   const dispatch = useDispatch()
 
@@ -84,7 +88,7 @@ export default function Login() {
         >
           <CardContent sx={{ p: 4 }}>
             <Typography variant="h5" fontWeight={700} color="#1e293b" sx={{ mb: 3 }}>
-              Log in to your account
+              {t("Log in to your account")}
             </Typography>
 
             <Box component="form" onSubmit={schema.handleSubmit}>
@@ -197,7 +201,7 @@ export default function Login() {
                 }}
               >
                 <Box component="span" sx={{ mr: 1 }}>
-                  Log in
+                  {t("Log in")}
                 </Box>
                 <ChevronRight size={18} />
               </Button>
@@ -208,7 +212,7 @@ export default function Login() {
                   fontSize: "0.875rem",
                   color: "#64748b",
                 }}>
-                Did you forget your password?
+                {t("Did you forget your password?")}
                 <Button
                   onClick={()=>{navigate("/forget-password")}}
                   variant="text"
@@ -220,7 +224,7 @@ export default function Login() {
                     },
                   }}
                 >
-                  Forgot password
+                  {t("Forgot password")}
                 </Button>
               </Typography>
               <Typography
@@ -230,7 +234,7 @@ export default function Login() {
                   color: "#64748b",
                 }}
               >
-                Don't have an account?{" "}
+                {t("Don't have an account?")}
                 <Button
                   variant="text"
                   onClick={()=>handleSwitchToSignUp()}
@@ -242,7 +246,7 @@ export default function Login() {
                     },
                   }}
                 >
-                  Sign up
+                  {t("Sign up")}
                 </Button>
               </Typography>
             </Box>

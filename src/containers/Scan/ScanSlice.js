@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit"
 import axios from "../../helpers/axios"
 
+import { t } from "i18next";
+
 export function AsyncGetScans() {
     return async (dispatch) => {
         dispatch(fetching())
@@ -19,7 +21,7 @@ export function AsyncGetScans() {
                 const error = response.data.error
                 dispatch(handleErrors({ error }))
             } else {
-                const error = "Something went wrong, Try again"
+                const error = t("Something went wrong, Try again")
                 dispatch(handleErrors({ error }))
             }
         }

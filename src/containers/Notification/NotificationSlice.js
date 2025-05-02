@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
 import axios from "../../helpers/axios"
+import { t } from "i18next";
 
 export function AsyncReadAllNotifications() {
     return async (dispatch) => {
@@ -16,7 +17,7 @@ export function AsyncReadAllNotifications() {
                 const error = response.data.error
                 dispatch(handleErrors({ error }))
             } else {
-                const error = "Something went wrong, Try again"
+                const error = t("Something went wrong, Try again")
                 dispatch(handleErrors({ error }))
             }
         }
@@ -39,7 +40,7 @@ export function AsyncReadNotification(id) {
                 const error = response.data.error
                 dispatch(handleErrors({ error }))
             } else {
-                const error = "Something went wrong, Try again"
+                const error = t("Something went wrong, Try again")
                 dispatch(handleErrors({ error }))
             }
         }
@@ -63,7 +64,7 @@ export function AsyncGetNotifications() {
                 const error = response.data.error
                 dispatch(handleErrors({ error }))
             } else {
-                const error = "Something went wrong, Try again"
+                const error = t("Something went wrong, Try again")
                 dispatch(handleErrors({ error }))
             }
         }

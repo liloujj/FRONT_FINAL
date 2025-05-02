@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import dayjs from 'dayjs';
 
+import { useTranslation } from "react-i18next";
+
 
 export default function User(){
 
@@ -30,6 +32,7 @@ export default function User(){
             setFilterdUsers(users)
         }
     }
+    const {t} = useTranslation()
 
     const handleActivateDoctor = (doctor_id)=>
     {
@@ -54,15 +57,15 @@ export default function User(){
         <Box sx={{ mt: 3  }}>
           <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
             <Typography variant="h5" component="h2" fontWeight="bold">
-              User Management
+              {t("User Management")}
             </Typography>
             <Box sx={{ display: "flex", gap: 2 }}>
               <FormControl size="small" sx={{ minWidth: 150 }}>
-                <InputLabel id="user-filter-label">User Type</InputLabel>
+                <InputLabel id="user-filter-label">{t("User Type")}</InputLabel>
                 <Select
                   defaultValue="All"
                   labelId="user-filter-label"
-                  label="User Type"
+                  label={t("User Type")}
                   onChange={(e) => handleFilter(e.target.value)}
                   startAdornment={
                     <InputAdornment position="start">
@@ -70,14 +73,14 @@ export default function User(){
                     </InputAdornment>
                   }
                 >
-                  <MenuItem value="All">All Users</MenuItem>
-                  <MenuItem value="Patient">Patients</MenuItem>
-                  <MenuItem value="Doctor">Doctors</MenuItem>
+                  <MenuItem value="All">{t("All Users")}</MenuItem>
+                  <MenuItem value="Patient">{t("Patients")}</MenuItem>
+                  <MenuItem value="Doctor">{t("Doctors")}</MenuItem>
                 </Select>
               </FormControl>
               <TextField
                 size="small"
-                placeholder="Search users..."
+                placeholder={t("Search users...")}
                 
                 InputProps={{
                   startAdornment: (
@@ -94,12 +97,12 @@ export default function User(){
             <Table sx={{ minWidth: 650 }}>
               <TableHead sx={(theme)=>({ backgroundColor: theme.palette.grey[50] })}>
                 <TableRow>
-                  <TableCell>User</TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell>Phone</TableCell>
-                  <TableCell>Join Date</TableCell>
-                  <TableCell>Status</TableCell>
-                  <TableCell align="right">Actions</TableCell>
+                  <TableCell>{t("User")}</TableCell>
+                  <TableCell>{t("Email")}</TableCell>
+                  <TableCell>{t("Phone")}</TableCell>
+                  <TableCell>{t("Join Date")}</TableCell>
+                  <TableCell>{t("Status")}</TableCell>
+                  <TableCell align="right">{t("Actions")}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

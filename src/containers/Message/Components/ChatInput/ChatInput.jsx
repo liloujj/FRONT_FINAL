@@ -3,13 +3,15 @@ import SendIcon from "@mui/icons-material/Send"
 import { useState } from "react"
 import { useEffect } from "react"
 
+import { useTranslation } from "react-i18next";
+
 
 export default function ChatInput(props) {
 
     const [activeSendButton, setActiveSendButton] = useState(false)
     const [message, setMessage] = useState("")
     const { onSend, disabled, clicked } = props
-
+    const {t} = useTranslation()
     useEffect(() => {
         setActiveSendButton(!!message)
     }, [message])
@@ -72,7 +74,7 @@ export default function ChatInput(props) {
                         </IconButton>
                     </InputAdornment>
                 }
-                placeholder="Type a message..."
+                placeholder={t("Type a message...")}
             />
         </FormControl>
     )

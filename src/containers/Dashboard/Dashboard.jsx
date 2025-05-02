@@ -9,6 +9,7 @@ import { AsyncGetAppointments } from "../Appointment/AppointmentSlice";
 import { AsyncGetUsers } from "../User/UserSlice";
 import { AsyncGetNotifications } from "../Notification/NotificationSlice";
 import ScanUploadDialog from "./Dialogs/ScanUploadDialog";
+import { useTranslation } from "react-i18next";
 
 export default function Dashboard(){
 
@@ -19,6 +20,8 @@ export default function Dashboard(){
     const {appointments} = useSelector((state)=>state.appointment)
 
     const [scanDialogOpen,setScanDialogOpen] = useState(false)
+
+    const {t} = useTranslation()
 
     useEffect(()=>{
         dispatch(AsyncGetAppointments())
@@ -34,10 +37,10 @@ export default function Dashboard(){
             <Box mt={3}>
                 <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>                
                     <Typography textAlign="left" variant="h5" component="h2" fontWeight="bold" gutterBottom >
-                        {"Dashboard"}
+                        {t("Dashboard")}
                     </Typography>
                     <Box sx={{ display: "flex", gap: 2 }}>
-                        <Button  onClick={()=>setScanDialogOpen(true)} variant="contained" >Upload scan</Button> 
+                        <Button  onClick={()=>setScanDialogOpen(true)} variant="contained" >{t("Upload scan")}</Button> 
                     </Box>
                 </Box>
             </Box>
@@ -45,19 +48,19 @@ export default function Dashboard(){
                 <Grid item size={4}>
                     <Paper sx={{padding:2}}>
                         <PersonIcon sx={{fontSize:50}}/>
-                        <Typography sx={{mt:1}} variant="h5">{users.length} Users</Typography>
+                        <Typography sx={{mt:1}} variant="h5">{users.length} {t("Users")}</Typography>
                     </Paper>
                 </Grid>
                 <Grid item size={4}>
                     <Paper sx={{padding:2}}>
                         <NotificationsIcon sx={{fontSize:50}}/>
-                        <Typography sx={{mt:1}} variant="h5">{notifications.length} Notifications</Typography>
+                        <Typography sx={{mt:1}} variant="h5">{notifications.length} {t("Notifications")}</Typography>
                     </Paper>
                 </Grid>
                 <Grid item size={4}>
                     <Paper sx={{padding:2}}>
                         <CalendarMonthIcon sx={{fontSize:50}}/>
-                        <Typography sx={{mt:1}} variant="h5">{appointments.length} Appointments</Typography>
+                        <Typography sx={{mt:1}} variant="h5">{appointments.length} {t("Appointments")}</Typography>
                     </Paper>
                 </Grid>
             </Grid>

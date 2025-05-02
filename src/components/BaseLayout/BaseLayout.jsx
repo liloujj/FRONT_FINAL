@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../containers/Login/LoginSlice';
 
+import { useTranslation } from "react-i18next";
+
 const drawerWidth = 300;
 
 const openedMixin = (theme) => ({
@@ -46,6 +48,7 @@ function BaseLayout(props) {
 
     const [desktopOpen, setDesktopOpen] = React.useState(true);
     const [mobileOpen, setMobileOpen] = React.useState(false);
+    const {t} = useTranslation()
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -70,7 +73,7 @@ function BaseLayout(props) {
                         <ListItemIcon>
                             {link.icon}
                         </ListItemIcon>
-                        <ListItemText sx={{ textAlign: "left" }} primary={link.title} />
+                        <ListItemText sx={{ textAlign: "left" }} primary={t(link.title)} />
                     </ListItem>
                 })}
                 <Divider/>
@@ -78,7 +81,7 @@ function BaseLayout(props) {
                         <ListItemIcon>
                             <LogoutIcon/>
                         </ListItemIcon>
-                    <ListItemText sx={{ textAlign: "left" }} primary="Log out" />
+                    <ListItemText sx={{ textAlign: "left" }} primary={t("Log out")} />
                 </ListItemButton>
             </List>
             

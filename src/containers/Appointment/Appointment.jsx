@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppointmentEditDialog from './Dialogs/AppointmentEditDialog';
 import dayjs from 'dayjs';
 
+import { useTranslation } from "react-i18next";
 
 
 export default function Appointment(){
@@ -34,7 +35,7 @@ export default function Appointment(){
     const [model,setModel] = useState(null)
     const [isEditDialogModeUpdate, setEditDialogModeUpdate] = useState(false)
     
-
+    const {t} = useTranslation()
 
     const [filterdAppointments,setFilterdAppointments]= useState(appointments)
 
@@ -110,14 +111,14 @@ export default function Appointment(){
         <Box sx={{ mt: 3  }}>
           <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
             <Typography variant="h5" component="h2" fontWeight="bold">
-                Appointment Management
+                {t("Appointment Management")}
             </Typography>
             <Box sx={{ display: "flex", gap: 2 }}>
               {role==="Patient" &&
                 <Button onClick={handleOpenDialog} variant="contained"> New appointment</Button>
               }
               <FormControl size="small" sx={{ minWidth: 150 }}>
-                <InputLabel id="user-filter-label">User Type</InputLabel>
+                <InputLabel id="user-filter-label">{t("User Type")}</InputLabel>
                 <Select
                   labelId="appointment-filter-label"
                   defaultValue="All"
@@ -129,17 +130,17 @@ export default function Appointment(){
                     </InputAdornment>
                   }
                 >
-                  <MenuItem value="All">All Appointments</MenuItem>
-                  <MenuItem value="Pending">Pending</MenuItem>
-                  <MenuItem value="Cancelled">Cancelled</MenuItem>
-                  <MenuItem value="Approved">Approved</MenuItem>
-                  <MenuItem value="Refused">Refused</MenuItem>
+                  <MenuItem value="All">{t("All Appointments")}</MenuItem>
+                  <MenuItem value="Pending">{t("Pending")}</MenuItem>
+                  <MenuItem value="Cancelled">{t("Cancelled")}</MenuItem>
+                  <MenuItem value="Approved">{t("Approved")}</MenuItem>
+                  <MenuItem value="Refused">{t("Refused")}</MenuItem>
 
                 </Select>
               </FormControl>
               <TextField
                 size="small"
-                placeholder="Search appointments..."
+                placeholder={t("Search appointments...")}
                 
                 InputProps={{
                   startAdornment: (
@@ -156,10 +157,10 @@ export default function Appointment(){
             <Table  sx={{ minWidth: 650 }}>
               <TableHead sx={(theme)=>({ backgroundColor: theme.palette.grey[50] })}>
                 <TableRow>
-                  <TableCell>Patient</TableCell>
-                  <TableCell>Date & Time</TableCell>
-                  <TableCell>Status</TableCell>
-                  <TableCell align="right">Actions</TableCell>
+                  <TableCell>{t("Patient")}</TableCell>
+                  <TableCell>{t("Date & Time")}</TableCell>
+                  <TableCell>{t("Status")}</TableCell>
+                  <TableCell align="right">{t("Actions")}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

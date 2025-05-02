@@ -9,6 +9,8 @@ import { useEffect,useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 
+import { useTranslation } from "react-i18next";
+
 export function Notification()
 {
 
@@ -40,7 +42,7 @@ export function NotificationTable(){
     const [isEditDialogModeUpdate, setEditDialogModeUpdate] = useState(false)
 
     const [filterdNotifications,setFilterdNotifications]= useState(notifications)
-
+    const {t} = useTranslation()
     const handleFilter = (value) =>{
         
         let data = notifications;
@@ -83,16 +85,16 @@ export function NotificationTable(){
         <Box sx={{ mt: 3  }}>
           <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
             <Typography variant="h5" component="h2" fontWeight="bold">
-                Notifications
+                {t("Notifications")}
             </Typography>
             <Box sx={{ display: "flex", gap: 2 }}>
-              <Button disabled={notifications.filter((notification)=>notification.read===false).length === 0} onClick={()=>{handleReadAllNotifications()}} variant="contained">Read all</Button>
+              <Button disabled={notifications.filter((notification)=>notification.read===false).length === 0} onClick={()=>{handleReadAllNotifications()}} variant="contained">{t("Read all")}</Button>
               <FormControl size="small" sx={{ minWidth: 150 }}>
-                <InputLabel id="notification-filter-label">Notification Type</InputLabel>
+                <InputLabel id="notification-filter-label">{t("Notification Type")}</InputLabel>
                 <Select
                   labelId="notification-filter-label"
                   defaultValue="All"
-                  label="Notification Status"
+                  label={t("Notification Status")}
                   onChange={(e) => handleFilter(e.target.value)}
                   startAdornment={
                     <InputAdornment position="start">
@@ -100,9 +102,9 @@ export function NotificationTable(){
                     </InputAdornment>
                   }
                 >
-                  <MenuItem value="All">All Notifications</MenuItem>
-                  <MenuItem value="Read">Read</MenuItem>
-                  <MenuItem value="Unread">Unread</MenuItem>
+                  <MenuItem value="All">{t("All Notifications")}</MenuItem>
+                  <MenuItem value="Read">{t("Read")}</MenuItem>
+                  <MenuItem value="Unread">{t("Unread")}</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -112,9 +114,9 @@ export function NotificationTable(){
             <Table  sx={{ minWidth: 650 }}>
               <TableHead sx={(theme)=>({ backgroundColor: theme.palette.grey[50] })}>
                 <TableRow>
-                  <TableCell>Contnet</TableCell>
-                  <TableCell>Date & Time</TableCell>
-                  <TableCell align="right">Actions</TableCell>
+                  <TableCell>{t("Contnet")}</TableCell>
+                  <TableCell>{t("Date & Time")}</TableCell>
+                  <TableCell align="right">{t("Actions")}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

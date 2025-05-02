@@ -25,6 +25,7 @@ import { AsyncSignUp } from "./LoginSlice";
 
 import { useFormik } from "formik";
 import * as Yup from 'yup';
+import { useTranslation } from "react-i18next";
 
 function handleError(schema, name) {
 
@@ -46,6 +47,7 @@ export default function Signup() {
     specialization: "",
     schedule: "",
   })
+  const { t } = useTranslation()
 
   const navigate = useNavigate()
   const [file, setFile] = useState(null)
@@ -70,18 +72,17 @@ export default function Signup() {
   const schema = useFormik({
     initialValues: { name:'',email: '', password: '',phoneNum:'',address:'',role:'Patient',specialization:'',schedule:'',file:null },
     validationSchema: Yup.object({
-        name:Yup.string().required("Required."),
-        email: Yup.string().required("Required."),
-        password: Yup.string().required("Required."),
-        phoneNum:Yup.string().required("Required."),
-        address:Yup.string().required("Required."),
-        role:Yup.string().required("Required."),
+        name:Yup.string().required(t("Required.")),
+        email: Yup.string().required(t("Required.")),
+        password: Yup.string().required(t("Required.")),
+        phoneNum:Yup.string().required(t("Required.")),
+        address:Yup.string().required(t("Required.")),
+        role:Yup.string().required(t("Required.")),
         specialization:Yup.string().notRequired(),
         schedule:Yup.string().notRequired(),
         file:Yup.mixed().notRequired()
     }),
     onSubmit: (values) => {
-      console.log("Test")
       dispatch(AsyncSignUp(
         values.name,
         values.email, 
@@ -151,15 +152,15 @@ export default function Signup() {
           <Card sx={{ borderRadius: 3, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}>
             <CardContent sx={{ p: 4 }}>
               <Typography variant="h5" fontWeight={700} color="#1e293b" sx={{ mb: 3 }}>
-                Create Your Account
+                {t("Create Your Account")}
               </Typography>
 
               <Box component="form" onSubmit={schema.handleSubmit}  sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                 <TextField
                   name="name"
-                  placeholder="Full Name"
+                  placeholder={t("Full Name")}
                   error={!!handleError(schema, "name")}
-                  helperText={handleError(schema, "name")}
+                  helperText={handleError(schema, t("name"))}
                   value={schema.values.name}
                   onChange={schema.handleChange}
                   onBlur={schema.handleBlur}
@@ -205,9 +206,9 @@ export default function Signup() {
                 <TextField
                   name="password"
                   type="password"
-                  placeholder="Password"
+                  placeholder={t("Password")}
                   error={!!handleError(schema, "password")}
-                  helperText={handleError(schema, "password")}
+                  helperText={handleError(schema, t("password"))}
                   value={schema.values.password}
                   onChange={schema.handleChange}
                   onBlur={schema.handleBlur}
@@ -228,7 +229,7 @@ export default function Signup() {
                 />
                 <TextField
                   name="phoneNum"
-                  placeholder="Phone Number"
+                  placeholder={t("Phone Number")}
                   error={!!handleError(schema, "phoneNum")}
                   helperText={handleError(schema, "phoneNum")}
                   value={schema.values.phoneNum}
@@ -302,7 +303,7 @@ export default function Signup() {
                               {...params}
                               margin="dense"
                               name="role"
-                              label={"Role"}
+                              label={t("Role")}
                               onBlur={schema.handleBlur}
                               error={Boolean(handleError(schema, "role"))}
                               helperText={handleError(schema, "role")}
@@ -482,12 +483,12 @@ export default function Signup() {
                     },
                   }}
                 >
-                  Sign Up
+                  {t("Sign Up")}
                   <ChevronRight size={20} style={{ marginLeft: "8px" }} />
                 </Button>
 
                 <Typography align="center" sx={{ fontSize: "0.875rem", color: "#64748b", mt: 2 }}>
-                  Already have an account?{" "}
+                  {t("Already have an account?")}
                   <Button
                     onClick={handleSwitchToSignUp}
                     sx={{
@@ -498,7 +499,7 @@ export default function Signup() {
                       },
                     }}
                   >
-                    Log in
+                    {t("Log in")}
                   </Button>
                 </Typography>
               </Box>

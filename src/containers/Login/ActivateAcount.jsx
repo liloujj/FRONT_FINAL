@@ -19,6 +19,8 @@ import { useDispatch } from "react-redux"
 import { useNavigate, useParams } from 'react-router-dom';
 import { AsyncActivateUser } from "./LoginSlice";
 
+import { useTranslation } from "react-i18next";
+
 
 function handleError(schema, name) {
 
@@ -33,6 +35,8 @@ export default function ActivateAcount() {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
 
+  const {t} = useTranslation()
+  
   const {token} = useParams() 
 
   const navigate = useNavigate()
@@ -47,7 +51,7 @@ export default function ActivateAcount() {
   const schema = useFormik({
     initialValues: { code: ''},
     validationSchema: Yup.object({
-        code: Yup.number().required("Required.")
+        code: Yup.number().required(t("Required."))
 
     }),
     onSubmit: (values) => {
@@ -84,7 +88,7 @@ export default function ActivateAcount() {
         >
           <CardContent sx={{ p: 4 }}>
             <Typography variant="h5" fontWeight={700} color="#1e293b" sx={{ mb: 3 }}>
-              Activate your account
+              {t("Activate your account")}
             </Typography>
             <Box component="form" onSubmit={schema.handleSubmit}>
               <Box sx={{ mb: 2.5 }}>
@@ -92,7 +96,7 @@ export default function ActivateAcount() {
                   error={!!handleError(schema, "code")}
                   id="code"
                   type="code"
-                  placeholder="code"
+                  placeholder={t("code")}
                   value={schema.values.code}
                   onChange={schema.handleChange}
                   onBlur={schema.handleBlur}
@@ -150,7 +154,7 @@ export default function ActivateAcount() {
                 }}
               >
                 <Box component="span" sx={{ mr: 1 }}>
-                  Activate
+                  {t("Activate")}
                 </Box>
                 <ChevronRight size={18} />
               </Button>

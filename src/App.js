@@ -12,11 +12,13 @@ import ForgetPassword from "./containers/Login/ForgetPassword";
 import ResetPassword from "./containers/Login/ResetPassword";
 import BaseApp from "./components/BaseApp/BaseApp";
 import {Notification} from "./containers/Notification/Notification";
+import i18n from "./helpers/i18n";
 import { Toaster } from "react-hot-toast";
 import {
     BrowserRouter, Route, Routes,Redirect,
     useNavigate,Navigate
 } from "react-router-dom";
+import { useEffect } from "react";
 
 function NotFound()
 {
@@ -29,6 +31,12 @@ function NotFound()
 
 function App() {
   const {mode,isAuthenticated,} = useSelector((state) => state.login)
+
+
+    useEffect(() => {
+      i18n.changeLanguage(localStorage.getItem("locale"))
+  }, [])
+
 
   return (
 

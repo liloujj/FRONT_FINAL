@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit"
 import axios from "../../helpers/axios"
 import toast from "react-hot-toast"
+import { t } from "i18next";
+
 
 export function AsyncAdminApproveAppointment(id) {
     return async (dispatch) => {
@@ -14,7 +16,7 @@ export function AsyncAdminApproveAppointment(id) {
                 id:id,
                 status:"Approved"
             }
-            toast("Appointment has been approved")
+            toast(t("Appointment has been approved"))
             dispatch(doWithAppointment(data))
         } catch (e) {
             const response = e.response
@@ -22,7 +24,7 @@ export function AsyncAdminApproveAppointment(id) {
                 const error = response.data.error
                 dispatch(handleErrors({ error }))
             } else {
-                const error = "Something went wrong, Try again"
+                const error = t("Something went wrong, Try again")
                 dispatch(handleErrors({ error }))
             }
         }
@@ -41,7 +43,7 @@ export function AsyncAdminRefuseAppointment(id) {
                 id:id,
                 status:"Refused"
             }
-            toast("Appointment has been refused")
+            toast(t("Appointment has been refused"))
             dispatch(doWithAppointment(data))
         } catch (e) {
             const response = e.response
@@ -49,7 +51,7 @@ export function AsyncAdminRefuseAppointment(id) {
                 const error = response.data.error
                 dispatch(handleErrors({ error }))
             } else {
-                const error = "Something went wrong, Try again"
+                const error = t("Something went wrong, Try again")
                 dispatch(handleErrors({ error }))
             }
         }
@@ -68,7 +70,7 @@ export function AsyncDeleteAppointment(id) {
                 id:id,
                 status:"Cancelled"
             }
-            toast("Appointment has been cancelled")
+            toast(t("Appointment has been cancelled"))
             dispatch(doWithAppointment(data))
 
         } catch (e) {
@@ -77,7 +79,7 @@ export function AsyncDeleteAppointment(id) {
                 const error = response.data.error
                 dispatch(handleErrors({ error }))
             } else {
-                const error = "Something went wrong, Try again"
+                const error = t("Something went wrong, Try again")
                 dispatch(handleErrors({ error }))
             }
         }
@@ -97,7 +99,7 @@ export function AsyncEditAppointment(id,date,time,status) {
                 }
             )
             const appointment = response.data.data
-            toast("Appointment has been rescheduled")
+            toast(t("Appointment has been rescheduled"))
             dispatch(editAppointment(appointment))
 
         } catch (e) {
@@ -106,7 +108,7 @@ export function AsyncEditAppointment(id,date,time,status) {
                 const error = response.data.error
                 dispatch(handleErrors({ error }))
             } else {
-                const error = "Something went wrong, Try again"
+                const error = t("Something went wrong, Try again")
                 dispatch(handleErrors({ error }))
             }
         }
@@ -126,7 +128,7 @@ export function AsyncCreateAppointment(date,time) {
                 }
             )
             const appointment = response.data.appointment
-            toast("Appointment has been created")
+            toast(t("Appointment has been created"))
             dispatch(addAppointment(appointment))
 
         } catch (e) {
@@ -135,7 +137,7 @@ export function AsyncCreateAppointment(date,time) {
                 const error = response.data.error
                 dispatch(handleErrors({ error }))
             } else {
-                const error = "Something went wrong, Try again"
+                const error = t("Something went wrong, Try again")
                 dispatch(handleErrors({ error }))
             }
         }
@@ -159,7 +161,7 @@ export function AsyncGetAppointments() {
                 const error = response.data.error
                 dispatch(handleErrors({ error }))
             } else {
-                const error = "Something went wrong, Try again"
+                const error = t("Something went wrong, Try again")
                 dispatch(handleErrors({ error }))
             }
         }
@@ -183,7 +185,7 @@ export function AsyncGetPatientAppointments() {
                 const error = response.data.error
                 dispatch(handleErrors({ error }))
             } else {
-                const error = "Something went wrong, Try again"
+                const error = t("Something went wrong, Try again")
                 dispatch(handleErrors({ error }))
             }
         }

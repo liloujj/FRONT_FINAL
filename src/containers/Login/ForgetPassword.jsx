@@ -17,6 +17,10 @@ import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom";
 import { AsyncInitResetPassword } from "./LoginSlice";
 
+
+import { useTranslation } from "react-i18next";
+
+
 function handleError(schema, name) {
 
     if (schema.touched[name] && schema.errors[name]) {
@@ -47,7 +51,7 @@ export default function ForgetPassword() {
       dispatch(AsyncInitResetPassword(values.email,handleOnSuccess))
     }
     })
-
+  const { t } = useTranslation()
 
   return (
     <Box
@@ -77,7 +81,7 @@ export default function ForgetPassword() {
         >
           <CardContent sx={{ p: 4 }}>
             <Typography variant="h5" fontWeight={700} color="#1e293b" sx={{ mb: 3 }}>
-              Set your email  
+              {t("Set your email")}  
             </Typography>
             <Box component="form" onSubmit={schema.handleSubmit}>
               <Box sx={{ mb: 2.5 }}>
@@ -143,7 +147,7 @@ export default function ForgetPassword() {
                 }}
               >
                 <Box component="span" sx={{ mr: 1 }}>
-                  Send
+                  {t("Send")}
                 </Box>
                 <ChevronRight size={18} />
               </Button>
@@ -154,7 +158,7 @@ export default function ForgetPassword() {
                   fontSize: "0.875rem",
                   color: "#64748b",
                 }}>
-                Go back to 
+                  {t("Go back to")} 
                 <Button
                   onClick={()=>{navigate("/login")}}
                   variant="text"
@@ -166,7 +170,7 @@ export default function ForgetPassword() {
                     },
                   }}
                 >
-                  Log In
+                  {t("Log In")}
                 </Button>
               </Typography>
             </Box>

@@ -1,6 +1,8 @@
 import axios from "../../helpers/axios"
 import toast from "react-hot-toast"
 
+import { t } from "i18next";
+
 export async function AsyncUploadScan(patient_id,formData) {
     console.log(formData)
     try {
@@ -25,7 +27,7 @@ export async function AsyncUploadScan(patient_id,formData) {
         if (response && response.status === 400) {
             const error = response.data.error
         } else {
-            const error = "Something went wrong, Try again"
+            const error = t("Something went wrong, Try again")
         }
     }
 }

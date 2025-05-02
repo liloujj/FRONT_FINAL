@@ -3,6 +3,8 @@ import { BASE_URL } from "../../configs"
 import axios from "../../helpers/axios"
 import toast from "react-hot-toast"
 
+import { t } from "i18next";
+
 export function AsyncRejectDoctor(doctor_id) {
     return async (dispatch) => {
         dispatch(loading())
@@ -15,7 +17,7 @@ export function AsyncRejectDoctor(doctor_id) {
                 }
                 
             )
-            toast("Doctor has been rejected")
+            toast(t("Doctor has been rejected"))
             
             dispatch(rejectDoctor(doctor_id))
         } catch (e) {
@@ -24,7 +26,7 @@ export function AsyncRejectDoctor(doctor_id) {
                 const error = response.data.error
                 dispatch(handleError({ error }))
             } else {
-                const error = "Something went wrong, Try again"
+                const error = t("Something went wrong, Try again")
                 dispatch(handleError({ error }))
             }
         }
@@ -42,7 +44,7 @@ export function AsyncActivateDoctor(doctor_id) {
                     baseURL: BASE_URL,
                 }
             )
-            toast("Doctor has been activated")
+            toast(t("Doctor has been activated"))
 
             dispatch(activateDoctor(doctor_id))
         } catch (e) {
@@ -51,7 +53,7 @@ export function AsyncActivateDoctor(doctor_id) {
                 const error = response.data.error
                 dispatch(handleError({ error }))
             } else {
-                const error = "Something went wrong, Try again"
+                const error = t("Something went wrong, Try again")
                 dispatch(handleError({ error }))
             }
         }
@@ -78,7 +80,7 @@ export function AsyncGetUsers() {
                 const error = response.data.error
                 dispatch(handleError({ error }))
             } else {
-                const error = "Something went wrong, Try again"
+                const error = t("Something went wrong, Try again")
                 dispatch(handleError({ error }))
             }
         }

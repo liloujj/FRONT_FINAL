@@ -18,6 +18,8 @@ import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
+
 import { AsyncResetPassword } from "./LoginSlice";
 
 function handleError(schema, name) {
@@ -51,6 +53,8 @@ export default function ResetPassword() {
     }
     })
 
+    const {t} = useTranslation()
+
 
   return (
     <Box
@@ -80,7 +84,7 @@ export default function ResetPassword() {
         >
           <CardContent sx={{ p: 4 }}>
             <Typography variant="h5" fontWeight={700} color="#1e293b" sx={{ mb: 3 }}>
-              Reset your password
+              {t("Reset your password")}
             </Typography>
             <Box component="form" onSubmit={schema.handleSubmit}>
               <Box sx={{ mb: 2.5 }}>
@@ -88,11 +92,11 @@ export default function ResetPassword() {
                     error={!!handleError(schema, "password")}
                     id="password"
                     type="password"
-                    placeholder="Password"
+                    placeholder={t("Password")}
                     value={schema.values.id}
                     onChange={schema.handleChange}
                     onBlur={schema.handleBlur}
-                    helperText={handleError(schema, "password")}
+                    helperText={handleError(schema, t("password"))}
                     required
                     fullWidth
                     InputProps={{
@@ -146,7 +150,7 @@ export default function ResetPassword() {
                 }}
               >
                 <Box component="span" sx={{ mr: 1 }}>
-                  Reset
+                  {t("Reset")}
                 </Box>
                 <LockResetIcon size={18} />
               </Button>
