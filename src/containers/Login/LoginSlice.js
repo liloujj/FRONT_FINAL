@@ -232,7 +232,7 @@ export function login(email, password) {
                 dispatch(handleError({ error }))
             }else if(response && response.status === 401)
                 {
-                    toast(t("Email or password are incorrect, try again"))  
+                    toast(t("Email or password is incorrect, try again"))  
                 }
             else {
                 const error = t("Something went wrong, Try again")
