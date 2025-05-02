@@ -16,6 +16,9 @@ import Dashboard from './Dashboard/Dashboard';
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 import Scan from './Scan/Scan';
 
+import MessageIcon from '@mui/icons-material/Message';
+import { MessageTable } from './Message/Message';
+
 export const routes = [
     {
         path: "/dashboard",
@@ -51,10 +54,17 @@ export const routes = [
         role : "Any",
     },
     {
+        path: "/messages",
+        title: "Messages",
+        icon: <MessageIcon />,
+        component: <MessageTable />,
+        role : "Admin",
+    },
+    {
         path: "/settings",
         title: "Settings",
         icon: <SettingsIcon />,
         component: <Settings />,
         role : "Any",
-    },
+    },    
 ]
