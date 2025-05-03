@@ -18,7 +18,10 @@
     "Required.":"Requis.",
     "Sign Up":"S'inscrire",
     "Already have an account?":"Vous avez déjà un compte ?",
-
+    "Note:":"Remarque :",
+    "Doctor accounts are not for receiving care, but for being featured in our recommendation list for premium patients.":"Les comptes de médecin ne sont pas destinés à recevoir des soins, mais à être présentés dans notre liste de recommandations pour les patients premium.",
+    "Doctor":"Médecin",
+    
     "Set your email":"Définissez votre e-mail",
     "Send":"Envoyer",
     "Go back to":"Retourner à",
@@ -38,11 +41,15 @@
     "Cancel":"Annuler",
 
     "Apointments":"Rendez-vous",
+    "New appointment":"Nouveau rendez-vous",
     "User Management":"Gestion des utilisateurs",
     "Scans":"Scans",
     "Messages":"Messages",
     "Settings":"Paramètres",
     "Log out":"Se déconnecter",
+
+    "Document id ":"ID du document ",
+    "Created at":"Créé à",
 
     "Appointment Management":"Gestion des rendez-vous",
     "User Type":"Type d'utilisateur",
@@ -60,6 +67,8 @@
     "Create appointment":"Créer un rendez-vous",
 
     "All Users":"Tous les utilisateurs",
+    "Enabled":"Activé",
+    "Disabled":"Désactivé",
     "Patients":"Patients",
     "Doctors":"Médecins",
     "Search users...":"Rechercher des utilisateurs...",
@@ -101,7 +110,7 @@
     "Email or password is incorrect, try again":"L'e-mail ou le mot de passe est incorrect, réessayez",
     "Logged out":"Déconnecté",
     "Doctor has been rejected":"Le médecin a été rejeté",
-    "Something went wrong, Try again":"Une erreur s'est produite, réessayez",
+    "Something went wrong, Try again":"Quelque chose a mal tourné, réessayez",
     "Doctor has been activated":"Le médecin a été activé",
     "There is no user with this email":"Il n'y a pas d'utilisateur avec cet e-mail",
     "Password changed":"Mot de passe changé",
