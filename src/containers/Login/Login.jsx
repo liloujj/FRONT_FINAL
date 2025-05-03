@@ -50,8 +50,8 @@ export default function Login() {
   const schema = useFormik({
     initialValues: { email: '', password: '' },
     validationSchema: Yup.object({
-        email: Yup.string().required("Required."),
-        password: Yup.string().required("Required.")
+        email: Yup.string().required(t("Required.")),
+        password: Yup.string().required(t("Required."))
     }),
     onSubmit: (values) => {
         dispatch(login(values.email, values.password))

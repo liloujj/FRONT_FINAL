@@ -18,7 +18,10 @@
     "Required.":"Required.",
     "Sign Up":"Sign Up",
     "Already have an account?":"Already have an account?",
-
+    "Note:":"Note:",
+    "Doctor accounts are not for receiving care, but for being featured in our recommendation list for premium patients.":"Doctor accounts are not for receiving care, but for being featured in our recommendation list for premium patients.",
+    "Doctor":"Doctor",
+    
     "Set your email":"Set your email",
     "Send":"Send",
     "Go back to":"Go back to",
@@ -38,11 +41,15 @@
     "Cancel":"Cancel",
 
     "Apointments":"Apointments",
+    "New appointment":"New appointment",
     "User Management":"User Management",
     "Scans":"Scans",
     "Messages":"Messages",
     "Settings":"Settings",
     "Log out":"Log out",
+
+    "Document id ":"Document id ",
+    "Created at":"Created at",
 
     "Appointment Management":"Appointment Management",
     "User Type":"User Type",
@@ -60,6 +67,8 @@
     "Create appointment":"Create appointment",
 
     "All Users":"All Users",
+    "Enabled":"Enabled",
+    "Disabled":"Disabled",
     "Patients":"Patients",
     "Doctors":"Doctors",
     "Search users...":"Search users...",

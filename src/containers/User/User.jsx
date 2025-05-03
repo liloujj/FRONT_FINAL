@@ -126,7 +126,7 @@ export default function User(){
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{user.p_phoneNum}</TableCell>
                       <TableCell>{formattedDate}</TableCell>
-                      <TableCell>{user.role === "Doctor" && <Chip color={user.isActive ?"success" :"error"} label={user.isActive ?"Enabled" :"Disabeld"}></Chip>}</TableCell>
+                      <TableCell>{user.role === "Doctor" && <Chip color={user.isActive ?"success" :"error"} label={user.isActive ?t("Enabled") :t("Disabled")}></Chip>}</TableCell>
                       <TableCell align="right">
                         {user.role==="Doctor" && 
                           <IconButton onClick={()=>{user.isActive ?handleRejectDoctor(user._id) :handleActivateDoctor(user._id)}}>

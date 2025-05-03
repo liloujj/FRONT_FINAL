@@ -252,7 +252,7 @@ export default function Signup() {
                 />
                 <TextField
                   name="address"
-                  placeholder="Address"
+                  placeholder={t("Address")}
                   error={!!handleError(schema, "address")}
                   helperText={handleError(schema, "address")}
                   value={schema.values.address}
@@ -296,7 +296,7 @@ export default function Signup() {
                       }}
                       disablePortal
                       fullWidth
-                      options={["Patient","Doctor"]}
+                      options={[t("Patient"),t("Doctor")]}
                       defaultValue={schema.values.role}
                       renderInput={(params) => {
                           return <TextField
@@ -327,10 +327,9 @@ export default function Signup() {
                         />
                         <FormHelperText sx={{ m: 0, color: "#64748b", fontSize: "0.75rem" }}>
                           <Typography component="span" fontWeight={500} sx={{ fontSize: "inherit" }}>
-                            Note:
+                            {t("Note:")}
                           </Typography>{" "}
-                          Doctor accounts are not for receiving care, but for being featured in our recommendation list
-                          for premium patients.
+                          {t("Doctor accounts are not for receiving care, but for being featured in our recommendation list for premium patients.")}
                         </FormHelperText>
                       </Box>
                     )}

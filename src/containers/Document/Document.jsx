@@ -8,6 +8,8 @@ import { AsyncGetScans } from "../Scan/ScanSlice";
 import dayjs from "dayjs";
 import { BASE_URL } from "../../configs";
 
+import { useTranslation } from "react-i18next";
+
 export default function Document()
 {
     const [scan,setScan] = useState(null)
@@ -16,6 +18,7 @@ export default function Document()
     const dispatch = useDispatch()
     const {scans} = useSelector((state)=>state.scan)
     const navigate = useNavigate()
+    const {t} = useTranslation()
 
     const handleGoBack = ()=>
     {
@@ -43,11 +46,11 @@ export default function Document()
             <Box sx={{ mt: 3  }}>
                 <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
                     <Typography variant="h5" component="h2" fontWeight="bold">
-                        Document id{scan !== null && scan.id}
+                        {t("Document id ")}{scan !== null && scan.id}
                     </Typography>
                     {createdAt !== null &&
                     <Typography>
-                        Created at {createdAt}
+                        {t("Created at")} {createdAt}
                     </Typography>
                     }
                     <Box sx={{ display: "flex", gap: 2 }}>

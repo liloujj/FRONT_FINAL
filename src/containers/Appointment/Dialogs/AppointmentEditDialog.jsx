@@ -35,9 +35,9 @@ export default function AppointmentEditDialog(props) {
     const { editInProgress, errorMessage } = useSelector((state) => state.appointment)
     const { name } = useSelector((state) => state.login)
 
+    const {t} = useTranslation()
     const [dateTime,setDateTime] = useState(isUpdate ? dayjs(model.date) :dayjs("2025-04-03 T10:30"))
     const [status,setStatus] = useState(isUpdate ? model.status : "Pending")
-    const {t} = useTranslation()
 
     const handleDateTimeChange = (newDateTime) => {
         setDateTime(dayjs(newDateTime))

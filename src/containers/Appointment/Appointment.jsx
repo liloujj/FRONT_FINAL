@@ -115,7 +115,7 @@ export default function Appointment(){
             </Typography>
             <Box sx={{ display: "flex", gap: 2 }}>
               {role==="Patient" &&
-                <Button onClick={handleOpenDialog} variant="contained"> New appointment</Button>
+                <Button onClick={handleOpenDialog} variant="contained">{t("New appointment")}</Button>
               }
               <FormControl size="small" sx={{ minWidth: 150 }}>
                 <InputLabel id="user-filter-label">{t("User Type")}</InputLabel>
