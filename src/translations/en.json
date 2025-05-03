@@ -4,6 +4,7 @@
     "Log in":"Log in",
     "Did you forget your password?":"Did you forget your password?",
     "Forgot password":"Forgot password",
+    "your@email.com":"your@email.com",
     "Sign up":"Sign up",
 
     "Create Your Account":"Create Your Account",
@@ -21,7 +22,7 @@
     "Note:":"Note:",
     "Doctor accounts are not for receiving care, but for being featured in our recommendation list for premium patients.":"Doctor accounts are not for receiving care, but for being featured in our recommendation list for premium patients.",
     "Doctor":"Doctor",
-    
+
     "Set your email":"Set your email",
     "Send":"Send",
     "Go back to":"Go back to",
@@ -31,6 +32,10 @@
     "Notifications":"Notifications",
     "Appointments":"Appointments",
     "Upload scan":"Upload scan",
+
+    "Profile":"Profile",
+    "About":"About",
+    "Member since ":"Member since ",
 
     "Patient":"Patient",
     "Upload Medical Scan":"Upload Medical Scan",

@@ -7,6 +7,8 @@ import { useEffect } from "react";
 import { AsyncGetScans } from "./ScanSlice";
 import { useNavigate } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
+
 export default function Scan()
 {
 
@@ -15,6 +17,7 @@ export default function Scan()
     const {scans} = useSelector((state)=>state.scan)
     const {name,role,id} = useSelector((state)=>state.login)
         
+    const {t} = useTranslation()
 
     const handleGoToDocument = (document_id)=>
     {
@@ -30,7 +33,7 @@ export default function Scan()
             <Box sx={{ mt: 3  }}>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
                 <Typography variant="h5" component="h2" fontWeight="bold">
-                    Scans
+                    {t("Scans")}
                 </Typography>
             </Box>
         
@@ -38,9 +41,9 @@ export default function Scan()
                 <Table  sx={{ minWidth: 650 }}>
                 <TableHead sx={(theme)=>({ backgroundColor: theme.palette.grey[50] })}>
                     <TableRow>
-                    <TableCell>Patient</TableCell>
-                    <TableCell>Created at</TableCell>
-                    <TableCell align="right">Actions</TableCell>
+                    <TableCell>{t("Patient")}</TableCell>
+                    <TableCell>{t("Created at")}</TableCell>
+                    <TableCell align="right">{t("Actions")}</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

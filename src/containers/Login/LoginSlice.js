@@ -221,7 +221,6 @@ export function login(email, password) {
             dispatch(setPersonalData(response.data.user))
 
             sessionStorage.setItem("token", token)
-            //sessionStorage.setItem("userId", user_id)
 
             dispatch(logged())
 
@@ -294,6 +293,11 @@ const initialState = {
     email:null,
     role:null,
     c:null,
+    avatar:null,
+    phoneNum:null,
+    address:null,
+    createdAt:null,
+    updatedAt:null,
 
 }
 
@@ -321,6 +325,11 @@ const loginSlice = createSlice({
             state.email = action.payload.email
             state.role = action.payload.role
             state.id = action.payload._id
+            state.avatar=action.payload.avatar
+            state.phoneNum=action.payload.p_phoneNum
+            state.address=action.payload.p_Address
+            state.createdAt=action.payload.createdAt
+            state.updatedAt=action.payload.updatedAt
             state.inProgress=false
         },
         removePersonalData(state){
@@ -328,6 +337,11 @@ const loginSlice = createSlice({
             state.email = null
             state.role = null
             state.id = null
+            state.avatar=null
+            state.phoneNum=null
+            state.address=null
+            state.createdAt=null
+            state.updatedAt=null
             state.inProgress=false
         },
         out(state) {

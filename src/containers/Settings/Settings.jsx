@@ -27,11 +27,9 @@ export default function Settings ()
     const dispatch = useDispatch()
 
     const {name} = useSelector((state)=>state.login)
-    const {t,i18n } = useTranslation()
     const [changePasswordMessage, setChangePasswordMessage] = useState({})
-
-    const [lang,setLang] = useState("en")
-
+    
+    const {t,i18n } = useTranslation()
     const handleChangeLanguage = (lng) => {
         i18n.changeLanguage(lng);
     };

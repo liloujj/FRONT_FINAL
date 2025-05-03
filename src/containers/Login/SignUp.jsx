@@ -296,7 +296,7 @@ export default function Signup() {
                       }}
                       disablePortal
                       fullWidth
-                      options={[t("Patient"),t("Doctor")]}
+                      options={["Patient","Doctor"]}
                       defaultValue={schema.values.role}
                       renderInput={(params) => {
                           return <TextField
@@ -450,11 +450,11 @@ export default function Signup() {
                               },
                             }}
                           >
-                            Select Document
+                            {t("Select Document")}
                           </Button>
                           {schema.values.file && (
                             <Typography sx={{ fontSize: "0.75rem", color: "#059669", mt: 1 }}>
-                              {schema.values.file.name} selected
+                              {schema.values.file.name} {t("selected")}
                             </Typography>
                           )}
                         </Box>

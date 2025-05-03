@@ -26,8 +26,10 @@ export async function AsyncUploadScan(patient_id,formData) {
         const response = e.response
         if (response && response.status === 400) {
             const error = response.data.error
+            toast(error)
         } else {
             const error = t("Something went wrong, Try again")
+            toast(error)
         }
     }
 }

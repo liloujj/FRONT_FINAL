@@ -8,6 +8,8 @@ import {
   CardContent,
   Link as MuiLink,
   Paper,
+  Select,
+  MenuItem,
   InputAdornment,
   useMediaQuery,
   useTheme,
@@ -37,7 +39,11 @@ export default function Login() {
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
 
-  const { t } = useTranslation()
+  const {t,i18n } = useTranslation()
+
+  const handleChangeLanguage = (lng) => {
+      i18n.changeLanguage(lng);
+  };
 
   const dispatch = useDispatch()
 
@@ -98,7 +104,7 @@ export default function Login() {
                   helperText={handleError(schema, "id")}
                   id="email"
                   type="email"
-                  placeholder="your@email.com"
+                  placeholder={t("your@email.com")}
                   value={schema.values.id}
                   onChange={schema.handleChange}
                   onBlur={schema.handleBlur}
@@ -249,6 +255,17 @@ export default function Login() {
                   {t("Sign up")}
                 </Button>
               </Typography>
+              <Select
+                  variant="standard"
+                  onChange={(e)=>handleChangeLanguage(e.target.value)}
+                  labelId="language-filter-label"
+                  defaultValue={i18n.language}
+                  label={t("Language")}
+                  >
+                  <MenuItem value="en">{t("English")}</MenuItem>
+                  <MenuItem value="fr">{t("French")}</MenuItem>
+
+              </Select>
             </Box>
           </CardContent>
         </Card>

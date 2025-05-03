@@ -19,6 +19,9 @@ import Scan from './Scan/Scan';
 import MessageIcon from '@mui/icons-material/Message';
 import Chat from './Message/Message';
 
+import PersonIcon from '@mui/icons-material/Person';
+import Profile from './Profile/Profile';
+
 export const routes = [
     {
         path: "/dashboard",
@@ -26,6 +29,13 @@ export const routes = [
         icon: <DashboardIcon />,
         component: <Dashboard />,
         role : "Admin",
+    },
+    {
+        path: "/profile",
+        title: "Profile",
+        icon: <PersonIcon />,
+        component: <Profile />,
+        role : "Any", 
     },
     {
         path: "/apointments",

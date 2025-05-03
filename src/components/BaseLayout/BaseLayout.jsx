@@ -10,7 +10,6 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../containers/Login/LoginSlice';
-
 import { useTranslation } from "react-i18next";
 
 const drawerWidth = 300;
@@ -113,9 +112,9 @@ function BaseLayout(props) {
                             sx={(theme)=>({ ml: 1, bgcolor: theme.palette.grey[100], color: theme.palette.grey[700] })}
                         />
                     </Box>
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                    <Box  sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                         {otherActionButtons}
-                        <Box sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}>
+                        <Box component='button' onClick={()=>navigate("/profile")} sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}>
                             <Avatar sx={(theme)=>({ bgcolor: theme.palette.primary.light, width: 32, height: 32 })}>
                                 <PersonIcon fontSize="small" />
                             </Avatar>

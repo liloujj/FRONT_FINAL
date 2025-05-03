@@ -4,6 +4,7 @@
     "Log in":"Se connecter",
     "Did you forget your password?":"Avez-vous oublié votre mot de passe ?",
     "Forgot password":"Mot de passe oublié",
+    "your@email.com":"votre@email.com",
     "Sign up":"S'inscrire",
 
     "Create Your Account":"Créez votre compte",
@@ -21,7 +22,7 @@
     "Note:":"Remarque :",
     "Doctor accounts are not for receiving care, but for being featured in our recommendation list for premium patients.":"Les comptes de médecin ne sont pas destinés à recevoir des soins, mais à être présentés dans notre liste de recommandations pour les patients premium.",
     "Doctor":"Médecin",
-    
+
     "Set your email":"Définissez votre e-mail",
     "Send":"Envoyer",
     "Go back to":"Retourner à",
@@ -31,6 +32,10 @@
     "Notifications":"Notifications",
     "Appointments":"Rendez-vous",
     "Upload scan":"Télécharger un scan",
+
+    "Profile":"Profil",
+    "About":"À propos",
+    "Member since ":"Membre depuis ",
 
     "Patient":"Patient",
     "Upload Medical Scan":"Télécharger un scan médical",
