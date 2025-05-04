@@ -133,9 +133,6 @@ export default function User(){
                             {user.isActive ?<CloseIcon/> :<DoneIcon/>}
                           </IconButton>
                         }
-                        <IconButton size="small">
-                          <MoreVertIcon fontSize="small" />
-                        </IconButton>
                       </TableCell>
                     </TableRow>
                   )

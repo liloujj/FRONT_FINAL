@@ -12,7 +12,7 @@ import { useSelector } from "react-redux"
 
 export default function ChatSideBar(props) {
 
-    const { users, conversations, onConversationSelect, onContactSelect } = props
+    const { users, onConversationSelect} = props
     const [searchText, setSearchText] = useState("")
     const [elements, setElements] = useState([])
     const [selectedConversation, setSelectedConversation] = useState(null)
@@ -20,37 +20,6 @@ export default function ChatSideBar(props) {
     const  {role,name,id} = useSelector((state)=>state.login)
 
 
-    const handleSearchInputChange = (event) => {
-        setSearchText(event.target.value)
-    }
-
-    const handleSearchInputKeyUp = (event) => {
-        const text = event.target.value
-        if (!!text) {
-            const newElements = conversations.filter((element) => {
-                const user = element.conversation_users.find((user) => {
-                    return user.id !== element.current_user.id
-                })
-                const fullName = `${user.name?.toLowerCase()} ${user.last_name?.toLowerCase()}`
-                return fullName?.search(text) !== -1
-            })
-            setElements(newElements)
-        } else {
-            setElements(conversations)
-        }
-
-    }
-
-    const handleClosedContactList = (user) => {
-        setOpenContactList(false)
-        if (onContactSelect && user) {
-            onContactSelect(user)
-        }
-    }
-
-    const handleAddConversationButtonClicked = () => {
-        setOpenContactList(true)
-    }
 
     useEffect(() => {
         setElements(users)
@@ -85,7 +54,6 @@ export default function ChatSideBar(props) {
                     </List>
                 }
             </Box>
-            <ChatContactList open={openContactList} onClose={handleClosedContactList} users={users} />
         </Box >
     )
 

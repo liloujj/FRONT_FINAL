@@ -89,7 +89,7 @@ export default function ForgetPassword() {
                     error={!!handleError(schema, "email")}
                     id="email"
                     type="email"
-                    placeholder="your@email.com"
+                    placeholder={t("your@email.com")}
                     value={schema.values.email}
                     onChange={schema.handleChange}
                     onBlur={schema.handleBlur}
@@ -170,7 +170,7 @@ export default function ForgetPassword() {
                     },
                   }}
                 >
-                  {t("Log In")}
+                  {t("Log in")}
                 </Button>
               </Typography>
             </Box>

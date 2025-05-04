@@ -415,13 +415,13 @@ export default function Signup() {
                         >
                           <FileText color="#94a3b8" size={32} />
                           <Typography sx={{ fontSize: "0.875rem", fontWeight: 500, color: "#334155" }}>
-                            Upload Medical Credentials
+                            {t("Upload Medical Credentials")}
                           </Typography>
                           <Typography sx={{ fontSize: "0.75rem", color: "#64748b" }}>
-                            Upload a document proving you're a certified medical professional
+                            {t("Upload a document proving you're a certified medical professional")}
                           </Typography>
                           <Typography sx={{ fontSize: "0.75rem", color: "#94a3b8" }}>
-                            PDF, JPG or PNG (max. 5MB)
+                            {t("PDF, JPG or PNG (max. 5MB)")}
                           </Typography>
                           <input
                             id="medical-document"

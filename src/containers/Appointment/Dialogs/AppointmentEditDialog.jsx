@@ -35,8 +35,10 @@ export default function AppointmentEditDialog(props) {
     const { editInProgress, errorMessage } = useSelector((state) => state.appointment)
     const { name } = useSelector((state) => state.login)
 
+    const [accepted,setAccepted] = useState(false)
+
     const {t} = useTranslation()
-    const [dateTime,setDateTime] = useState(isUpdate ? dayjs(model.date) :dayjs("2025-04-03 T10:30"))
+    const [dateTime,setDateTime] = useState(isUpdate ? dayjs(model.date) :dayjs())
     const [status,setStatus] = useState(isUpdate ? model.status : "Pending")
 
     const handleDateTimeChange = (newDateTime) => {
@@ -55,6 +57,22 @@ export default function AppointmentEditDialog(props) {
         handleClose()
     }
     
+    const shouldDisableTime = (value, view ) => {
+        if (view === "hours") {
+          const hour = value.hour()
+          return hour < 9 || hour > 17
+        }
+        if (view === "minutes") {
+            const minute = value.minute()
+            return minute % 15 !== 0
+          }
+        return false
+      }
+    
+    const disableWeekend = (date) => {
+        const day = date.day()
+        return day === 5 || day === 6
+    }
 
     return <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
             <DialogTitle>{isUpdate ? t("Update appointment") : t("Create appointment")}</DialogTitle>
@@ -71,9 +89,9 @@ export default function AppointmentEditDialog(props) {
                             />
                     </Grid >
                     <Grid item container sx={{alignItems:"center"}} size={12}>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DateTimePicker sx={{width:"100%"}} ampm={false} reduceAnimations onChange={handleDateTimeChange} orientation="landscape" disablePast actionBar={<></>} value={dateTime} />
-                            </LocalizationProvider>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DateTimePicker onAccept={(e)=>{setAccepted(true)}} timeSteps={15} shouldDisableTime={shouldDisableTime} shouldDisableDate={disableWeekend} sh sx={{width:"100%"}} ampm={false} reduceAnimations onChange={handleDateTimeChange} orientation="landscape" disablePast value={dateTime} />
+                        </LocalizationProvider>
                     </Grid>
                     <Grid item size={12}>
                         <Autocomplete
@@ -107,7 +125,7 @@ export default function AppointmentEditDialog(props) {
                         handleClose()
                     }}
                 >{t("Cancel")}</Button>
-                <Button type="submit" onClick={handleSubmit} disabled={editInProgress}>{t("Save")}</Button>
+                <Button  type="submit" onClick={handleSubmit} disabled={model?.date === dateTime || !accepted}>{t("Save")}</Button>
             </DialogActions>
     </Dialog>
 }

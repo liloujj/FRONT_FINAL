@@ -1,42 +1,37 @@
 import { Container } from "@mui/material"
 import { io } from 'socket.io-client';
 import { Box } from "@mui/system"
-import { useEffect, useState } from "react"
+import { useEffect, useState,useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import ChatContent from "./Components/ChatContent/ChatContent"
 import ChatInput from "./Components/ChatInput/ChatInput"
 import ChatSideBar from "./Components/ChatSideBar/ChatSideBar"
-import { SOCKET_IO_ORIGIN } from "../../configs";
 import { AsyncGetUsers } from "../User/UserSlice"
-import { fetchConversationsAsync,fetchMessagesAsync,appendMessage } from "./ChatSlice"
+import { fetchConversationsAsync,fetchMessagesAsync,removeFromNotificationMessage,setSelectedConversation,appendSocketMessage,appendSocketMessagePatient } from "./ChatSlice"
 
 import { useTranslation } from "react-i18next";
+import { useSocket } from "../../helpers/socket";
+
+const admins =[{
+    avatar: "/uploads/user.jpeg",
+    name: "admin",
+    role: "Admin"
+}]
 
 
 export default function Chat() {
 
     const dispatch = useDispatch()
 
-    const { conversations, messages } = useSelector((state) => state.chat)
+    const { messages,selectedConversation } = useSelector((state) => state.chat)
+
     const  {users} = useSelector((state)=>state.user)
 
-    const [selectedConversation, setSelectedConversation] = useState(null)
     const [updateMessages, setUpdateMessages] = useState(false)
     const  {role,name,id} = useSelector((state)=>state.login)
     
     const {t} = useTranslation()
-    
-    const [socket, setSocket] = useState(null);
-  
-    useEffect(() => {
-      const newSocket = io(SOCKET_IO_ORIGIN);
-      setSocket(newSocket);
-      
-
-      return () => {
-        newSocket.disconnect();
-      };
-    }, []);
+    const socket = useSocket();
   
     const sendMessage = (message) => {
       if (message && socket) {
@@ -44,59 +39,79 @@ export default function Chat() {
       }
     };
 
+    const selectedConversationRef = useRef(selectedConversation);
+
+    useEffect(() => {
+        selectedConversationRef.current = selectedConversation;
+    }, [selectedConversation]);
+
+
+
+    useEffect(()=>{
+        const handleNewMessage = (msg) => {
+            const currentConversation = selectedConversationRef.current;
+            if(role==="Admin")
+            {
+                if (currentConversation?._id===msg.patientId )
+                {
+                    dispatch(appendSocketMessage(msg))
+
+                }
+
+            }else if (role==="Patient" || role ==="Doctor"){
+                dispatch(appendSocketMessage(msg))
+            
+            }
+            
+        };
+        socket.on("new-message",handleNewMessage)
+        return () => {
+            if (socket) {
+                socket.off('new-message');
+            }
+        };
+    },[socket])
 
     const handleSendMessage = (message) => {
 
         const data = {
-            patientId:selectedConversation._id,
+            patientId:role ==="Admin"?selectedConversation._id:id,
             content: message,
             sender:role ==="Admin"?"admin":"patient",
             senderType:role ==="Admin"?"admin":"patient",
         }
         sendMessage(data)
-        dispatch(appendMessage(data))
     }
 
     const handleSelectConversation = (conversation) => {
-        setSelectedConversation(conversation)
+        dispatch(setSelectedConversation(conversation))
+        
         let patientId = id
         if (role === "Admin")
         {
+            dispatch(removeFromNotificationMessage(conversation._id))
             patientId = conversation._id
+        }else {
+            dispatch(removeFromNotificationMessage(id))
         }
         dispatch(fetchMessagesAsync(patientId))
         if (socket)
         {
-            socket.emit("admin-join",{id,patientId});
+            if(role === "Admin")
+                {
+                socket.emit("admin-join",{adminId:id,patientId:patientId});
 
-            socket.on(`conversation-${patientId}`, (msg) => {
-                console.log(msg)
-            });
-        }
-        //dispatch(clearMessages())
-        //dispatch(fetchMessagesByConversationAsync(conversation.id))
-    }
+            }else{
+                socket.emit("patient-join",patientId);
 
-    const handleSelectContact = (user) => {
-        const filteredConversations = conversations.filter((conversation) => {
-            const condition1 = conversation.current_user.id !== user.id
-            const condition2 = conversation.conversation_users.map((user) => user.id).indexOf(user._id) !== -1
-
-            return condition1 && condition2
-        })
-
-        if (filteredConversations.length > 0) {
-            handleSelectConversation(filteredConversations[0])
-        } else {
-            //dispatch(createConversationAsync({ users: [user.id] }))
+            }
         }
     }
 
     const handleChatInputClicked = () => {
         if (updateMessages && selectedConversation) {
             setUpdateMessages(false)
-            //dispatch(fetchMessagesByConversationAsync(selectedConversation.id))
-            //dispatch(fetchConversationsAsync())
+
         }
     }
 
@@ -104,30 +119,16 @@ export default function Chat() {
         dispatch(AsyncGetUsers())
         dispatch(fetchConversationsAsync())
         
-        //dispatch(clearMessages())
-
     }, [dispatch])
 
-    useEffect(() => {
-        if (selectedConversation) {
-            messages.forEach((message) => {
-                if (message.patientId !== selectedConversation._id && message.status === "UNREAD") {
-                    setUpdateMessages(true)
-                    //dispatch(updateMessageAsync(message.id, { status: "READ" }))
-                }
-            })
-        }
-    }, [messages, selectedConversation, dispatch])
 
     return (
         <Container>
             <Box display="flex" height="85vh">
                 <Box flex={{ xs: 4 }} marginRight={2}>
                     <ChatSideBar
-                        conversations={conversations}
                         onConversationSelect={handleSelectConversation}
-                        onContactSelect={handleSelectContact}
-                        users={users} />
+                        users={role === "Admin"?users:admins} />
                 </Box>
                 <Box flex={{ xs: 8 }} display="flex" flexDirection="column" alignItems="stretch">
                     <Box flexGrow="10" sx={{
