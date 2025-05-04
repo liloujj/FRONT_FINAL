@@ -138,18 +138,6 @@ export default function Appointment(){
 
                 </Select>
               </FormControl>
-              <TextField
-                size="small"
-                placeholder={t("Search appointments...")}
-                
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon fontSize="small" />
-                    </InputAdornment>
-                  ),
-                }}
-              />
             </Box>
           </Box>
     

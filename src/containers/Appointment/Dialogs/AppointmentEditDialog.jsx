@@ -35,7 +35,7 @@ export default function AppointmentEditDialog(props) {
     const { editInProgress, errorMessage } = useSelector((state) => state.appointment)
     const { name } = useSelector((state) => state.login)
 
-    const [accepted,setAccepted] = useState(false)
+    const [accepted,setAccepted]= useState(false)
 
     const {t} = useTranslation()
     const [dateTime,setDateTime] = useState(isUpdate ? dayjs(model.date) :dayjs())
@@ -74,6 +74,16 @@ export default function AppointmentEditDialog(props) {
         return day === 5 || day === 6
     }
 
+    const handleDateError = (e) => {
+        if (e===null)
+        {
+            setAccepted(true)
+            
+        }else{
+            setAccepted(false)
+        }
+    }
+
     return <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
             <DialogTitle>{isUpdate ? t("Update appointment") : t("Create appointment")}</DialogTitle>
             <DialogContent>
@@ -90,7 +100,7 @@ export default function AppointmentEditDialog(props) {
                     </Grid >
                     <Grid item container sx={{alignItems:"center"}} size={12}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DateTimePicker onAccept={(e)=>{setAccepted(true)}} timeSteps={15} shouldDisableTime={shouldDisableTime} shouldDisableDate={disableWeekend} sh sx={{width:"100%"}} ampm={false} reduceAnimations onChange={handleDateTimeChange} orientation="landscape" disablePast value={dateTime} />
+                            <DateTimePicker onError={(e)=>handleDateError(e)}  timeSteps={15} shouldDisableTime={shouldDisableTime} shouldDisableDate={disableWeekend} sh sx={{width:"100%"}} ampm={false} reduceAnimations onChange={handleDateTimeChange} orientation="landscape" disablePast value={dateTime} />
                         </LocalizationProvider>
                     </Grid>
                     <Grid item size={12}>
@@ -125,7 +135,11 @@ export default function AppointmentEditDialog(props) {
                         handleClose()
                     }}
                 >{t("Cancel")}</Button>
-                <Button  type="submit" onClick={handleSubmit} disabled={model?.date === dateTime || !accepted}>{t("Save")}</Button>
+                {isUpdate ?
+                <Button  type="submit" onClick={handleSubmit} disabled={model?.date === dateTime }>{t("Save")}</Button>
+                :<Button  type="submit" onClick={handleSubmit} disabled={!accepted} >{t("Save")}</Button>
+                }
+                
             </DialogActions>
     </Dialog>
 }

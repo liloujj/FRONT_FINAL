@@ -1,10 +1,8 @@
 import { ListItem, Avatar, ListItemAvatar, ListItemText, Typography } from "@mui/material"
 
-import { useSelector } from "react-redux"
 export default function ChatMessage(props) {
 
     const { message } = props
-    const  {role} = useSelector((state)=>state.login)
 
     return (
         <div
@@ -23,7 +21,7 @@ export default function ChatMessage(props) {
                     sx={{textAlign:message.sender ==="admin"?"left":"right"}}
                     primary={<>
                         <Typography component="span" variant="subtitle2">
-                            {message?.sender} {""}
+                            {message?.sender}
                             <Typography variant="caption">
                                 {message.timestamps}
                             </Typography>

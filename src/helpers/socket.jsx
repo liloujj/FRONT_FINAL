@@ -22,8 +22,13 @@ export const SocketProvider = ({ children }) => {
     useEffect(() => {
       const newSocket = io(SOCKET_IO_ORIGIN);
       setSocket(newSocket);
+      newSocket.emit(`register-user-${id}`);
+    
+      const handleNotification = (notification) => {
+        console.log(notification)
+      }
 
-      const handleNewNotification = (notification) => {
+      const handleMessageNotification = (notification) => {
         const currentConversation = selectedConversationRef.current;
         if((role==="Admin" && notification.to === "admin") || (role==="Patient" && notification.to !== "admin"))
         {
@@ -37,8 +42,9 @@ export const SocketProvider = ({ children }) => {
             }
         }
         };
-      newSocket.on("send-notification", handleNewNotification)
-
+      newSocket.on("send-notification", handleMessageNotification)
+      newSocket.on("new-notification", handleNotification)
+      
       return () => {
         newSocket.disconnect();
       };

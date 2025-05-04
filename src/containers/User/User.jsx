@@ -78,18 +78,7 @@ export default function User(){
                   <MenuItem value="Doctor">{t("Doctors")}</MenuItem>
                 </Select>
               </FormControl>
-              <TextField
-                size="small"
-                placeholder={t("Search users...")}
-                
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon fontSize="small" />
-                    </InputAdornment>
-                  ),
-                }}
-              />
+
             </Box>
           </Box>
     

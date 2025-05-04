@@ -156,7 +156,7 @@ export function AsyncSignUp(name, email, password, phoneNum, address, role,speci
         const rawData = {name,email,password,phoneNum,address,role}
         const formData = new FormData();
 
-        if (file) {
+        if (role==="Doctor") {
           formData.append('file', file);
           formData.append("name",name)
           formData.append("email",email)
