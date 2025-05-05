@@ -25,6 +25,10 @@ import Profile from './Profile/Profile';
 import PaidIcon from '@mui/icons-material/Paid';
 import Payment from './Payment/Payment';
 
+import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
+import Doctors from './Payment/Doctor';
+
+
 export const routes = [
     {
         path: "/dashboard",
@@ -74,12 +78,20 @@ export const routes = [
         role : "Any",
     },
     {
+        path :"/doctor",
+        title:"Doctors",
+        icon:<LocalHospitalIcon/>,
+        component:<Doctors/>,
+        role:"Patient",
+    },
+    {
         path :"/subscription",
         title:"Subscription",
         icon:<PaidIcon/>,
         component:<Payment/>,
         role:"Patient",
     },
+
     {
         path: "/settings",
         title: "Settings",

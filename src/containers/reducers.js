@@ -4,6 +4,7 @@ import {reducer as LoginReducer} from "./Login/LoginSlice"
 import {reducer as NotificationReducer} from "./Notification/NotificationSlice"
 import {reducer as ScanReducer} from "./Scan/ScanSlice"
 import {reducer as ChatReducer} from "./Message/ChatSlice"
+import {reducer as PaymentReducer} from "./Payment/PaymentSlice"
 
 export const reducers = {
     appointment: AppointmentReducer,
@@ -11,5 +12,6 @@ export const reducers = {
     user:UserReducer,
     notification:NotificationReducer,
     scan:ScanReducer,
-    chat:ChatReducer
+    chat:ChatReducer,
+    payment:PaymentReducer,
 }

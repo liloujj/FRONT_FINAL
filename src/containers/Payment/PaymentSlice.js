@@ -5,6 +5,31 @@ import toast from "react-hot-toast"
 
 import { t } from "i18next";
 
+export function AsyncgetAllDoctors() {
+    return async (dispatch) => {
+        dispatch(loading())
+        try {
+            
+            const response = await axios.get("/patient/doctors")
+            if (response.status === 200)
+            {
+                console.log(response.data)
+                const doctors = response.data
+                dispatch(setDoctors(doctors))
+            }
+            
+        } catch (e) {
+            const response = e.response
+            if (response && response.status === 400) {
+                const error = response.data.error
+                dispatch(handleError({ error }))
+            } else {
+                const error = t("Something went wrong, Try again")
+                dispatch(handleError({ error }))
+            }
+        }
+    }
+}
 
 export function AsyncIsPatientPremium() {
     return async (dispatch) => {
@@ -13,7 +38,6 @@ export function AsyncIsPatientPremium() {
         try {
             
             const response = await axios.get("/patient/premium")
-            console.log("test")
             if (response.status === 200)
             {
                 console.log(response.data)
@@ -74,6 +98,7 @@ const initialState = {
     errorMessage: null,
     subscription :null,
     isPatientPremium:false,
+    doctors :[]
 }
 
 const paymentrSlice = createSlice({
@@ -86,9 +111,15 @@ const paymentrSlice = createSlice({
         },
         setSubscription(state,action){
             state.subscription = action.payload
+            state.inProgress = false
         },
         setPatientPremium(state,action){
             state.isPatientPremium = action.payload
+            state.inProgress = false
+        },
+        setDoctors(state,action){
+            state.doctors = action.payload
+            state.inProgress = false
         },
         handleError(state, action) {
             const { error } = action.payload
@@ -98,5 +129,5 @@ const paymentrSlice = createSlice({
     },
 })
 
-const { handleError, loading,setSubscription,setPatientPremium} = paymentrSlice.actions
+const { handleError, loading,setSubscription,setPatientPremium,setDoctors} = paymentrSlice.actions
 export const reducer = paymentrSlice.reducer
