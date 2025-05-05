@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../containers/Login/LoginSlice';
 import { useTranslation } from "react-i18next";
+import { useEffect } from 'react';
+import { AsyncIsPatientPremium } from '../../containers/Payment/PaymentSlice';
 
 const drawerWidth = 300;
 
@@ -61,6 +63,13 @@ function BaseLayout(props) {
         dispatch(logout())
         navigate("/login")
     }
+
+    useEffect(()=>{
+        if(role==="Patient")
+        {
+            dispatch(AsyncIsPatientPremium())
+        }
+    },[])
 
     const drawer = (
         <div>

@@ -22,6 +22,9 @@ import Chat from './Message/Message';
 import PersonIcon from '@mui/icons-material/Person';
 import Profile from './Profile/Profile';
 
+import PaidIcon from '@mui/icons-material/Paid';
+import Payment from './Payment/Payment';
+
 export const routes = [
     {
         path: "/dashboard",
@@ -69,6 +72,13 @@ export const routes = [
         icon: <MessageIcon />,
         component: <Chat />,
         role : "Any",
+    },
+    {
+        path :"/subscription",
+        title:"Subscription",
+        icon:<PaidIcon/>,
+        component:<Payment/>,
+        role:"Patient",
     },
     {
         path: "/settings",
