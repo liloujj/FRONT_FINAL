@@ -149,7 +149,7 @@ export function AsyncActivateUser(token,activationCode,action)
     }
 }
 
-export function AsyncSignUp(name, email, password, phoneNum, address, role,specialization,schedule,file)
+export function AsyncSignUp(name, email, password, phoneNum, address, role,specialization,schedule,file,action)
 {
     return async(dispatch) =>
     {
@@ -183,7 +183,7 @@ export function AsyncSignUp(name, email, password, phoneNum, address, role,speci
             )
             const { token} = response.data.token
             toast(t("Check your email"))
-            //action(token)
+            action(token)
             //sessionStorage.setItem("userId", user_id)
 
         } catch (e) {

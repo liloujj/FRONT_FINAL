@@ -66,7 +66,7 @@ export default function Signup() {
 
   const handleGoActiv = (token) =>
   {
-    //navigate(`/activate-account/${token}`);
+    navigate(`/activate-account/${token}`);
   }
 
   const schema = useFormik({
@@ -92,7 +92,8 @@ export default function Signup() {
         values.role,
         values.specialization,
         values.schedule,
-        values.file
+        values.file,
+        handleGoActiv
       ))}
   })
 
