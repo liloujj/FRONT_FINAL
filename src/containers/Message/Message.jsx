@@ -7,7 +7,7 @@ import ChatContent from "./Components/ChatContent/ChatContent"
 import ChatInput from "./Components/ChatInput/ChatInput"
 import ChatSideBar from "./Components/ChatSideBar/ChatSideBar"
 import { AsyncGetUsers } from "../User/UserSlice"
-import { fetchConversationsAsync,fetchMessagesAsync,removeFromNotificationMessage,setSelectedConversation,appendSocketMessage,appendSocketMessagePatient } from "./ChatSlice"
+import { fetchConversationsAsync,fetchMessagesAsync,removeFromNotificationMessage,setSelectedConversation,appendSocketMessage } from "./ChatSlice"
 
 import { useTranslation } from "react-i18next";
 import { useSocket } from "../../helpers/socket";

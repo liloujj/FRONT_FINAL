@@ -52,7 +52,7 @@ function App() {
             <Route path="/login" Component={Login} />
             <Route path="/signup" Component={Signup} />
             <Route path="/forget-password" Component={ForgetPassword} />
-            <Route path="/reset-passwrod/:token" Component={ResetPassword}/>
+            <Route path="/reset-password/:token" Component={ResetPassword}/>
             <Route path="*" element={<Navigate to="/login" />} />
           </Routes>
         </BrowserRouter>

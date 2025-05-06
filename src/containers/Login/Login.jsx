@@ -37,7 +37,6 @@ function handleError(schema, name) {
 export default function Login() {
   const theme = useTheme()
   const navigate = useNavigate();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
 
   const {t,i18n } = useTranslation()
 

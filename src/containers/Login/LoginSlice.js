@@ -51,6 +51,7 @@ export function AsyncInitResetPassword(email,action) {
             {
                 const token = response.data.token
                 action(token)
+                toast(t("Check your email"))
             }
             dispatch(endFetching())
 
