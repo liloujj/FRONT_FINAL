@@ -181,8 +181,9 @@ export function AsyncSignUp(name, email, password, phoneNum, address, role,speci
                 ,
                 {headers}
             )
-            const { token} = response.data.token
+            const { token} = response.data
             toast(t("Check your email"))
+            console.log(token)
             action(token)
             //sessionStorage.setItem("userId", user_id)
 
