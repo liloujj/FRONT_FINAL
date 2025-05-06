@@ -4,8 +4,13 @@ import { Container, Typography, Paper, Box, Switch, FormControlLabel } from "@mu
 import PaymentForm from "./Components/PaymentForm"
 import PremiumSubscription from "./Components/PaymentSubscription"
 
+import { useSelector } from "react-redux"
+
 export default function Payment (){
     const [isPremium, setIsPremium] = useState(false)
+
+    const  {isPatientPremium} = useSelector((state)=>state.payment)
+
 
     return(
     <Container  sx={{ py: 4 }}>
@@ -14,13 +19,9 @@ export default function Payment (){
           <Typography variant="h4" component="h1" gutterBottom>
             Membership Portal
           </Typography>
-          <FormControlLabel
-            control={<Switch checked={isPremium} onChange={() => setIsPremium(!isPremium)} color="primary" />}
-            label="Toggle Premium Status"
-          />
         </Box>
 
-        {isPremium ? <PremiumSubscription /> : <PaymentForm onSuccess={() => setIsPremium(true)} />}
+        {isPatientPremium ? <PremiumSubscription /> : <PaymentForm />}
       </Paper>
     </Container>
     )

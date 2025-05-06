@@ -91,7 +91,6 @@ export const routes = [
         component:<Payment/>,
         role:"Patient",
     },
-
     {
         path: "/settings",
         title: "Settings",

@@ -335,6 +335,8 @@ const loginSlice = createSlice({
             state.address=action.payload.p_Address
             state.createdAt=action.payload.createdAt
             state.updatedAt=action.payload.updatedAt
+            state.specialization=action.payload.specialization
+            state.schedule=action.payload.schedule
             state.inProgress=false
         },
         removePersonalData(state){

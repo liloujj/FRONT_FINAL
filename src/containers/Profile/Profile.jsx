@@ -20,7 +20,7 @@ import {
 import { BASE_URL } from "../../configs"
 import { useSelector } from "react-redux"
 import { useTranslation } from "react-i18next";
-
+import GradeIcon from '@mui/icons-material/Grade';
 import dayjs from "dayjs"
 
 export default function Profile() 
@@ -30,7 +30,7 @@ export default function Profile()
 
     const avatarUrl = "/placeholder.svg?height=150&width=150"
 
-    const  {role,name,email,phoneNum,avatar,address,createdAt} = useSelector((state)=>state.login)
+    const  {role,name,email,phoneNum,avatar,address,createdAt,specialization,schedule} = useSelector((state)=>state.login)
 
     return (
         <Container  sx={{ mt: 4, mb: 4 }}>
@@ -95,6 +95,18 @@ export default function Profile()
                     <Cake color="action" sx={{ mr: 2 }} />
                     <Typography variant="body2">{t("Member since ")}{dayjs(createdAt).format("DD-MM-YYYY")}</Typography>
                 </ListItem>
+                {specialization && 
+                    <ListItem disablePadding sx={{ mb: 1 }}>
+                        <GradeIcon color="action" sx={{ mr: 2 }} />
+                        <Typography variant="body2">{`${t("Specialization ")} ${specialization}`}</Typography>
+                    </ListItem>
+                }
+                {schedule && 
+                    <ListItem disablePadding sx={{ mb: 1 }}>
+                        <GradeIcon color="action" sx={{ mr: 2 }} />
+                        <Typography variant="body2">{`${t("Schedule ")} ${schedule}`}</Typography>
+                    </ListItem>
+                }
                 </List>
             </Paper>
             </Grid>
