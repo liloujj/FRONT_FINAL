@@ -234,6 +234,9 @@ export function login(email, password) {
             }else if(response && response.status === 401)
                 {
                     toast(t("Email or password is incorrect, try again"))  
+            }else if(response && response.status === 403)
+                {
+                    toast(t("Account is not activated"))  
                 }
             else {
                 const error = t("Something went wrong, Try again")

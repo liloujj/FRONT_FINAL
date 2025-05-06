@@ -1,22 +1,21 @@
-import { use, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Typography,InputLabel,TextField,Box,Select,IconButton,InputAdornment,Paper,Table,TableContainer,TableCell,TableRow,TableBody,TableHead,MenuItem,FormControl,ListItemText,Toolbar,Chip,Divider,Badge,Avatar, Container } from '@mui/material';
 import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
 import PersonIcon from '@mui/icons-material/Person';
-import SearchIcon from '@mui/icons-material/Search';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { AsyncGetUsers,AsyncActivateDoctor,AsyncRejectDoctor } from './UserSlice';
 import { useDispatch, useSelector } from 'react-redux';
-
-import dayjs from 'dayjs';
+import AssignmentIcon from '@mui/icons-material/Assignment';import dayjs from 'dayjs';
 
 import { useTranslation } from "react-i18next";
 
+import { useNavigate } from "react-router-dom";
 
 export default function User(){
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const  {users} = useSelector((state)=>state.user)
 
@@ -33,6 +32,11 @@ export default function User(){
         }
     }
     const {t} = useTranslation()
+
+    const handleGoToDocument = (document_id)=>
+    {
+        navigate(`/document-doctor/${document_id}`)
+    }
 
     const handleActivateDoctor = (doctor_id)=>
     {
@@ -121,6 +125,11 @@ export default function User(){
                           <IconButton onClick={()=>{user.isActive ?handleRejectDoctor(user._id) :handleActivateDoctor(user._id)}}>
                             {user.isActive ?<CloseIcon/> :<DoneIcon/>}
                           </IconButton>
+                        }
+                        {user.role==="Doctor" &&
+                          <IconButton onClick={()=>handleGoToDocument(user._id)}>
+                          <AssignmentIcon/>
+                        </IconButton>
                         }
                       </TableCell>
                     </TableRow>
