@@ -1,9 +1,10 @@
-import { IconButton, Badge } from "@mui/material";
+import { IconButton, Badge,Tooltip,useTheme } from "@mui/material";
 import ChatIcon from "@mui/icons-material/Chat"
+import MessageIcon from '@mui/icons-material/Message';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+
 
 
 export default function ChatBadge() {
@@ -14,13 +15,19 @@ export default function ChatBadge() {
     const handleClicked = () => {
         navigate("/messages")
     }
+    const theme = useTheme()
 
-    return <IconButton
-        color="inherit"
-        onClick={handleClicked}
-    >
-        {notifications.length > 0 ? <Badge badgeContent={notifications.length} color="secondary">
-            <ChatIcon />
-        </Badge> : <ChatIcon />}
-    </IconButton>
+    return (
+        <Tooltip >
+            <IconButton
+                color="inherit"
+
+                onClick={handleClicked}
+            >
+                {notifications.length > 0 ? <Badge badgeContent={notifications.length} >
+                    <MessageIcon sx={{color:"white"}} htmlColor="white" />
+                </Badge> : <MessageIcon sx={{color:"white"}} htmlColor="white" />}
+            </IconButton>
+        </Tooltip>
+    )
 } 

@@ -1,4 +1,3 @@
-"use client"
 import PersonIcon from "@mui/icons-material/Person"
 import LogoutIcon from "@mui/icons-material/Logout"
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown"
@@ -119,7 +118,7 @@ function BaseLayout(props) {
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <BiotechIcon color="primary" sx={{ mr: 1 }} />
+          <BiotechIcon  sx={{ mr: 1 ,backgroundColor:"white"}} />
           <Typography variant="h6" fontWeight="bold">
             DeepVision Lab
           </Typography>
@@ -146,7 +145,7 @@ function BaseLayout(props) {
             <PersonIcon />
           </Avatar>
           <Box>
-            <Typography variant="subtitle1" fontWeight="medium">
+            <Typography sx={{color:"white"}} variant="subtitle1" fontWeight="medium">
               {name}
             </Typography>
             <Chip label={role} size="small" sx={{ fontSize: "0.7rem", height: 24 }} />
@@ -206,7 +205,6 @@ function BaseLayout(props) {
         position="fixed"
         elevation={0}
         sx={{
-          bgcolor: "white",
           color: "text.primary",
           borderBottom: `1px solid ${alpha(theme.palette.grey[300], 0.7)}`,
           zIndex: (theme) => theme.zIndex.drawer + 1,
@@ -226,8 +224,8 @@ function BaseLayout(props) {
           )}
 
           <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
-            <BiotechIcon color="primary" sx={{ mr: 1 }} />
-            <Typography variant="h6" component="div" fontWeight="bold">
+            <BiotechIcon htmlColor="white"  sx={{ mr: 1 }} />
+            <Typography sx={{color:"white"}} variant="h6" component="div" fontWeight="bold">
               DeepVision Lab
             </Typography>
             <Chip

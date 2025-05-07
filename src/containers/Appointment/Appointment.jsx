@@ -153,7 +153,7 @@ export default function Appointment() {
       case "Approved":
         return { color: "success", icon: <DoneIcon fontSize="small" /> }
       case "Pending":
-        return { color: "warning", icon: <CalendarMonthIcon fontSize="small" /> }
+        return { color: "inherit", icon: <CalendarMonthIcon fontSize="small" /> }
       case "Refused":
         return { color: "error", icon: <CloseIcon fontSize="small" /> }
       case "Cancelled":

@@ -79,7 +79,7 @@ export function Notification() {
             },
           }}
         >
-          <NotificationsIcon />
+          <NotificationsIcon htmlColor="white" />
         </Badge>
       </IconButton>
     </Tooltip>
