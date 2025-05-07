@@ -34,6 +34,8 @@ function BaseApp(props) {
                 ))}
                 <Route path='/document/:document_id' element={<Document isMedical={false}/>} />
                 <Route path='/document-doctor/:document_id' element={<Document isMedical={true}/>} />
+                {role === "Admin" && <Route path="*" element={<Navigate to="/dashboard" />} />}
+                {role !== "Admin" && <Route path="*" element={<Navigate to="/profile" />} />}
 
             </Routes>
         </BaseLayout>
