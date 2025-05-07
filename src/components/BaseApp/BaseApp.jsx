@@ -1,7 +1,8 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-    BrowserRouter, Route, Routes,Navigate
+    BrowserRouter, Route, Routes,Navigate,useLocation 
 } from "react-router-dom";
 import { routes } from '../../containers/routes';
 import BaseLayout from "../BaseLayout/BaseLayout";
@@ -12,9 +13,15 @@ function BaseApp(props) {
     const dispatch = useDispatch()
     const {role} = useSelector((state)=>state.login)
     const { dir, otherActionButtons } = props
+
+    const location = useLocation();
     
-    return <BrowserRouter basename={process.env.PUBLIC_URL}>
-        <BaseLayout
+    useEffect(() => {
+        // Store the current path in localStorage
+        localStorage.setItem('lastPath', location.pathname);
+      }, [location]);
+
+    return <BaseLayout
             dir={dir}
             otherActionButtons={otherActionButtons}
             links={routes.filter((item)=> (item.role === "Any" || item.role === role) && item?.notFor !== role).map((route) => ({ title: route.title, icon: route.icon, path: route.path }))}
@@ -34,12 +41,11 @@ function BaseApp(props) {
                 ))}
                 <Route path='/document/:document_id' element={<Document isMedical={false}/>} />
                 <Route path='/document-doctor/:document_id' element={<Document isMedical={true}/>} />
-                {role === "Admin" && <Route path="*" element={<Navigate to="/dashboard" />} />}
-                {role !== "Admin" && <Route path="*" element={<Navigate to="/profile" />} />}
+                {role === "Admin" && <Route path="*" element={<Navigate to={localStorage.getItem('lastPath') || "/dashboard"} />} />}
+                {role !== "Admin" && <Route path="*" element={<Navigate to={localStorage.getItem('lastPath') || "/profile"} />} />}
 
             </Routes>
         </BaseLayout>
-    </BrowserRouter>
 }
 
 export default BaseApp

@@ -90,10 +90,13 @@ function BaseLayout(props) {
     setUserMenuAnchorEl(null)
   }
 
+  const goToLogin  = () => {
+    navigate("/login")
+  }
   const handleLogout = () => {
     handleUserMenuClose()
-    dispatch(logout())
-    navigate("/login")
+    dispatch(logout(goToLogin))
+    
   }
 
   const handleTabChange = (event, newValue) => {

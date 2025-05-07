@@ -258,7 +258,7 @@ export function login(email, password) {
 }
 
 
-export function logout() {
+export function logout(onSuccess) {
     return async (dispatch) => {
         dispatch(loading())
 
@@ -271,6 +271,10 @@ export function logout() {
             dispatch(removePersonalData())
             dispatch(out())
             toast(t("Logged out"))
+            if(onSuccess)
+            {
+                onSuccess()
+            }
 
         } catch (e) {
             const response = e.response

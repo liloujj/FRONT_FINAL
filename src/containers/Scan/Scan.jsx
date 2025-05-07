@@ -24,11 +24,14 @@ import PersonIcon from "@mui/icons-material/Person"
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth"
 import RefreshIcon from "@mui/icons-material/Refresh"
 import VisibilityIcon from "@mui/icons-material/Visibility"
+import DownloadIcon from '@mui/icons-material/Download';
 import dayjs from "dayjs"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
 import { AsyncGetScans } from "./ScanSlice"
 import { useNavigate } from "react-router-dom"
+import { BASE_URL } from "../../configs";
+
 
 import { useTranslation } from "react-i18next"
 
@@ -66,7 +69,23 @@ export default function Scan() {
     dispatch(AsyncGetScans())
   }, [dispatch])
 
-  // Apply pagination
+
+  const handleDownload = async (url_file,path) => {
+    const file = `${url_file}${path}`
+    const fileName = file.split('/').pop();
+    const response = await fetch(file); // Replace with your file URL
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName; // Specify the file name
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url); // Clean up
+  };
+
   const paginatedScans = scans.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 
   return (
@@ -177,7 +196,8 @@ export default function Scan() {
                         <TableCell align="right">
                           <Tooltip title={t("View scan")}>
                             <IconButton
-                              onClick={() => handleGoToDocument(scan._id)}
+                            onClick={() => handleGoToDocument(scan._id)}
+
                               size="small"
                               color="primary"
                               sx={{
@@ -186,9 +206,22 @@ export default function Scan() {
                                   transform: "scale(1.1)",
                                 },
                               }}
-                            >
+                                >
                               <VisibilityIcon />
                             </IconButton>
+                                <IconButton
+                                    onClick={()=>{handleDownload(BASE_URL,scan.imageURL)}}
+                                    size="small"
+                                    color="primary"
+                                    sx={{
+                                    transition: "transform 0.2s ease",
+                                    "&:hover": {
+                                        transform: "scale(1.1)",
+                                    },
+                                    }}
+                                >
+                                    <DownloadIcon />
+                                </IconButton>
                           </Tooltip>
                         </TableCell>
                       </TableRow>

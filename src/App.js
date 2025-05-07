@@ -19,7 +19,7 @@ import {
     BrowserRouter, Route, Routes,Redirect,
     useNavigate,Navigate
 } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ThemeProvider } from "@mui/material/styles"
 import CssBaseline from "@mui/material/CssBaseline"
 import theme from "./theme"
@@ -42,6 +42,7 @@ function App() {
   const {mode,isAuthenticated,} = useSelector((state) => state.login)
 
     const dispatch = useDispatch()
+    const [loginPage,setLoginPage]  = useState(false)
     useEffect(() => {
       i18n.changeLanguage(localStorage.getItem("locale"))
       const token = localStorage.getItem("token");
@@ -49,29 +50,34 @@ function App() {
     
       if (token){
         dispatch(autoLogin(token,user))
+        setLoginPage(false)
+      }else{
+        setLoginPage(true)
       }
-  }, [])
 
+  }, [])
 
   return (
 
     <div className="App">
       <ThemeProvider theme={theme}>
         <SocketProvider>
-          {!isAuthenticated &&
           <BrowserRouter>
-            <Routes>
-              <Route path="/activate-account/:token" Component={ActivateAcount} />
-              <Route path="/login" Component={Login} />
-              <Route path="/signup" Component={Signup} />
-              <Route path="/forget-password" Component={ForgetPassword} />
-              <Route path="/reset-password/:token" Component={ResetPassword}/>
-              <Route path="*" element={<Navigate to="/login" />} />
-            </Routes>
+              {!isAuthenticated &&
+                <Routes>
+                    <Route path="/activate-account/:token" Component={ActivateAcount} />
+                    <Route path="/login" Component={Login} />
+                    <Route path="/signup" Component={Signup} />
+                    <Route path="/forget-password" Component={ForgetPassword} />
+                    <Route path="/reset-password/:token" Component={ResetPassword}/>
+                    {loginPage &&
+                    <Route path="*" element={<Navigate to="/login"/>}/>
+                    }
+                </Routes>
+              }
+            {isAuthenticated && <BaseApp otherActionButtons={[<Notification/>,<ChatBadge/>]}/>}
           </BrowserRouter>
 
-          }
-          {isAuthenticated && <BaseApp otherActionButtons={[<Notification/>,<ChatBadge/>]}/>}
           <Toaster position="botton-left" />
         </SocketProvider>
 
