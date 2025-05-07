@@ -164,7 +164,7 @@ export default function ScanUploadDialog(props) {
                             handleClose()
                         }}
                     >{t("Cancel")}</Button>
-                    <Button type="submit" >{t("Save")}</Button>
+                    <Button disabled={!schema.isValid} type="submit" >{t("Save")}</Button>
                 </DialogActions>
             </Box>
     </Dialog>)
