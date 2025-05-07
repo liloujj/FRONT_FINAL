@@ -156,6 +156,10 @@ export default function Doctors() {
               <Typography variant="body1" color="text.secondary" paragraph>
                 {t("You need to upgrade to premium to access the complete list of doctors.")}
               </Typography>
+              <Typography variant="body1" color="text.secondary" paragraph>
+                {t("The average patient gets the scan within 24/48 hours. And the premium patient gets it immediately.")}
+              </Typography>
+
               <Button
                 variant="contained"
                 color="warning"
