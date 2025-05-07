@@ -38,7 +38,7 @@
     "Profile":"Profil",
     "Contact Information":"Informations de contact",
     "About":"À propos",
-    "Member since ":"Membre depuis ",
+    "Member since":"Membre depuis",
 
     "Patient":"Patient",
     "Upload Medical Scan":"Télécharger un scan médical",
@@ -125,6 +125,13 @@
     "You need to upgrade to premium to access the complete list of doctors.":"Vous devez passer à la version premium pour accéder à la liste complète des médecins.",
     "Upgrade to Premium":"Passer à la version Premium",
     "The average patient gets the scan within 24/48 hours. And the premium patient gets it immediately.":"Le patient moyen reçoit le scan dans les 24 à 48 heures. Et le patient premium le reçoit immédiatement.",
+
+    "Ai Results":"Résultats de l'IA",
+    "No scans found.":"Aucun scan trouvé.",
+    "No scans results found.":"Aucun résultat de scan trouvé.",
+    "You Already Make A Request For This Scan":"Vous avez déjà fait une demande pour ce scan",
+    "You Can Check Your Scan Tommorow":"Vous pouvez vérifier votre scan demain",
+    "Scan Result Is Here!":"Le résultat du scan est ici !",
 
     "Check your email":"Vérifiez votre email",
     "Logged":"Connecté",

@@ -2,6 +2,37 @@ import { createSlice } from "@reduxjs/toolkit"
 import axios from "../../helpers/axios"
 
 import { t } from "i18next";
+import toast from "react-hot-toast";
+
+export function AsyncRequstScan(scanId) {
+    return async (dispatch) => {
+        dispatch(fetching())
+        try {
+            const response = await axios.post(
+                `/patient/scans/${scanId}`,
+            )
+            if(response.status===200)
+            {
+                toast(t(response.data.message))
+            }
+
+        } catch (e) {
+            const response = e.response
+            if (response && response.status === 400) {
+                const error = response.data.error
+                dispatch(handleErrors({ error }))
+            }
+            else if(response && response.status === 500)
+            {
+                toast(t(response.data.error))
+            }
+            else {
+                const error = t("Something went wrong, Try again")
+                dispatch(handleErrors({ error }))
+            }
+        }
+    }
+}
 
 export function AsyncGetScans() {
     return async (dispatch) => {
@@ -32,6 +63,7 @@ const initialState = {
     errorMessage: null,
     fetchingInProgress: false,
     scans: [],
+    scanResults : [],
 }
 
 const scanSlice = createSlice({

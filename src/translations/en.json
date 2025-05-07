@@ -38,7 +38,7 @@
     "Profile":"Profile",
     "Contact Information":"Contact Information",
     "About":"About",
-    "Member since ":"Member since ",
+    "Member since":"Member since",
 
     "Patient":"Patient",
     "Upload Medical Scan":"Upload Medical Scan",
@@ -125,6 +125,13 @@
     "You need to upgrade to premium to access the complete list of doctors.":"You need to upgrade to premium to access the complete list of doctors.",
     "Upgrade to Premium":"Upgrade to Premium",
     "The average patient gets the scan within 24/48 hours. And the premium patient gets it immediately.":"The average patient gets the scan within 24/48 hours. And the premium patient gets it immediately",
+
+    "Ai Results":"Ai Results", 
+    "No scans found.":"No scans found.",
+    "No scans results found.":"No scans results found.",
+    "You Already Make A Request For This Scan":"You Already Make A Request For This Scan",
+    "You Can Check Your Scan Tommorow":"You Can Check Your Scan Tommorow",
+    "Scan Result Is Here!":"Scan Result Is Here!",
 
     "Check your email":"Check your email",
     "Logged":"Logged",

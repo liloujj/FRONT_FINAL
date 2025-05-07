@@ -34,7 +34,7 @@ export default function ScanUploadDialog(props) {
 
     const {users} = useSelector((state)=>state.user)
 
-
+    const dispatch = useDispatch()
     const handleFormikFileChange = (event) => {
         schema.setFieldValue('file', event.currentTarget.files[0]);
       };
@@ -50,7 +50,7 @@ export default function ScanUploadDialog(props) {
         onSubmit: (values) => {
             const formData = new FormData();
             formData.append('image', values.file);
-            AsyncUploadScan(values.patientID._id,formData)
+            dispatch(AsyncUploadScan(values.patientID._id,formData))
             handleClose()
         }
     })

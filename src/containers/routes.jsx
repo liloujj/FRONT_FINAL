@@ -28,6 +28,9 @@ import Payment from './Payment/Payment';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import Doctors from './Payment/Doctor';
 
+import FlipIcon from '@mui/icons-material/Flip';
+import ScanResult from './Scan/ScanResult';
+
 
 export const routes = [
     {
@@ -63,7 +66,15 @@ export const routes = [
         icon: <DocumentScannerIcon />,
         component: <Scan />,
         role : "Patient",
-    },,{
+    },
+    {
+        path: "/results",
+        title: "Scan Results",
+        icon: <FlipIcon />,
+        component: <ScanResult />,
+        role : "Patient",
+    },
+    {
         path: "/notifications",
         title: "Notifications",
         icon: <NotificationsIcon />,

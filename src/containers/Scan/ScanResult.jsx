@@ -36,13 +36,15 @@ import { useNavigate } from "react-router-dom"
 import { BASE_URL } from "../../configs";
 
 
+import AiScanUploadDialog from "./Dialogs/AiScanUploadDialog";
 import { useTranslation } from "react-i18next"
 
-export default function Scan() {
+export default function ScanResult() {
   const theme = useTheme()
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { scans} = useSelector((state) => state.scan)
+  const { scanResults } = useSelector((state) => state.scan)
+  const [scanDialogOpen,setScanDialogOpen] = useState(false)
   const { name, role, id } = useSelector((state) => state.login)
 
     const { isPatientPremium } = useSelector((state) => state.payment)
@@ -52,10 +54,6 @@ export default function Scan() {
   // Pagination state
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
-
-  const handleGoToDocument = (document_id) => {
-    navigate(`/document/${document_id}`)
-  }
 
   const handleRefresh = () => {
     dispatch(AsyncGetScans())
@@ -75,23 +73,7 @@ export default function Scan() {
   }, [dispatch])
 
 
-  const handleDownload = async (url_file,path) => {
-    const file = `${url_file}${path}`
-    const fileName = file.split('/').pop();
-    const response = await fetch(file); // Replace with your file URL
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
-    
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = fileName; // Specify the file name
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    window.URL.revokeObjectURL(url); // Clean up
-  };
-
-  const paginatedScans = scans.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+  const paginatedScans = scanResults.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 
   return (
     <Container maxWidth="lg">
@@ -163,16 +145,23 @@ export default function Scan() {
                 },
               }}
             >
-              {t("Scans")}
+              {t("Ai Results")}
             </Typography>
+          </Box>
+          <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+            <Tooltip title={t("Add scan")}>
+              <IconButton onClick={()=>{setScanDialogOpen(true)}}  color="primary">
+                <AddIcon />
+              </IconButton>
+            </Tooltip>
           </Box>
         </Box>
 
         <Divider sx={{ mb: 3 }} />
 
-        {scans.length === 0 ? (
+        {scanResults.length === 0 ? (
           <Alert severity="info" sx={{ mb: 3 }}>
-            {t("No scans found.")}
+            {t("No scans results found.")}
           </Alert>
         ) : (
           <>
@@ -229,35 +218,7 @@ export default function Scan() {
                           </Box>
                         </TableCell>
                         <TableCell align="right">
-                          <Tooltip title={t("View scan")}>
-                            <IconButton
-                            onClick={() => handleGoToDocument(scan._id)}
-
-                              size="small"
-                              color="primary"
-                              sx={{
-                                transition: "transform 0.2s ease",
-                                "&:hover": {
-                                  transform: "scale(1.1)",
-                                },
-                              }}
-                                >
-                              <VisibilityIcon />
-                            </IconButton>
-                                <IconButton
-                                    onClick={()=>{handleDownload(BASE_URL,scan.imageURL)}}
-                                    size="small"
-                                    color="primary"
-                                    sx={{
-                                    transition: "transform 0.2s ease",
-                                    "&:hover": {
-                                        transform: "scale(1.1)",
-                                    },
-                                    }}
-                                >
-                                    <DownloadIcon />
-                                </IconButton>
-                          </Tooltip>
+                          
                         </TableCell>
                       </TableRow>
                     )
@@ -269,7 +230,7 @@ export default function Scan() {
               labelRowsPerPage={t("Rows per page")}
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={scans.length}
+              count={scanResults.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
@@ -283,6 +244,10 @@ export default function Scan() {
           </>
         )}
       </Paper>
+      <AiScanUploadDialog
+        open={scanDialogOpen}
+        handleClose={() => setScanDialogOpen(false)}
+      />
     </Container>
   )
 }
