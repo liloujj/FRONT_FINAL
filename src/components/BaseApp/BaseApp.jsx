@@ -29,7 +29,6 @@ function BaseApp(props) {
                 //dispatch(logout())
             }}>
             <Routes>
-                <Route path="/" element={<Navigate to="/appointments" replace />} />
                 {routes.filter((item)=> (item.role === "Any" || item.role === role) && item?.notFor !== role).map((route, index) => (
                     <Route
                         key={index}
