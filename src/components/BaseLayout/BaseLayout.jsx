@@ -270,7 +270,7 @@ function BaseLayout(props) {
               >
                 <PersonIcon fontSize="small" />
               </Avatar>
-              <Typography variant="body2" sx={{ ml: 1, mr: 0.5, fontWeight: "medium" }}>
+              <Typography variant="body2" sx={{ ml: 1, mr: 0.5, fontWeight: "bold" ,color:"white"}}>
                 {name}
               </Typography>
               <ArrowDropDownIcon fontSize="small" />
