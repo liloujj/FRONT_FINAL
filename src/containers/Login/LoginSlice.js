@@ -203,6 +203,15 @@ export function AsyncSignUp(name, email, password, phoneNum, address, role,speci
     }
 }
 
+export function autoLogin(token,user)
+{
+    return (dispatch) => {
+            sessionStorage.setItem("token", token)
+            dispatch(logged())
+            dispatch(setPersonalData(JSON.parse(user)))
+    }
+}
+
 export function login(email, password) {
     return async (dispatch) => {
         dispatch(loading())
@@ -218,12 +227,13 @@ export function login(email, password) {
                     baseURL: BASE_URL,
                 }
             )
-            const { token} = response.data.token
-            toast(t("Logged"))
-            dispatch(setPersonalData(response.data.user))
-
+            const token = response.data.token
+            
             sessionStorage.setItem("token", token)
-
+            localStorage.setItem("token", token)
+            localStorage.setItem("user", JSON.stringify(response.data.user));
+            
+            dispatch(setPersonalData(response.data.user))
             dispatch(logged())
 
         } catch (e) {
@@ -256,7 +266,8 @@ export function logout() {
             const response = await axios.post(
                 "/user/logout",
             )
-            sessionStorage.clear()
+            //sessionStorage.clear()
+            localStorage.clear()
             dispatch(removePersonalData())
             dispatch(out())
             toast(t("Logged out"))
@@ -326,6 +337,7 @@ const loginSlice = createSlice({
             state.mode = "signup"
         },
         setPersonalData(state,action){
+            console.log(action.payload)
             state.name = action.payload.name
             state.email = action.payload.email
             state.role = action.payload.role

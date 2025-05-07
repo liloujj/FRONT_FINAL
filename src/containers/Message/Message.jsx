@@ -1,4 +1,4 @@
-import { Container } from "@mui/material"
+import { Container,Paper,alpha,useTheme } from "@mui/material"
 import { io } from 'socket.io-client';
 import { Box } from "@mui/system"
 import { useEffect, useState,useRef } from "react"
@@ -8,7 +8,6 @@ import ChatInput from "./Components/ChatInput/ChatInput"
 import ChatSideBar from "./Components/ChatSideBar/ChatSideBar"
 import { AsyncGetUsers } from "../User/UserSlice"
 import { fetchConversationsAsync,fetchMessagesAsync,removeFromNotificationMessage,setSelectedConversation,appendSocketMessage } from "./ChatSlice"
-
 import { useTranslation } from "react-i18next";
 import { useSocket } from "../../helpers/socket";
 
@@ -20,6 +19,9 @@ const admins =[{
 
 
 export default function Chat() {
+
+    const theme = useTheme()
+    
 
     const dispatch = useDispatch()
 
@@ -123,7 +125,19 @@ export default function Chat() {
 
 
     return (
-        <Container>
+    <Container maxWidth="lg">
+      <Paper
+        elevation={0}
+        sx={{
+          p: 3,
+          mt: 3,
+          borderRadius: 2,
+          backgroundColor: alpha(theme.palette.background.paper, 0.8),
+          backdropFilter: "blur(8px)",
+        }}
+      >
+
+
             <Box display="flex" height="85vh">
                 <Box flex={{ xs: 4 }} marginRight={2}>
                     <ChatSideBar
@@ -143,6 +157,9 @@ export default function Chat() {
                     </Box>
                 </Box>
             </Box>
+        
+            
+    </Paper>
         </Container >
     )
 }

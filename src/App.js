@@ -20,6 +20,12 @@ import {
     useNavigate,Navigate
 } from "react-router-dom";
 import { useEffect } from "react";
+import { ThemeProvider } from "@mui/material/styles"
+import CssBaseline from "@mui/material/CssBaseline"
+import theme from "./theme"
+
+import { autoLogin } from "./containers/Login/LoginSlice";
+import { useDispatch } from "react-redux";
 
 import { SocketProvider } from "./helpers/socket";
 
@@ -35,32 +41,40 @@ function NotFound()
 function App() {
   const {mode,isAuthenticated,} = useSelector((state) => state.login)
 
-
+    const dispatch = useDispatch()
     useEffect(() => {
       i18n.changeLanguage(localStorage.getItem("locale"))
+      const token = localStorage.getItem("token");
+      const user = localStorage.getItem("user");
+      if (token){
+        dispatch(autoLogin(token,user))
+      }
   }, [])
 
 
   return (
 
     <div className="App">
-      <SocketProvider>
-        {!isAuthenticated &&
-        <BrowserRouter>
-          <Routes>
-            <Route path="/activate-account/:token" Component={ActivateAcount} />
-            <Route path="/login" Component={Login} />
-            <Route path="/signup" Component={Signup} />
-            <Route path="/forget-password" Component={ForgetPassword} />
-            <Route path="/reset-password/:token" Component={ResetPassword}/>
-            <Route path="*" element={<Navigate to="/login" />} />
-          </Routes>
-        </BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <SocketProvider>
+          {!isAuthenticated &&
+          <BrowserRouter>
+            <Routes>
+              <Route path="/activate-account/:token" Component={ActivateAcount} />
+              <Route path="/login" Component={Login} />
+              <Route path="/signup" Component={Signup} />
+              <Route path="/forget-password" Component={ForgetPassword} />
+              <Route path="/reset-password/:token" Component={ResetPassword}/>
+              <Route path="*" element={<Navigate to="/login" />} />
+            </Routes>
+          </BrowserRouter>
 
-        }
-        {isAuthenticated && <BaseApp otherActionButtons={[<Notification/>,<ChatBadge/>]}/>}
-        <Toaster position="botton-left" />
-      </SocketProvider>
+          }
+          {isAuthenticated && <BaseApp otherActionButtons={[<Notification/>,<ChatBadge/>]}/>}
+          <Toaster position="botton-left" />
+        </SocketProvider>
+
+      </ThemeProvider>
     </div>
   );
 }
