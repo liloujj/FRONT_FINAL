@@ -46,6 +46,7 @@ function App() {
       i18n.changeLanguage(localStorage.getItem("locale"))
       const token = localStorage.getItem("token");
       const user = localStorage.getItem("user");
+    
       if (token){
         dispatch(autoLogin(token,user))
       }

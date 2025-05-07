@@ -17,13 +17,13 @@ function BaseApp(props) {
         <BaseLayout
             dir={dir}
             otherActionButtons={otherActionButtons}
-            links={routes.filter((item)=> item.role === "Any" || item.role === role).map((route) => ({ title: route.title, icon: route.icon, path: route.path }))}
+            links={routes.filter((item)=> (item.role === "Any" || item.role === role) && item?.notFor !== role).map((route) => ({ title: route.title, icon: route.icon, path: route.path }))}
             onLogoutClicked={() => {
                 //dispatch(logout())
             }}>
             <Routes>
                 <Route path="/" element={<Navigate to="/appointments" replace />} />
-                {routes.filter((item)=> item.role === "Any" || item.role === role).map((route, index) => (
+                {routes.filter((item)=> (item.role === "Any" || item.role === role) && item?.notFor !== role).map((route, index) => (
                     <Route
                         key={index}
                         path={route.path}

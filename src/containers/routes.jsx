@@ -76,6 +76,7 @@ export const routes = [
         icon: <MessageIcon />,
         component: <Chat />,
         role : "Any",
+        notFor:"Doctor"
     },
     {
         path :"/doctor",

@@ -335,6 +335,7 @@ export function NotificationTable() {
               </Table>
             </TableContainer>
             <TablePagination
+              labelRowsPerPage={t("Rows per page")}
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
               count={filteredNotifications.length}

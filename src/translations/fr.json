@@ -22,8 +22,10 @@
     "Note:":"Remarque :",
     "Doctor accounts are not for receiving care, but for being featured in our recommendation list for premium patients.":"Les comptes de médecin ne sont pas destinés à recevoir des soins, mais à être présentés dans notre liste de recommandations pour les patients premium.",
     "Doctor":"Médecin",
+    "Upload Medical Credentials":"Télécharger les qualifications médicales",
+    "Upload a document proving you're a certified medical professional":"Téléchargez un document prouvant que vous êtes un professionnel de santé certifié",
 
-    "Set your email":"Définissez votre e-mail",
+    "Set your email":"Définissez votre email",
     "Send":"Envoyer",
     "Go back to":"Retourner à",
 
@@ -34,6 +36,7 @@
     "Upload scan":"Télécharger un scan",
 
     "Profile":"Profil",
+    "Contact Information":"Informations de contact",
     "About":"À propos",
     "Member since ":"Membre depuis ",
 
@@ -54,7 +57,7 @@
     "Log out":"Se déconnecter",
 
     "Document id ":"ID du document ",
-    "Created at":"Créé à",
+    "Created at":"Créé le",
 
     "Appointment Management":"Gestion des rendez-vous",
     "User Type":"Type d'utilisateur",
@@ -78,9 +81,9 @@
     "Doctors":"Médecins",
     "Search users...":"Rechercher des utilisateurs...",
     "User":"Utilisateur",
-    "Email":"E-mail",
+    "Email":"Email",
     "Phone":"Téléphone",
-    "Join Date":"Date d'inscription",
+    "Join Date":"Date d'adhésion",
 
     "Read all":"Tout lire",
     "Contnet":"Contenu",
@@ -95,8 +98,14 @@
     "The password changed with success":"Le mot de passe a été changé avec succès",
     "Change password":"Changer le mot de passe",
     "Name":"Nom",
-    "New password":"Nouveau mot de passe",
-    "Confirm new password":"Confirmer le nouveau mot de passe",
+    "New Password":"Nouveau mot de passe",
+    "Current Password":"Mot de passe actuel",
+    "Confirm New Password":"Confirmer le nouveau mot de passe",
+    "Password must be at least 8 characters":"Le mot de passe doit contenir au moins 8 caractères",
+    "Password must contain at least one lowercase letter":"Le mot de passe doit contenir au moins une lettre minuscule",
+    "Password must contain at least one uppercase letter":"Le mot de passe doit contenir au moins une lettre majuscule",
+    "Password must contain at least one number":"Le mot de passe doit contenir au moins un chiffre",
+    "Passwords must match":"Les mots de passe doivent correspondre",
     "Submit":"Soumettre",
     "Change language":"Changer de langue",
     "Language":"Langue",
@@ -110,18 +119,20 @@
     "Reset your password":"Réinitialisez votre mot de passe",
     "Reset":"Réinitialiser",
 
-    "Check your email":"Vérifiez votre e-mail",
+    "Rows per page":"Lignes par page",
+
+    "Check your email":"Vérifiez votre email",
     "Logged":"Connecté",
-    "Email or password is incorrect, try again":"L'e-mail ou le mot de passe est incorrect, réessayez",
+    "Email or password is incorrect, try again":"L'email ou le mot de passe est incorrect, réessayez",
     "Logged out":"Déconnecté",
     "Doctor has been rejected":"Le médecin a été rejeté",
-    "Something went wrong, Try again":"Quelque chose a mal tourné, réessayez",
+    "Something went wrong, Try again":"Une erreur s'est produite, réessayez",
     "Doctor has been activated":"Le médecin a été activé",
-    "There is no user with this email":"Il n'y a pas d'utilisateur avec cet e-mail",
+    "There is no user with this email":"Il n'y a pas d'utilisateur avec cet email",
     "Password changed":"Mot de passe changé",
     "Account has been created":"Le compte a été créé",
     "Appointment has been approved":"Le rendez-vous a été approuvé",
-    "Appointment has been refused":"Le rendez-vous a été refusé",
+    "Appointment has been refused":"Le rendez-vous a été refusfé",
     "Appointment has been cancelled":"Le rendez-vous a été annulé",
     "Appointment has been rescheduled":"Le rendez-vous a été reprogrammé",
     "Appointment has been created":"Le rendez-vous a été créé"
