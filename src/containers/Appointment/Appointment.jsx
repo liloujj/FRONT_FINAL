@@ -27,9 +27,11 @@ import {
   alpha,
   Tooltip,
   Alert,
+  Grid,
   TablePagination,
 } from "@mui/material"
 
+import StarIcon from "@mui/icons-material/Star"
 import DoneIcon from "@mui/icons-material/Done"
 import CloseIcon from "@mui/icons-material/Close"
 import AddIcon from "@mui/icons-material/Add"
@@ -53,11 +55,13 @@ import AppointmentEditDialog from "./Dialogs/AppointmentEditDialog"
 import dayjs from "dayjs"
 
 import { useTranslation } from "react-i18next"
+import { useNavigate } from "react-router-dom"
 
 export default function Appointment() {
   const theme = useTheme()
   const dispatch = useDispatch()
 
+  const { isPatientPremium } = useSelector((state) => state.payment)
   const { role, name } = useSelector((state) => state.login)
   const { appointments } = useSelector((state) => state.appointment)
   const { users } = useSelector((state) => state.user)
@@ -69,6 +73,8 @@ export default function Appointment() {
   const { t } = useTranslation()
 
   const [filteredAppointments, setFilteredAppointments] = useState(appointments)
+
+  const navigate  = useNavigate()
 
   // Pagination state
   const [page, setPage] = useState(0)
@@ -185,7 +191,40 @@ export default function Appointment() {
           <AddIcon />
         </Fab>
       )}
-
+      {!isPatientPremium && role === "Patient"  &&
+      <Paper
+        elevation={0}
+        sx={{
+          p: 3,
+          mt: 3,
+          borderRadius: 2,
+          backgroundColor: alpha(theme.palette.background.paper, 0.8),
+          backdropFilter: "blur(8px)",
+        }}
+      >
+          <Typography variant="h5" fontWeight="bold" gutterBottom>
+            {t("Premium Feature")}
+          </Typography>
+          <Button
+            variant="contained"
+            color="warning"
+            startIcon={<StarIcon />}
+            onClick={()=>{navigate("/subscription")}}
+            sx={{
+              mt: 2,
+              borderRadius: "8px",
+              boxShadow: "0 4px 14px 0 rgba(255,152,0,0.39)",
+              transition: "all 0.2s ease",
+              "&:hover": {
+                transform: "translateY(-2px)",
+                boxShadow: "0 6px 20px rgba(255,152,0,0.39)",
+              },
+            }}
+          >
+            {t("Upgrade to Premium")}
+          </Button>
+      </Paper>
+      }
       <Paper
         elevation={0}
         sx={{

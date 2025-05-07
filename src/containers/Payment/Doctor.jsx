@@ -142,16 +142,7 @@ export default function Doctors() {
               textAlign: "center",
             }}
           >
-            <Paper
-              elevation={2}
-              sx={{
-                p: 4,
-                borderRadius: 3,
-                maxWidth: 500,
-                backgroundColor: alpha(theme.palette.warning.light, 0.1),
-                border: `1px solid ${alpha(theme.palette.warning.main, 0.2)}`,
-              }}
-            >
+
               <StarIcon
                 sx={{
                   fontSize: 60,
@@ -183,7 +174,6 @@ export default function Doctors() {
               >
                 {t("Upgrade to Premium")}
               </Button>
-            </Paper>
           </Box>
         ) : filteredUsers.length === 0 ? (
           <Alert severity="info" sx={{ mb: 3 }}>

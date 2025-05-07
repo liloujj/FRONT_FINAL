@@ -19,7 +19,9 @@ import {
   Tooltip,
   Alert,
   TablePagination,
+  Button
 } from "@mui/material"
+import StarIcon from "@mui/icons-material/Star"
 import PersonIcon from "@mui/icons-material/Person"
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth"
 import RefreshIcon from "@mui/icons-material/Refresh"
@@ -42,6 +44,8 @@ export default function Scan() {
   const { scans } = useSelector((state) => state.scan)
   const { name, role, id } = useSelector((state) => state.login)
 
+    const { isPatientPremium } = useSelector((state) => state.payment)
+  
   const { t } = useTranslation()
 
   // Pagination state
@@ -90,6 +94,40 @@ export default function Scan() {
 
   return (
     <Container maxWidth="lg">
+    {!isPatientPremium && role === "Patient"  &&
+      <Paper
+        elevation={0}
+        sx={{
+          p: 3,
+          mt: 3,
+          borderRadius: 2,
+          backgroundColor: alpha(theme.palette.background.paper, 0.8),
+          backdropFilter: "blur(8px)",
+        }}
+      >
+          <Typography variant="h5" fontWeight="bold" gutterBottom>
+            {t("Premium Feature")}
+          </Typography>
+          <Button
+            variant="contained"
+            color="warning"
+            startIcon={<StarIcon />}
+            onClick={()=>{navigate("/subscription")}}
+            sx={{
+              mt: 2,
+              borderRadius: "8px",
+              boxShadow: "0 4px 14px 0 rgba(255,152,0,0.39)",
+              transition: "all 0.2s ease",
+              "&:hover": {
+                transform: "translateY(-2px)",
+                boxShadow: "0 6px 20px rgba(255,152,0,0.39)",
+              },
+            }}
+          >
+            {t("Upgrade to Premium")}
+          </Button>
+      </Paper>
+      }
       <Paper
         elevation={0}
         sx={{
