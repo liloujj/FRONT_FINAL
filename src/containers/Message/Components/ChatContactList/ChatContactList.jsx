@@ -1,87 +1,289 @@
-import SearchIcon from "@mui/icons-material/Search"
-import { Avatar, Dialog, DialogContent, DialogTitle, FormControl, IconButton, InputAdornment, ListItem, ListItemAvatar, ListItemText, OutlinedInput } from "@mui/material"
-import { useEffect, useState } from "react"
+import SearchIcon from "@mui/icons-material/Search";
+import { 
+  Avatar, 
+  Dialog, 
+  DialogContent, 
+  DialogTitle, 
+  FormControl, 
+  IconButton, 
+  InputAdornment, 
+  ListItem, 
+  ListItemAvatar, 
+  ListItemText, 
+  OutlinedInput,
+  styled,
+  alpha,
+  Box,
+  Typography,
+  keyframes,
+  Paper
+} from "@mui/material";
+import { useEffect, useState } from "react";
+
+// Animations keyframes
+const fadeIn = keyframes`
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+`;
+
+const pulse = keyframes`
+  0% { box-shadow: 0 0 0 0 rgba(186, 104, 200, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(186, 104, 200, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(186, 104, 200, 0); }
+`;
+
+// Styled components
+const StyledDialog = styled(Dialog)(({ theme }) => ({
+  '& .MuiDialog-paper': {
+    borderRadius: 16,
+    background: `linear-gradient(145deg, #2a1a2d 0%, #3a1a3d 100%)`,
+    border: '1px solid rgba(255, 105, 180, 0.3)',
+    boxShadow: '0 8px 32px rgba(186, 104, 200, 0.3)',
+    overflow: 'hidden',
+    animation: `${fadeIn} 0.3s ease-out`,
+  },
+}));
+
+const StyledDialogTitle = styled(DialogTitle)(({ theme }) => ({
+  background: `linear-gradient(90deg, #3a1a3d 0%, #2a1a2d 100%)`,
+  padding: '16px 20px',
+  borderBottom: '1px solid rgba(255, 105, 180, 0.2)',
+}));
+
+const StyledOutlinedInput = styled(OutlinedInput)(({ theme }) => ({
+  borderRadius: 12,
+  transition: 'all 0.3s ease',
+  '& .MuiOutlinedInput-notchedOutline': {
+    borderColor: 'rgba(255, 105, 180, 0.5)',
+    borderWidth: 1.5,
+  },
+  '&:hover .MuiOutlinedInput-notchedOutline': {
+    borderColor: 'rgba(186, 104, 200, 0.8)',
+    boxShadow: '0 0 8px rgba(255, 105, 180, 0.3)',
+  },
+  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+    borderColor: '#ff69b4',
+    borderWidth: 2,
+    boxShadow: '0 0 0 3px rgba(255, 105, 180, 0.2)',
+  },
+  '& input': {
+    color: 'rgba(255, 255, 255, 0.9)',
+    '&::placeholder': {
+      color: 'rgba(255, 255, 255, 0.5)',
+      opacity: 1,
+    },
+  },
+  '& .MuiInputAdornment-root': {
+    color: 'rgba(255, 105, 180, 0.7)',
+  },
+}));
+
+const StyledIconButton = styled(IconButton)(({ theme }) => ({
+  color: 'rgba(186, 104, 200, 0.8)',
+  '&:hover': {
+    backgroundColor: 'rgba(255, 105, 180, 0.1)',
+  },
+  '&.Mui-disabled': {
+    color: 'rgba(186, 104, 200, 0.5)',
+  },
+}));
+
+const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
+  padding: '8px 0',
+  '&::-webkit-scrollbar': {
+    width: '6px',
+  },
+  '&::-webkit-scrollbar-track': {
+    background: 'rgba(255, 255, 255, 0.05)',
+    borderRadius: '10px',
+  },
+  '&::-webkit-scrollbar-thumb': {
+    background: 'linear-gradient(180deg, #ff69b4 0%, #ba68c8 100%)',
+    borderRadius: '10px',
+  },
+}));
+
+const StyledListItem = styled(ListItem)(({ theme }) => ({
+  padding: '8px 20px',
+  transition: 'all 0.2s ease',
+  position: 'relative',
+  overflow: 'hidden',
+  '&:hover': {
+    background: 'linear-gradient(90deg, rgba(186, 104, 200, 0.15) 0%, rgba(255, 105, 180, 0.15) 100%)',
+    '& .MuiListItemText-primary': {
+      color: '#fff',
+      textShadow: '0 0 8px rgba(255, 105, 180, 0.5)',
+    },
+    '& .MuiAvatar-root': {
+      boxShadow: '0 0 0 2px rgba(255, 105, 180, 0.7)',
+      transform: 'scale(1.05)',
+    },
+    '&::after': {
+      opacity: 1,
+      transform: 'translateX(0)',
+    },
+  },
+  '&::after': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '4px',
+    height: '100%',
+    background: 'linear-gradient(180deg, #ff69b4, #ba68c8)',
+    opacity: 0,
+    transform: 'translateX(-4px)',
+    transition: 'all 0.3s ease',
+  },
+  '& + &': {
+    borderTop: '1px solid rgba(255, 255, 255, 0.05)',
+  },
+}));
+
+const StyledAvatar = styled(Avatar)(({ theme }) => ({
+  background: 'linear-gradient(135deg, #ba68c8 0%, #ff69b4 100%)',
+  border: '2px solid transparent',
+  boxShadow: '0 0 0 1px rgba(255, 105, 180, 0.3)',
+  transition: 'all 0.3s ease',
+  color: 'white',
+  fontWeight: 'bold',
+}));
+
+const StyledListItemText = styled(ListItemText)(({ theme }) => ({
+  '& .MuiListItemText-primary': {
+    color: 'rgba(255, 255, 255, 0.85)',
+    fontWeight: 500,
+    transition: 'all 0.2s ease',
+    fontSize: '0.95rem',
+  },
+}));
 
 export default function ChatContactList(props) {
+  const { open, onClose, users } = props;
 
-    const { open, onClose, users } = props
+  const [searchText, setSearchText] = useState("");
+  const [elements, setElements] = useState([]);
 
-    const [searchText, setSearchText] = useState("")
-    const [elements, setElements] = useState([])
+  const handleSearchInputChange = (event) => {
+    setSearchText(event.target.value);
+  };
 
-    const handleSearchInputChange = (event) => {
-        setSearchText(event.target.value)
+  const handleSearchInputKeyUp = (event) => {
+    const value = event.target.value;
+    if (!!value) {
+      const newElements = users.filter((user) => {
+        const fullName = `${user.name?.toLowerCase()}`;
+        return fullName?.search(value.toLowerCase()) !== -1;
+      });
+      setElements(newElements);
+    } else {
+      setElements(users);
     }
+  };
 
-    const handleSearchInputKeyUp = (event) => {
-        const value = event.target.value
-        if (!!value) {
-            const newElements = users.filter((user) => {
-                const fullName = `${user.name?.toLowerCase()}`
-                return fullName?.search(value) !== -1
-            })
-            setElements(newElements)
-        } else {
-            setElements(users)
+  const handleClose = () => {
+    if (onClose) {
+      onClose();
+    }
+  };
+
+  const handleSelectedUser = (user) => () => {
+    if (onClose) {
+      onClose(user);
+    }
+  };
+
+  useEffect(() => {
+    setElements(users);
+  }, [users]);
+
+  return (
+    <StyledDialog 
+      onClose={handleClose} 
+      open={open} 
+      fullWidth={true} 
+      maxWidth="xs" 
+      PaperProps={{
+        sx: { 
+          height: "75vh",
+          maxHeight: "600px"
         }
-
-    }
-
-    const handleClose = () => {
-        if (onClose) {
-            onClose()
-        }
-    }
-
-    const handleSelectedUser = (user) => () => {
-        if (onClose) {
-            onClose(user)
-        }
-    }
-
-    useEffect(() => {
-        setElements(users)
-    }, [users])
-
-
-    return <Dialog onClose={handleClose} open={open} fullWidth={true} maxWidth="xs" sx={{ height: "75vh" }}>
-        <DialogTitle>
-            <FormControl variant="outlined" fullWidth={true}>
-                <OutlinedInput
-                    fullWidth={true}
-                    type="text"
-                    value={searchText}
-                    onChange={handleSearchInputChange}
-                    onKeyUp={handleSearchInputKeyUp}
-                    size="small"
-                    endAdornment={
-                        <InputAdornment position="end">
-                            <IconButton
-                                disabled={true}
-                                aria-label="search"
-                                edge="end"
-                            >
-                                <SearchIcon />
-                            </IconButton>
-                        </InputAdornment>
-                    }
-                    placeholder="Type to search..."
-                />
-            </FormControl>
-        </DialogTitle>
-        <DialogContent>
-            {elements.map((user) => {
-                return <ListItem key={user._id} button onClick={handleSelectedUser(user)}>
-                    <ListItemAvatar>
-                        {
-                            user?.avatar ?
-                                <Avatar src={user.avatar} /> :
-                                <Avatar>{user.name[0]}</Avatar>
-                        }
-                    </ListItemAvatar>
-                    <ListItemText primary={`${user.name}`} />
-                </ListItem>
-            })}
-        </DialogContent>
-    </Dialog>
+      }}
+    >
+      <StyledDialogTitle>
+        <Typography 
+          variant="subtitle1" 
+          sx={{ 
+            mb: 1.5, 
+            color: 'rgba(255, 255, 255, 0.9)',
+            fontWeight: 600,
+            textAlign: 'center',
+            background: 'linear-gradient(90deg, #ff69b4, #ba68c8)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}
+        >
+          Select Contact
+        </Typography>
+        <FormControl variant="outlined" fullWidth={true}>
+          <StyledOutlinedInput
+            fullWidth={true}
+            type="text"
+            value={searchText}
+            onChange={handleSearchInputChange}
+            onKeyUp={handleSearchInputKeyUp}
+            size="small"
+            endAdornment={
+              <InputAdornment position="end">
+                <StyledIconButton
+                  disabled={true}
+                  aria-label="search"
+                  edge="end"
+                >
+                  <SearchIcon />
+                </StyledIconButton>
+              </InputAdornment>
+            }
+            placeholder="Type to search..."
+          />
+        </FormControl>
+      </StyledDialogTitle>
+      <StyledDialogContent>
+        {elements.length > 0 ? (
+          elements.map((user) => (
+            <StyledListItem 
+              key={user._id} 
+              button 
+              onClick={handleSelectedUser(user)}
+            >
+              <ListItemAvatar>
+                {user?.avatar ? (
+                  <StyledAvatar 
+                    src={user.avatar} 
+                    alt={user.name}
+                  />
+                ) : (
+                  <StyledAvatar>
+                    {user.name[0]}
+                  </StyledAvatar>
+                )}
+              </ListItemAvatar>
+              <StyledListItemText primary={`${user.name}`} />
+            </StyledListItem>
+          ))
+        ) : (
+          <Box sx={{ 
+            p: 3, 
+            textAlign: 'center', 
+            color: 'rgba(255, 255, 255, 0.6)',
+            animation: `${fadeIn} 0.5s ease-out`
+          }}>
+            <Typography variant="body2">
+              No contacts found
+            </Typography>
+          </Box>
+        )}
+      </StyledDialogContent>
+    </StyledDialog>
+  );
 }
