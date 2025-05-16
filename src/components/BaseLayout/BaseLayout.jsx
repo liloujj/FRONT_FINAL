@@ -471,10 +471,102 @@ function BaseLayout(props) {
           )}
 
           <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
-            <BiotechIcon sx={{ mr: 1, color: "#ec4899" }} />
-            <LogoText variant="h6" component="div">
-              DeepVision Lab
-            </LogoText>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              opacity: loaded ? 1 : 0,
+              transform: loaded ? "translateX(0)" : "translateX(-20px)",
+              transition: "opacity 1s ease, transform 1s ease",
+            }}
+          >
+            <Box
+              sx={{
+                width: "40px",
+                height: "40px",
+                position: "relative",
+                mr: 2,
+              }}
+            >
+              <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="eyeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#ffffff" />
+                    <stop offset="100%" stopColor="#a855f7" />
+                  </linearGradient>
+                  <radialGradient id="pupilGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                    <stop offset="0%" stopColor="#8b5cf6" />
+                    <stop offset="100%" stopColor="#4f46e5" />
+                  </radialGradient>
+                  <filter id="glow">
+                    <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
+                    <feMerge>
+                      <feMergeNode in="coloredBlur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                </defs>
+
+                {/* Outer Ring with Animation */}
+                <circle cx="50" cy="50" r="48" fill="none" stroke="url(#eyeGradient)" strokeWidth="1" filter="url(#glow)">
+                  <animate attributeName="r" values="48;46;48" dur="3s" repeatCount="indefinite" />
+                  <animate attributeName="stroke-width" values="1;2;1" dur="3s" repeatCount="indefinite" />
+                  <animate attributeName="opacity" values="0.8;1;0.8" dur="3s" repeatCount="indefinite" />
+                </circle>
+
+                {/* Tech Lines */}
+                <path d="M50,2 L50,15" stroke="#ffffff" strokeWidth="1" opacity="0.6">
+                  <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite" />
+                </path>
+                <path d="M50,85 L50,98" stroke="#ffffff" strokeWidth="1" opacity="0.6">
+                  <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite" />
+                </path>
+                <path d="M2,50 L15,50" stroke="#ffffff" strokeWidth="1" opacity="0.6">
+                  <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite" />
+                </path>
+                <path d="M85,50 L98,50" stroke="#ffffff" strokeWidth="1" opacity="0.6">
+                  <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite" />
+                </path>
+
+                {/* Eye White */}
+                <ellipse cx="50" cy="50" rx="30" ry="30" fill="rgba(255,255,255,0.9)" filter="url(#glow)" />
+
+                {/* Iris */}
+                <circle cx="50" cy="50" r="20" fill="url(#pupilGradient)" filter="url(#glow)">
+                  <animate attributeName="r" values="20;18;20" dur="3s" repeatCount="indefinite" />
+                </circle>
+
+                {/* Pupil */}
+                <circle cx="50" cy="50" r="10" fill="#000">
+                  <animate attributeName="r" values="10;8;10" dur="3s" repeatCount="indefinite" />
+                </circle>
+
+                {/* Scanning Line */}
+                <line x1="20" y1="50" x2="80" y2="50" stroke="#ffffff" strokeWidth="1" opacity="0.8">
+                  <animate attributeName="y1" values="40;60;40" dur="2s" repeatCount="indefinite" />
+                  <animate attributeName="y2" values="40;60;40" dur="2s" repeatCount="indefinite" />
+                  <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite" />
+                </line>
+
+                {/* Highlight */}
+                <circle cx="40" cy="40" r="5" fill="white" opacity="0.7" />
+              </svg>
+            </Box>
+
+          <Typography
+            variant="h6"
+            sx={{
+              color: "#fff",
+              fontWeight: 300,
+              letterSpacing: "2px",
+              textTransform: "uppercase",
+              fontSize: { xs: "1rem", sm: "1.25rem" },
+              textShadow: "0 0 10px rgba(255, 255, 255, 0.5)",
+            }}
+          >
+            <span style={{ fontWeight: 600, color: "#a855f7" }}>Deep</span>Vision Lab
+          </Typography>
+        </Box>
             <StyledChip
               label={role}
               size="small"
