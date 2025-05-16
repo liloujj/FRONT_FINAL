@@ -185,6 +185,9 @@ export default function Login() {
       dispatch(login(values.email, values.password))
     },
   })
+  const navigateToHome = () => {
+    navigate("/home")
+  }
 
   return (
     <Box
@@ -236,7 +239,10 @@ export default function Login() {
           opacity: loaded ? 1 : 0,
           transform: loaded ? "translateX(0)" : "translateX(-20px)",
           transition: "opacity 1s ease, transform 1s ease",
+          cursor: "pointer",
+
         }}
+        onClick={navigateToHome}
       >
         <Box
           sx={{

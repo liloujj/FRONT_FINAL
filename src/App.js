@@ -11,6 +11,9 @@ import ActivateAcount from "./containers/Login/ActivateAcount";
 import ForgetPassword from "./containers/Login/ForgetPassword";
 import ResetPassword from "./containers/Login/ResetPassword";
 import BaseApp from "./components/BaseApp/BaseApp";
+import Home from "./containers/Login/Home";
+import Contact from "./containers/Login/Contact";
+
 import {Notification} from "./containers/Notification/Notification";
 import ChatBadge from "./containers/Message/Components/ChatBadge/ChatBadge";
 import i18n from "./helpers/i18n";
@@ -67,11 +70,13 @@ function App() {
                 <Routes>
                     <Route path="/activate-account/:token" Component={ActivateAcount} />
                     <Route path="/login" Component={Login} />
+                    <Route path="/home" Component={Home} />
+                    <Route path="/contact" Component={Contact} />
                     <Route path="/signup" Component={Signup} />
                     <Route path="/forget-password" Component={ForgetPassword} />
                     <Route path="/reset-password/:token" Component={ResetPassword}/>
                     {loginPage &&
-                    <Route path="*" element={<Navigate to="/login"/>}/>
+                    <Route path="*" element={<Navigate to="/home"/>}/>
                     }
                 </Routes>
               }

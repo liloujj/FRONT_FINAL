@@ -353,7 +353,7 @@ export default function Appointment() {
   }
 
   // Count appointments by status
-  const appointmentCounts = {
+  const appointmentCounts  = {
     total: appointments.length,
     pending: appointments.filter((a) => a.status === "Pending").length,
     approved: appointments.filter((a) => a.status === "Approved").length,
@@ -623,7 +623,7 @@ export default function Appointment() {
                   {appointmentCounts.total}
                 </Typography>
                 <Typography variant="body2" color="rgba(255, 255, 255, 0.6)">
-                  {t("All appointments")}
+                  {t("All Appointments")}
                 </Typography>
               </CardContent>
             </Card>
