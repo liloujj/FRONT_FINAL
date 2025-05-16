@@ -53,12 +53,14 @@ export function Notification() {
   const { notifications } = useSelector((state) => state.notification)
   const unreadCount = notifications.filter((element) => element.read === false).length
 
+  const { t } = useTranslation()
+
   useEffect(() => {
     dispatch(AsyncGetNotifications())
   }, [dispatch])
 
   return (
-    <Tooltip title={unreadCount > 0 ? `${unreadCount} unread notifications` : "No new notifications"}>
+    <Tooltip title={unreadCount > 0 ? `${unreadCount} ${t("unread notifications")}` : t("No new notifications")}>
       <IconButton
         onClick={() => navigate("/notifications")}
         sx={{
@@ -824,9 +826,7 @@ export function NotificationTable() {
                             <TableCell>
                               <Box sx={{ display: "flex", flexDirection: "column" }}>
                                 <Typography variant="body2">{date}</Typography>
-                                <Typography variant="caption" color="rgba(255, 255, 255, 0.5)">
-                                  {timeAgo}
-                                </Typography>
+
                               </Box>
                             </TableCell>
                             <TableCell align="right">

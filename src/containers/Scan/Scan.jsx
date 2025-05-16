@@ -564,25 +564,6 @@ export default function Scan() {
                   }}
                 />
               </Box>
-              <Button
-                variant="contained"
-                startIcon={<AddIcon />}
-                sx={{
-                  background: "linear-gradient(45deg, #8b5cf6, #ec4899)",
-                  color: "white",
-                  borderRadius: "12px",
-                  fontWeight: 600,
-                  boxShadow: "0 4px 15px rgba(236, 72, 153, 0.3)",
-                  "&:hover": {
-                    background: "linear-gradient(45deg, #7c3aed, #db2777)",
-                    transform: "translateY(-2px)",
-                    boxShadow: "0 6px 20px rgba(236, 72, 153, 0.4)",
-                  },
-                  transition: "all 0.3s ease",
-                }}
-              >
-                {t("Upload New Scan")}
-              </Button>
             </Box>
 
             {scans.length === 0 ? (

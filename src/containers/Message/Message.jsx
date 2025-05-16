@@ -28,7 +28,7 @@ const ChatContainer = styled(Container)(({ theme }) => ({
 }));
 
 const ChatPaper = styled(Paper)(({ theme }) => ({
-  padding: '24px',
+  padding: '21px',
   marginTop: '24px',
   borderRadius: '16px',
   background: 'linear-gradient(135deg, rgba(250, 240, 252, 0.95) 0%, rgba(255, 235, 245, 0.95) 100%)',
@@ -65,10 +65,10 @@ const SidebarWrapper = styled(MuiBox)(({ theme }) => ({
 }));
 
 const ContentWrapper = styled(MuiBox)(({ theme }) => ({
-  flex: { xs: 8 },
-  display: 'flex',
+  display:"flex",
   flexDirection: 'column',
   alignItems: 'stretch',
+  width:"100%",
   gap: '16px',
   height: '100%',
 }));
@@ -193,7 +193,6 @@ export default function Chat() {
 
   return (
     <ChatContainer maxWidth="lg">
-      <ChatPaper elevation={0}>
         <ChatLayout>
           <SidebarWrapper>
             <ChatSideBar
@@ -219,7 +218,6 @@ export default function Chat() {
             </InputWrapper>
           </ContentWrapper>
         </ChatLayout>
-      </ChatPaper>
     </ChatContainer>
   );
 }

@@ -467,7 +467,7 @@ export default function Settings() {
                 <Grid container item xs={12} alignItems="center">
                   <Grid item xs={12} md={4}>
                     <Typography color="rgba(255, 255, 255, 0.7)" variant="subtitle1" gutterBottom>
-                      {t("New password")}
+                      {t("New Password")}
                     </Typography>
                   </Grid>
                   <Grid item xs={12} md={8}>
@@ -495,7 +495,7 @@ export default function Settings() {
                 <Grid container item xs={12} alignItems="center">
                   <Grid item xs={12} md={4}>
                     <Typography color="rgba(255, 255, 255, 0.7)" variant="subtitle1" gutterBottom>
-                      {t("Confirm new password")}
+                      {t("Confirm New Password")}
                     </Typography>
                   </Grid>
                   <Grid item xs={12} md={8}>

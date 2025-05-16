@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
-import { Box, Typography, Button, Card, CardContent, useMediaQuery, useTheme, Container, Grid } from "@mui/material"
+import { Box, Typography, Button,Select,MenuItem, Card, CardContent, useMediaQuery, useTheme, Container, Grid } from "@mui/material"
 import { ArrowRight, Brain, Zap, Shield, ChevronRight } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
@@ -10,10 +10,12 @@ export default function HomePage() {
   const theme = useTheme()
   const navigate = useNavigate()
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
-  const { t } = useTranslation()
+  const { t,i18n } = useTranslation()
   const [loaded, setLoaded] = useState(false)
   const canvasRef = useRef(null)
-
+  const handleChangeLanguage = (lng) => {
+    i18n.changeLanguage(lng)
+  }
   // Beautiful background animation
   useEffect(() => {
     setLoaded(true)
@@ -294,7 +296,6 @@ export default function HomePage() {
           </Typography>
         </Box>
 
-        {/* Login Button */}
         <Button
           onClick={navigateToLogin}
           variant="contained"
@@ -322,7 +323,6 @@ export default function HomePage() {
         </Button>
       </Box>
 
-      {/* Hero Section */}
       <Box
         component="section"
         sx={{
@@ -379,7 +379,7 @@ export default function HomePage() {
               "Harness the power of cutting-edge artificial intelligence to transform your visual data into actionable insights.",
             )}
           </Typography>
-
+          
           <Box
             sx={{
               display: "flex",
@@ -998,6 +998,35 @@ export default function HomePage() {
               </Box>
             </CardContent>
           </Card>
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+            <Select
+              variant="standard"
+              onChange={(e) => handleChangeLanguage(e.target.value)}
+              labelId="language-filter-label"
+              defaultValue={i18n.language}
+              label={t("Language")}
+              sx={{
+                minWidth: 100,
+                "& .MuiSelect-select": {
+                  color: "rgba(255, 255, 255, 0.7)",
+                  fontSize: "0.85rem",
+                  fontWeight: 500,
+                },
+                "&:before, &:after": {
+                  borderColor: "rgba(139, 92, 246, 0.3)",
+                },
+                "&:hover:not(.Mui-disabled):before": {
+                  borderColor: "rgba(139, 92, 246, 0.5)",
+                },
+                "& .MuiSvgIcon-root": {
+                  color: "rgba(255, 255, 255, 0.7)",
+                },
+              }}
+            >
+              <MenuItem value="en">{t("English")}</MenuItem>
+              <MenuItem value="fr">{t("French")}</MenuItem>
+            </Select>
+          </Box>
         </Container>
       </Box>
     </Box>
