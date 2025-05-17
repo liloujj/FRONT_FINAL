@@ -1674,7 +1674,7 @@ export default function ScanResult() {
                     }
                     label={
                       <Box sx={{ display: "flex", alignItems: "center" }}>
-                        {t("Upload new scan")}
+                        {t("Upload New Scan")}
                         <Chip
                           size="small"
                           icon={<StarIcon sx={{ fontSize: "0.8rem !important" }} />}
