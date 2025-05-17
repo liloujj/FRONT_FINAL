@@ -1,8 +1,18 @@
 {
+    "Submit Scan for AI Analysis":"Submit Scan for AI Analysis",
+    "As a regular patient, your analysis results will be available within 24-48 hours.":"As a regular patient, your analysis results will be available within 24-48 hours.",
+    "Select Scan Source":"Select Scan Source",
+    "Select a scan from your records":"Select a scan from your records",
+    "AI analysis is intended to assist healthcare professionals and should not replace professional medical advice. Always consult with your doctor regarding the results.":"AI analysis is intended to assist healthcare professionals and should not replace professional medical advice. Always consult with your doctor regarding the results.",
+    "Submit Scan for Analysis":"Submit Scan for Analysis",
+    "Use existing scan":"Use existing scan",
+    
+
     "You don't have any appointments yet.":"You don't have any appointments yet.",
     "No new notifications":"No new notifications",
     "Schedule your first appointment":"Schedule your first appointment",
     "unread notifications":"unread notifications",
+    
 
     "Get AI-powered analysis of your medical scans":"Get AI-powered analysis of your medical scans",
     "New Analysis":"New Analysis",

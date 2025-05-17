@@ -1,4 +1,12 @@
 {
+    "Submit Scan for AI Analysis":"Soumettre le scan pour analyse par IA",
+    "As a regular patient, your analysis results will be available within 24-48 hours.":"En tant que patient régulier, vos résultats d'analyse seront disponibles dans les 24 à 48 heures.",
+    "Select Scan Source":"Sélectionner la source du scan",
+    "Select a scan from your records":"Sélectionnez un scan dans vos dossiers",
+    "AI analysis is intended to assist healthcare professionals and should not replace professional medical advice. Always consult with your doctor regarding the results.":"L'analyse par IA est destinée à aider les professionnels de la santé et ne doit pas remplacer les conseils médicaux professionnels. Consultez toujours votre médecin concernant les résultats.",
+    "Submit Scan for Analysis":"Soumettre le scan pour analyse",
+    "Use existing scan":"Utiliser un scan existant",
+
     "You don't have any appointments yet.":"Vous n'avez pas encore de rendez-vous.",
     "No new notifications":"Aucune nouvelle notification",
     "Schedule your first appointment":"Planifiez votre premier rendez-vous",
