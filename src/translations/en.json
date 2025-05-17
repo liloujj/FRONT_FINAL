@@ -1,4 +1,8 @@
 {
+    "No scans available. Please contact your administrator.":"No scans available. Please contact your administrator.",
+    "Image not available":"Image not available",
+    "submit for analysis":"submit for analysis",
+    
     "Submit Scan for AI Analysis":"Submit Scan for AI Analysis",
     "As a regular patient, your analysis results will be available within 24-48 hours.":"As a regular patient, your analysis results will be available within 24-48 hours.",
     "Select Scan Source":"Select Scan Source",
@@ -203,7 +207,7 @@
     "Name":"Name",
     "New Password":"New Password",
     "Current Password":"Current Password",
-    "Confirm New password":"Confirm New Password",
+    "Confirm New Password":"Confirm New Password",
     "Password must be at least 8 characters":"Password must be at least 8 characters",
     "Password must contain at least one lowercase letter":"Password must contain at least one lowercase letter",
     "Password must contain at least one uppercase letter":"Password must contain at least one uppercase letter",

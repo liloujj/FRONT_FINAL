@@ -1,4 +1,8 @@
 {
+    "No scans available. Please contact your administrator.":"Aucun scan disponible. Veuillez contacter votre administrateur.",
+    "Image not available":"Image non disponible",
+    "submit for analysis":"soumettre pour analyse",
+    
     "Submit Scan for AI Analysis":"Soumettre le scan pour analyse par IA",
     "As a regular patient, your analysis results will be available within 24-48 hours.":"En tant que patient régulier, vos résultats d'analyse seront disponibles dans les 24 à 48 heures.",
     "Select Scan Source":"Sélectionner la source du scan",
@@ -198,7 +202,7 @@
     "Name":"Nom",
     "New Password":"Nouveau mot de passe",
     "Current Password":"Mot de passe actuel",
-    "Confirm New password":"Confirmer le nouveau mot de passe",
+    "Confirm New Password":"Confirmer le nouveau mot de passe",
     "Password must be at least 8 characters":"Le mot de passe doit comporter au moins 8 caractères",
     "Password must contain at least one lowercase letter":"Le mot de passe doit contenir au moins une lettre minuscule",
     "Password must contain at least one uppercase letter":"Le mot de passe doit contenir au moins une lettre majuscule",
