@@ -19,6 +19,7 @@ import GradeIcon from "@mui/icons-material/Grade"
 import AccessTimeIcon from "@mui/icons-material/AccessTime"
 
 // Après les imports existants, ajoutez ces nouveaux imports
+import StarIcon from "@mui/icons-material/Star"
 
 import { useSelector } from "react-redux"
 import { useTranslation } from "react-i18next"
@@ -36,6 +37,9 @@ export default function Profile() {
   const { role, name, email, phoneNum, avatar, address, createdAt, specialization, schedule } = useSelector(
     (state) => state.login,
   )
+
+  // Add this line after the existing useSelector statement to get the premium status
+  const { isPatientPremium } = useSelector((state) => state.payment)
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text)
@@ -316,6 +320,45 @@ export default function Profile() {
                     },
                   }}
                 />
+                {role === "Patient" && (
+                  <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
+                    {isPatientPremium ? (
+                      <Chip
+                        icon={<StarIcon />}
+                        label={t("Premium Member")}
+                        sx={{
+                          fontWeight: "medium",
+                          backgroundColor: "rgba(245, 158, 11, 0.2)",
+                          color: "#f59e0b",
+                          borderRadius: "8px",
+                          backdropFilter: "blur(4px)",
+                          border: "1px solid rgba(245, 158, 11, 0.3)",
+                          "& .MuiChip-label": {
+                            px: 2,
+                          },
+                          "& .MuiChip-icon": {
+                            color: "#f59e0b",
+                          },
+                        }}
+                      />
+                    ) : (
+                      <Chip
+                        label={t("Regular Member")}
+                        sx={{
+                          fontWeight: "medium",
+                          backgroundColor: "rgba(255, 255, 255, 0.1)",
+                          color: "rgba(255, 255, 255, 0.8)",
+                          borderRadius: "8px",
+                          backdropFilter: "blur(4px)",
+                          border: "1px solid rgba(255, 255, 255, 0.2)",
+                          "& .MuiChip-label": {
+                            px: 2,
+                          },
+                        }}
+                      />
+                    )}
+                  </Box>
+                )}
                 <Box sx={{ display: "flex", alignItems: "center", mb: 1, color: "rgba(255, 255, 255, 0.9)", mt: 2 }}>
                   <LocationOn sx={{ color: "#ec4899", fontSize: "1rem", mr: 1 }} />
                   <Typography variant="body2" sx={{ color: "rgba(255, 255, 255, 0.9)" }}>

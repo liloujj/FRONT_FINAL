@@ -581,22 +581,26 @@ export default function Scan() {
                   {t("No scans found.")}
                 </Typography>
                 <Typography color="rgba(255, 255, 255, 0.5)" variant="body2" sx={{ maxWidth: 500, mx: "auto", mb: 3 }}>
-                  {t("Upload your first medical scan to get started. Our system will securely store and analyze it.")}
+                  {role === "Admin"
+                    ? t("Upload your first medical scan to get started. Our system will securely store and analyze it.")
+                    : t("No scans have been uploaded for you yet. Please contact your administrator.")}
                 </Typography>
-                <Button
-                  variant="outlined"
-                  startIcon={<AddIcon />}
-                  sx={{
-                    borderColor: "rgba(139, 92, 246, 0.5)",
-                    color: "white",
-                    "&:hover": {
-                      borderColor: "#8b5cf6",
-                      background: "rgba(139, 92, 246, 0.1)",
-                    },
-                  }}
-                >
-                  {t("Upload Your First Scan")}
-                </Button>
+                {role === "Admin" && (
+                  <Button
+                    variant="outlined"
+                    startIcon={<AddIcon />}
+                    sx={{
+                      borderColor: "rgba(139, 92, 246, 0.5)",
+                      color: "white",
+                      "&:hover": {
+                        borderColor: "#8b5cf6",
+                        background: "rgba(139, 92, 246, 0.1)",
+                      },
+                    }}
+                  >
+                    {t("Upload Your First Scan")}
+                  </Button>
+                )}
               </Box>
             ) : (
               <>

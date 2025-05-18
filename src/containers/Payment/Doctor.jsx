@@ -4,12 +4,6 @@ import { useEffect, useState, useRef } from "react"
 import {
   Typography,
   Box,
-  Table,
-  TableContainer,
-  TableCell,
-  TableRow,
-  TableBody,
-  TableHead,
   Chip,
   Avatar,
   useTheme,
@@ -18,6 +12,9 @@ import {
   Button,
   Card,
   CardContent,
+  Grid,
+  Paper,
+  Divider,
 } from "@mui/material"
 import DoneIcon from "@mui/icons-material/Done"
 import CloseIcon from "@mui/icons-material/Close"
@@ -28,6 +25,8 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth"
 import StarIcon from "@mui/icons-material/Star"
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices"
 import { useDispatch, useSelector } from "react-redux"
+import LocationOnIcon from "@mui/icons-material/LocationOn"
+import ContentCopyIcon from "@mui/icons-material/ContentCopy"
 
 import dayjs from "dayjs"
 
@@ -208,6 +207,18 @@ export default function Doctors() {
   // Apply pagination
   const paginatedUsers = filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text).then(
+      () => {
+        // You could add a toast notification here if you have a toast system
+        console.log("Copied to clipboard: " + text)
+      },
+      (err) => {
+        console.error("Could not copy text: ", err)
+      },
+    )
+  }
+
   return (
     <Box
       sx={{
@@ -253,12 +264,13 @@ export default function Doctors() {
           width: "100%",
         }}
       >
-        {/* Page Title */}
+        {/* Header Section with Title and Status */}
         <Box
           sx={{
             display: "flex",
+            flexDirection: { xs: "column", md: "row" },
             justifyContent: "space-between",
-            alignItems: "center",
+            alignItems: { xs: "flex-start", md: "center" },
             mb: 4,
             mt: 4,
             opacity: loaded ? 1 : 0,
@@ -266,291 +278,416 @@ export default function Doctors() {
             transition: "opacity 0.5s ease, transform 0.5s ease",
           }}
         >
-          <Typography
-            variant="h3"
-            component="h1"
-            sx={{
-              color: "white",
-              fontWeight: 700,
-              textShadow: "0 2px 10px rgba(0,0,0,0.3)",
-              background: "linear-gradient(to right, #ffffff, #ec4899)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
-            {t("Doctors")}
-          </Typography>
-          {isPatientPremium && (
-            <Box sx={{ display: "flex", gap: 2 }}>
-              <Button
-                variant="contained"
-                startIcon={<RefreshIcon />}
-                onClick={handleRefresh}
+          <Box sx={{ display: "flex", alignItems: "center", mb: { xs: 2, md: 0 } }}>
+            <Avatar
+              sx={{
+                width: 60,
+                height: 60,
+                bgcolor: "rgba(139, 92, 246, 0.1)",
+                color: "#8b5cf6",
+                mr: 3,
+                boxShadow: "0 8px 16px rgba(139, 92, 246, 0.2)",
+              }}
+            >
+              <MedicalServicesIcon sx={{ fontSize: 30 }} />
+            </Avatar>
+            <Box>
+              <Typography
+                variant="h3"
+                component="h1"
                 sx={{
-                  background: "rgba(255, 255, 255, 0.05)",
-                  backdropFilter: "blur(10px)",
                   color: "white",
-                  borderRadius: "12px",
-                  border: "1px solid rgba(255, 255, 255, 0.1)",
-                  "&:hover": {
-                    background: "rgba(255, 255, 255, 0.1)",
-                  },
+                  fontWeight: 700,
+                  textShadow: "0 2px 10px rgba(0,0,0,0.3)",
+                  background: "linear-gradient(to right, #ffffff, #ec4899)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
                 }}
               >
-                {t("Refresh")}
-              </Button>
+                {t("Doctors")}
+              </Typography>
+              <Box sx={{ display: "flex", alignItems: "center", mt: 0.5 }}>
+                {isPatientPremium ? (
+                  <Chip
+                    icon={<StarIcon sx={{ color: "#f59e0b !important", fontSize: "1rem" }} />}
+                    label={t("Premium Access")}
+                    size="small"
+                    sx={{
+                      backgroundColor: "rgba(245, 158, 11, 0.15)",
+                      color: "#f59e0b",
+                      fontWeight: "bold",
+                      borderRadius: "8px",
+                      border: "1px solid rgba(245, 158, 11, 0.3)",
+                      "& .MuiChip-label": {
+                        px: 1,
+                      },
+                    }}
+                  />
+                ) : (
+                  <Chip
+                    icon={<StarIcon sx={{ color: "rgba(255, 255, 255, 0.5) !important", fontSize: "1rem" }} />}
+                    label={t("Limited Access")}
+                    size="small"
+                    sx={{
+                      backgroundColor: "rgba(255, 255, 255, 0.1)",
+                      color: "rgba(255, 255, 255, 0.7)",
+                      fontWeight: "medium",
+                      borderRadius: "8px",
+                      border: "1px solid rgba(255, 255, 255, 0.2)",
+                      "& .MuiChip-label": {
+                        px: 1,
+                      },
+                    }}
+                  />
+                )}
+                {isPatientPremium && filteredUsers.length > 0 && (
+                  <Chip
+                    label={`${filteredUsers.length} ${t("doctors")}`}
+                    size="small"
+                    sx={{
+                      ml: 2,
+                      backgroundColor: "rgba(236, 72, 153, 0.15)",
+                      color: "white",
+                      fontWeight: "bold",
+                      borderRadius: "8px",
+                      border: "1px solid rgba(236, 72, 153, 0.3)",
+                    }}
+                  />
+                )}
+              </Box>
             </Box>
+          </Box>
+
+          {isPatientPremium && (
+            <Button
+              variant="contained"
+              startIcon={<RefreshIcon />}
+              onClick={handleRefresh}
+              sx={{
+                background: "rgba(255, 255, 255, 0.05)",
+                backdropFilter: "blur(10px)",
+                color: "white",
+                borderRadius: "12px",
+                border: "1px solid rgba(255, 255, 255, 0.1)",
+                px: 3,
+                py: 1.2,
+                "&:hover": {
+                  background: "rgba(255, 255, 255, 0.1)",
+                  transform: "translateY(-2px)",
+                  boxShadow: "0 6px 15px rgba(0, 0, 0, 0.1)",
+                },
+                transition: "all 0.3s ease",
+              }}
+            >
+              {t("Refresh")}
+            </Button>
           )}
         </Box>
 
-        {/* Main Content Card */}
-        <Card
-          sx={{
-            borderRadius: "24px",
-            background: "rgba(15, 23, 42, 0.6)",
-            backdropFilter: "blur(20px)",
-            boxShadow: "0 15px 40px rgba(0, 0, 0, 0.3)",
-            overflow: "hidden",
-            position: "relative",
-            border: "1px solid rgba(139, 92, 246, 0.2)",
-            mb: 4,
-            opacity: loaded ? 1 : 0,
-            transform: loaded ? "translateY(0)" : "translateY(20px)",
-            transition: "opacity 0.5s ease, transform 0.5s ease",
-            transitionDelay: "0.4s",
-            "&::before": {
-              content: '""',
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              height: "4px",
-              background: "linear-gradient(to right, #8b5cf6, #ec4899)",
-            },
-          }}
-        >
-          <CardContent sx={{ p: 3 }}>
-            {!isPatientPremium ? (
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  py: 6,
-                  textAlign: "center",
-                }}
-              >
-                <Avatar
-                  sx={{
-                    width: 80,
-                    height: 80,
-                    bgcolor: "rgba(236, 72, 153, 0.1)",
-                    color: "#ec4899",
-                    mb: 3,
-                  }}
-                >
-                  <StarIcon sx={{ fontSize: 40 }} />
-                </Avatar>
-                <Typography variant="h5" fontWeight="bold" color="white" gutterBottom>
-                  {t("Premium Feature")}
-                </Typography>
-                <Typography
-                  variant="body1"
-                  color="rgba(255, 255, 255, 0.7)"
-                  paragraph
-                  sx={{ maxWidth: 600, mx: "auto" }}
-                >
-                  {t("You need to upgrade to premium to access the complete list of doctors.")}
-                </Typography>
-                <Typography
-                  variant="body1"
-                  color="rgba(255, 255, 255, 0.7)"
-                  paragraph
-                  sx={{ maxWidth: 600, mx: "auto" }}
-                >
-                  {t(
-                    "The average patient gets the scan within 24/48 hours. And the premium patient gets it immediately.",
-                  )}
-                </Typography>
+        {/* Main Content */}
+        {!isPatientPremium ? (
+          <Card
+            sx={{
+              borderRadius: "24px",
+              background: "rgba(15, 23, 42, 0.6)",
+              backdropFilter: "blur(20px)",
+              boxShadow: "0 15px 40px rgba(0, 0, 0, 0.3)",
+              overflow: "hidden",
+              position: "relative",
+              border: "1px solid rgba(139, 92, 246, 0.2)",
+              mb: 4,
+              opacity: loaded ? 1 : 0,
+              transform: loaded ? "translateY(0)" : "translateY(20px)",
+              transition: "opacity 0.5s ease, transform 0.5s ease",
+              transitionDelay: "0.2s",
+              "&::before": {
+                content: '""',
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                height: "4px",
+                background: "linear-gradient(to right, #8b5cf6, #ec4899)",
+              },
+            }}
+          >
+            <CardContent sx={{ p: 0 }}>
+              <Grid container>
+                <Grid item xs={12} md={5}>
+                  <Box
+                    sx={{
+                      p: 4,
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      background: "linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%)",
+                      borderRight: { xs: "none", md: "1px solid rgba(255, 255, 255, 0.1)" },
+                      borderBottom: { xs: "1px solid rgba(255, 255, 255, 0.1)", md: "none" },
+                    }}
+                  >
+                    <Avatar
+                      sx={{
+                        width: 80,
+                        height: 80,
+                        bgcolor: "rgba(236, 72, 153, 0.1)",
+                        color: "#ec4899",
+                        mb: 3,
+                        mx: "auto",
+                      }}
+                    >
+                      <StarIcon sx={{ fontSize: 40 }} />
+                    </Avatar>
+                    <Typography variant="h4" fontWeight="bold" color="white" gutterBottom align="center">
+                      {t("Premium Feature")}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      color="rgba(255, 255, 255, 0.7)"
+                      paragraph
+                      sx={{ maxWidth: 500, mx: "auto", textAlign: "center" }}
+                    >
+                      {t("You need to upgrade to premium to access the complete list of doctors.")}
+                    </Typography>
+                    <Box sx={{ textAlign: "center", mt: 2 }}>
+                      <Button
+                        variant="contained"
+                        startIcon={<StarIcon />}
+                        onClick={() => {
+                          navigate("/subscription")
+                        }}
+                        sx={{
+                          background: "linear-gradient(45deg, #8b5cf6, #ec4899)",
+                          color: "white",
+                          borderRadius: "12px",
+                          py: 1.5,
+                          px: 4,
+                          fontWeight: 600,
+                          boxShadow: "0 4px 15px rgba(236, 72, 153, 0.3)",
+                          "&:hover": {
+                            background: "linear-gradient(45deg, #7c3aed, #db2777)",
+                            transform: "translateY(-2px)",
+                            boxShadow: "0 6px 20px rgba(236, 72, 153, 0.4)",
+                          },
+                          transition: "all 0.3s ease",
+                        }}
+                      >
+                        {t("Upgrade to Premium")}
+                      </Button>
+                    </Box>
+                  </Box>
+                </Grid>
+                <Grid item xs={12} md={7}>
+                  <Box sx={{ p: 4 }}>
+                    <Typography variant="h5" fontWeight="bold" color="white" gutterBottom>
+                      {t("Premium Benefits")}
+                    </Typography>
+                    <Divider sx={{ my: 2, borderColor: "rgba(255, 255, 255, 0.1)" }} />
 
-                <Button
-                  variant="contained"
-                  startIcon={<StarIcon />}
-                  onClick={() => {
-                    navigate("/subscription")
-                  }}
+                    <Grid container spacing={2} sx={{ mt: 1 }}>
+                      <Grid item xs={12} sm={6}>
+                        <Paper
+                          elevation={0}
+                          sx={{
+                            p: 2,
+                            borderRadius: "12px",
+                            background: "rgba(255, 255, 255, 0.03)",
+                            border: "1px solid rgba(139, 92, 246, 0.2)",
+                            height: "100%",
+                          }}
+                        >
+                          <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+                            <Avatar
+                              sx={{
+                                width: 36,
+                                height: 36,
+                                bgcolor: "rgba(139, 92, 246, 0.1)",
+                                color: "#8b5cf6",
+                                mr: 2,
+                              }}
+                            >
+                              <MedicalServicesIcon fontSize="small" />
+                            </Avatar>
+                            <Typography variant="subtitle1" fontWeight="medium" color="white">
+                              {t("Full Doctor Directory")}
+                            </Typography>
+                          </Box>
+                          <Typography variant="body2" color="rgba(255, 255, 255, 0.7)">
+                            {t("Access our complete directory of qualified medical professionals")}
+                          </Typography>
+                        </Paper>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <Paper
+                          elevation={0}
+                          sx={{
+                            p: 2,
+                            borderRadius: "12px",
+                            background: "rgba(255, 255, 255, 0.03)",
+                            border: "1px solid rgba(236, 72, 153, 0.2)",
+                            height: "100%",
+                          }}
+                        >
+                          <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+                            <Avatar
+                              sx={{
+                                width: 36,
+                                height: 36,
+                                bgcolor: "rgba(236, 72, 153, 0.1)",
+                                color: "#ec4899",
+                                mr: 2,
+                              }}
+                            >
+                              <CalendarMonthIcon fontSize="small" />
+                            </Avatar>
+                            <Typography variant="subtitle1" fontWeight="medium" color="white">
+                              {t("Immediate Results")}
+                            </Typography>
+                          </Box>
+                          <Typography variant="body2" color="rgba(255, 255, 255, 0.7)">
+                            {t("Get your scan results immediately instead of waiting 24-48 hours")}
+                          </Typography>
+                        </Paper>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Box
+                          sx={{
+                            p: 2,
+                            borderRadius: "12px",
+                            background: "rgba(245, 158, 11, 0.05)",
+                            border: "1px solid rgba(245, 158, 11, 0.2)",
+                            mt: 1,
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          <StarIcon sx={{ color: "#f59e0b", mr: 2 }} />
+                          <Typography color="rgba(255, 255, 255, 0.9)" variant="body2">
+                            {t(
+                              "The average patient gets the scan within 24/48 hours. Premium patients get it immediately.",
+                            )}
+                          </Typography>
+                        </Box>
+                      </Grid>
+                    </Grid>
+                  </Box>
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+        ) : (
+          <Card
+            sx={{
+              borderRadius: "24px",
+              background: "rgba(15, 23, 42, 0.6)",
+              backdropFilter: "blur(20px)",
+              boxShadow: "0 15px 40px rgba(0, 0, 0, 0.3)",
+              overflow: "hidden",
+              position: "relative",
+              border: "1px solid rgba(139, 92, 246, 0.2)",
+              mb: 4,
+              opacity: loaded ? 1 : 0,
+              transform: loaded ? "translateY(0)" : "translateY(20px)",
+              transition: "opacity 0.5s ease, transform 0.5s ease",
+              transitionDelay: "0.2s",
+              "&::before": {
+                content: '""',
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                height: "4px",
+                background: "linear-gradient(to right, #8b5cf6, #ec4899)",
+              },
+            }}
+          >
+            <CardContent sx={{ p: 3 }}>
+              {filteredUsers.length === 0 ? (
+                <Box
                   sx={{
-                    mt: 2,
-                    background: "linear-gradient(45deg, #8b5cf6, #ec4899)",
-                    color: "white",
-                    borderRadius: "12px",
-                    py: 1,
-                    px: 3,
-                    fontWeight: 600,
-                    boxShadow: "0 4px 15px rgba(236, 72, 153, 0.3)",
-                    "&:hover": {
-                      background: "linear-gradient(45deg, #7c3aed, #db2777)",
-                      transform: "translateY(-2px)",
-                      boxShadow: "0 6px 20px rgba(236, 72, 153, 0.4)",
-                    },
-                    transition: "all 0.3s ease",
-                  }}
-                >
-                  {t("Upgrade to Premium")}
-                </Button>
-              </Box>
-            ) : filteredUsers.length === 0 ? (
-              <Box
-                sx={{
-                  p: 6,
-                  textAlign: "center",
-                  background: alpha(theme.palette.common.white, 0.02),
-                  borderRadius: "8px",
-                  border: `1px dashed ${alpha(theme.palette.primary.main, 0.2)}`,
-                }}
-              >
-                <MedicalServicesIcon sx={{ fontSize: 64, color: "rgba(255, 255, 255, 0.2)", mb: 2 }} />
-                <Typography color="rgba(255, 255, 255, 0.7)" variant="h6" gutterBottom>
-                  {t("No doctors found in the system.")}
-                </Typography>
-              </Box>
-            ) : (
-              <>
-                <TableContainer
-                  sx={{
-                    borderRadius: "8px",
+                    p: 6,
+                    textAlign: "center",
                     background: alpha(theme.palette.common.white, 0.02),
-                    border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`,
-                    mb: 2,
-                    "&::-webkit-scrollbar": {
-                      width: "8px",
-                      height: "8px",
-                    },
-                    "&::-webkit-scrollbar-thumb": {
-                      backgroundColor: alpha(theme.palette.primary.main, 0.2),
-                      borderRadius: "4px",
-                    },
-                    "&::-webkit-scrollbar-track": {
-                      backgroundColor: "rgba(0, 0, 0, 0.1)",
-                    },
+                    borderRadius: "16px",
+                    border: `1px dashed ${alpha(theme.palette.primary.main, 0.2)}`,
                   }}
                 >
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell
-                          sx={{
-                            color: "rgba(255, 255, 255, 0.7)",
-                            fontWeight: "bold",
-                            borderBottom: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`,
-                            fontSize: "0.9rem",
-                          }}
-                        >
-                          {t("Doctor")}
-                        </TableCell>
-                        <TableCell
-                          sx={{
-                            color: "rgba(255, 255, 255, 0.7)",
-                            fontWeight: "bold",
-                            borderBottom: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`,
-                            fontSize: "0.9rem",
-                          }}
-                        >
-                          {t("Email")}
-                        </TableCell>
-                        <TableCell
-                          sx={{
-                            color: "rgba(255, 255, 255, 0.7)",
-                            fontWeight: "bold",
-                            borderBottom: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`,
-                            fontSize: "0.9rem",
-                          }}
-                        >
-                          {t("Phone")}
-                        </TableCell>
-                        <TableCell
-                          sx={{
-                            color: "rgba(255, 255, 255, 0.7)",
-                            fontWeight: "bold",
-                            borderBottom: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`,
-                            fontSize: "0.9rem",
-                          }}
-                        >
-                          {t("Join Date")}
-                        </TableCell>
-                        <TableCell
-                          sx={{
-                            color: "rgba(255, 255, 255, 0.7)",
-                            fontWeight: "bold",
-                            borderBottom: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`,
-                            fontSize: "0.9rem",
-                          }}
-                        >
-                          {t("Status")}
-                        </TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {paginatedUsers.map((user) => {
-                        const formattedDate = dayjs(user.createdAt).format("DD-MM-YY HH:mm")
+                  <MedicalServicesIcon sx={{ fontSize: 64, color: "rgba(255, 255, 255, 0.2)", mb: 2 }} />
+                  <Typography color="rgba(255, 255, 255, 0.7)" variant="h6" gutterBottom>
+                    {t("No doctors found in the system.")}
+                  </Typography>
+                  <Typography
+                    color="rgba(255, 255, 255, 0.5)"
+                    variant="body2"
+                    sx={{ maxWidth: 500, mx: "auto", mb: 3 }}
+                  >
+                    {t("Please try refreshing the page or check back later.")}
+                  </Typography>
+                  <Button
+                    variant="outlined"
+                    startIcon={<RefreshIcon />}
+                    onClick={handleRefresh}
+                    sx={{
+                      borderColor: "rgba(139, 92, 246, 0.5)",
+                      color: "white",
+                      "&:hover": {
+                        borderColor: "#8b5cf6",
+                        background: "rgba(139, 92, 246, 0.1)",
+                      },
+                    }}
+                  >
+                    {t("Refresh")}
+                  </Button>
+                </Box>
+              ) : (
+                <>
+                  <Box sx={{ mb: 3 }}>
+                    <Typography variant="h6" fontWeight="bold" color="white" sx={{ mb: 2 }}>
+                      {t("Available Medical Professionals")}
+                    </Typography>
+                    <Divider sx={{ borderColor: "rgba(255, 255, 255, 0.1)" }} />
+                  </Box>
 
-                        return (
-                          <TableRow
-                            key={user.id || user._id}
-                            hover
+                  <Grid container spacing={3} sx={{ mb: 3 }}>
+                    {paginatedUsers.map((user) => {
+                      const formattedDate = dayjs(user.createdAt).format("DD-MM-YY HH:mm")
+
+                      return (
+                        <Grid item xs={12} sm={6} md={4} key={user.id || user._id}>
+                          <Paper
+                            elevation={0}
                             sx={{
-                              transition: "background-color 0.3s ease",
+                              p: 3,
+                              borderRadius: "16px",
+                              background: alpha(theme.palette.common.white, 0.02),
+                              border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`,
+                              transition: "transform 0.3s ease, box-shadow 0.3s ease",
                               "&:hover": {
-                                backgroundColor: alpha(theme.palette.primary.main, 0.05),
-                              },
-                              "& td": {
-                                borderBottom: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`,
-                                color: "white",
-                                py: 2,
+                                transform: "translateY(-5px)",
+                                boxShadow: `0 10px 20px ${alpha(theme.palette.common.black, 0.2)}`,
+                                borderColor: alpha(theme.palette.primary.main, 0.3),
                               },
                             }}
                           >
-                            <TableCell>
-                              <Box sx={{ display: "flex", alignItems: "center" }}>
-                                <Avatar
-                                  sx={{
-                                    bgcolor: "rgba(139, 92, 246, 0.1)",
-                                    color: "#8b5cf6",
-                                    mr: 2,
-                                  }}
-                                >
-                                  <MedicalServicesIcon />
-                                </Avatar>
-                                <Box>
-                                  <Typography variant="body2" fontWeight="medium">
-                                    {user.name}
-                                  </Typography>
-                                  <Typography variant="caption" color="rgba(255, 255, 255, 0.5)">
-                                    {user.specialization || t("General Practitioner")}
-                                  </Typography>
-                                </Box>
-                              </Box>
-                            </TableCell>
-                            <TableCell>
-                              <Box sx={{ display: "flex", alignItems: "center" }}>
-                                <EmailIcon fontSize="small" sx={{ color: "#ec4899", mr: 1, opacity: 0.7 }} />
-                                <Typography>{user.email}</Typography>
-                              </Box>
-                            </TableCell>
-                            <TableCell>
-                              <Box sx={{ display: "flex", alignItems: "center" }}>
-                                <PhoneIcon fontSize="small" sx={{ color: "#ec4899", mr: 1, opacity: 0.7 }} />
-                                <Typography>{user.p_phoneNum || user.phoneNum || t("Not provided")}</Typography>
-                              </Box>
-                            </TableCell>
-                            <TableCell>
-                              <Box sx={{ display: "flex", alignItems: "center" }}>
-                                <CalendarMonthIcon fontSize="small" sx={{ color: "#ec4899", mr: 1, opacity: 0.7 }} />
-                                <Typography>{formattedDate}</Typography>
-                              </Box>
-                            </TableCell>
-                            <TableCell>
+                            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mb: 2 }}>
+                              <Avatar
+                                sx={{
+                                  bgcolor: "rgba(139, 92, 246, 0.1)",
+                                  color: "#8b5cf6",
+                                  mb: 2,
+                                  width: 80,
+                                  height: 80,
+                                  boxShadow: "0 4px 10px rgba(139, 92, 246, 0.2)",
+                                }}
+                              >
+                                <MedicalServicesIcon sx={{ fontSize: 40 }} />
+                              </Avatar>
+                              <Typography variant="h6" fontWeight="medium" align="center">
+                                {user.name}
+                              </Typography>
+                              <Typography variant="body2" color="rgba(255, 255, 255, 0.5)" align="center" gutterBottom>
+                                {user.specialization || t("General Practitioner")}
+                              </Typography>
                               {user.role === "Doctor" && (
                                 <Chip
                                   icon={user.isActive ? <DoneIcon /> : <CloseIcon />}
@@ -561,43 +698,102 @@ export default function Doctors() {
                                     backgroundColor: user.isActive ? alpha("#10b981", 0.2) : alpha("#ef4444", 0.2),
                                     color: user.isActive ? "#10b981" : "#ef4444",
                                     borderRadius: "8px",
+                                    border: `1px solid ${user.isActive ? alpha("#10b981", 0.3) : alpha("#ef4444", 0.3)}`,
+                                    mt: 1,
                                   }}
                                 />
                               )}
-                            </TableCell>
-                          </TableRow>
-                        )
-                      })}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-                <TablePagination
-                  labelRowsPerPage={t("Rows per page")}
-                  rowsPerPageOptions={[5, 10, 25]}
-                  component="div"
-                  count={filteredUsers.length}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  onPageChange={handleChangePage}
-                  onRowsPerPageChange={handleChangeRowsPerPage}
-                  sx={{
-                    color: "rgba(255, 255, 255, 0.7)",
-                    ".MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows": {
-                      margin: 0,
+                            </Box>
+
+                            <Divider sx={{ borderColor: "rgba(255, 255, 255, 0.1)", my: 2 }} />
+
+                            <Box sx={{ mt: 2 }}>
+                              <Box sx={{ display: "flex", alignItems: "center", mb: 1.5 }}>
+                                <EmailIcon fontSize="small" sx={{ color: "#ec4899", mr: 2, opacity: 0.7 }} />
+                                <Typography variant="body2" sx={{ wordBreak: "break-word", flex: 1 }}>
+                                  {user.email}
+                                </Typography>
+                              </Box>
+                              <Box sx={{ display: "flex", alignItems: "center", mb: 1.5 }}>
+                                <PhoneIcon fontSize="small" sx={{ color: "#ec4899", mr: 2, opacity: 0.7 }} />
+                                <Typography variant="body2" sx={{ flex: 1 }}>
+                                  {user.p_phoneNum || user.phoneNum || t("Not provided")}
+                                </Typography>
+                                {(user.p_phoneNum || user.phoneNum) && (
+                                  <Button
+                                    size="small"
+                                    sx={{
+                                      minWidth: "auto",
+                                      p: 0.5,
+                                      color: "rgba(255, 255, 255, 0.7)",
+                                      "&:hover": { color: "#ec4899" },
+                                    }}
+                                    onClick={() => copyToClipboard(user.p_phoneNum || user.phoneNum)}
+                                    title={t("Copy phone number")}
+                                  >
+                                    <ContentCopyIcon fontSize="small" />
+                                  </Button>
+                                )}
+                              </Box>
+                              <Box sx={{ display: "flex", alignItems: "center", mb: 1.5 }}>
+                                <LocationOnIcon fontSize="small" sx={{ color: "#ec4899", mr: 2, opacity: 0.7 }} />
+                                <Typography variant="body2" sx={{ flex: 1 }}>
+                                  {user.address || t("Address not provided")}
+                                </Typography>
+                                {user.address && (
+                                  <Button
+                                    size="small"
+                                    sx={{
+                                      minWidth: "auto",
+                                      p: 0.5,
+                                      color: "rgba(255, 255, 255, 0.7)",
+                                      "&:hover": { color: "#ec4899" },
+                                    }}
+                                    onClick={() => copyToClipboard(user.address)}
+                                    title={t("Copy address")}
+                                  >
+                                    <ContentCopyIcon fontSize="small" />
+                                  </Button>
+                                )}
+                              </Box>
+                              <Box sx={{ display: "flex", alignItems: "center" }}>
+                                <CalendarMonthIcon fontSize="small" sx={{ color: "#ec4899", mr: 2, opacity: 0.7 }} />
+                                <Typography variant="body2">{formattedDate}</Typography>
+                              </Box>
+                            </Box>
+                          </Paper>
+                        </Grid>
+                      )
+                    })}
+                  </Grid>
+                  <TablePagination
+                    labelRowsPerPage={t("Rows per page")}
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component="div"
+                    count={filteredUsers.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    sx={{
                       color: "rgba(255, 255, 255, 0.7)",
-                    },
-                    ".MuiTablePagination-select": {
-                      color: "white",
-                    },
-                    ".MuiSvgIcon-root": {
-                      color: "rgba(255, 255, 255, 0.7)",
-                    },
-                  }}
-                />
-              </>
-            )}
-          </CardContent>
-        </Card>
+                      ".MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows": {
+                        margin: 0,
+                        color: "rgba(255, 255, 255, 0.7)",
+                      },
+                      ".MuiTablePagination-select": {
+                        color: "white",
+                      },
+                      ".MuiSvgIcon-root": {
+                        color: "rgba(255, 255, 255, 0.7)",
+                      },
+                    }}
+                  />
+                </>
+              )}
+            </CardContent>
+          </Card>
+        )}
       </Box>
     </Box>
   )

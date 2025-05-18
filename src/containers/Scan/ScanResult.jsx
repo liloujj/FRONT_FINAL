@@ -85,7 +85,7 @@ export default function ScanResult() {
   const [success, setSuccess] = useState(false)
   const [resultDialogOpen, setResultDialogOpen] = useState(false)
   const [selectedResult, setSelectedResult] = useState(null)
-  const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const [isAnalyzing, setIsAnalyzing] = useState(isPatientPremium ? false : true)
   const [analysisResult, setAnalysisResult] = useState(null)
 
   // Pagination state
@@ -1162,222 +1162,527 @@ export default function ScanResult() {
                 </Box>
               ) : (
                 <>
-                  <TableContainer
-                    sx={{
-                      borderRadius: "20px",
-                      background: "rgba(255, 255, 255, 0.02)",
-                      backdropFilter: "blur(10px)",
-                      border: "1px solid rgba(255, 255, 255, 0.05)",
-                      mb: 3,
-                      overflow: "hidden",
-                    }}
-                  >
-                    <Table>
-                      <TableHead>
-                        <TableRow
-                          sx={{
-                            background: "linear-gradient(90deg, rgba(236, 72, 153, 0.1), rgba(217, 70, 239, 0.1))",
-                            "& th": {
-                              color: "rgba(255, 255, 255, 0.9)",
-                              fontWeight: 600,
-                              fontSize: "0.9rem",
-                              textTransform: "uppercase",
-                              letterSpacing: "0.05em",
-                              borderBottom: "none",
-                              py: 2.5,
-                            },
-                          }}
-                        >
-                          <TableCell>{t("Scan")}</TableCell>
-                          <TableCell>{t("Submitted")}</TableCell>
-                          <TableCell>{t("Status")}</TableCell>
-                          <TableCell>{t("Result")}</TableCell>
-                          <TableCell align="right">{t("Actions")}</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {paginatedScans.map((scan) => {
-                          const formattedDate = dayjs(scan.createdAt).format("DD-MM-YY HH:mm")
-                          const statusInfo = getStatusInfo(scan.status || "Processing")
-
-                          return (
-                            <TableRow
-                              key={scan._id}
+                  {/* Scan Selection Section - Similar to New Analysis Dialog */}
+                  <Box sx={{ mb: 4 }}>
+                    <FormControl component="fieldset" sx={{ width: "100%" }}>
+                      <FormLabel
+                        component="legend"
+                        sx={{
+                          color: "rgba(255, 255, 255, 0.7)",
+                          fontWeight: 600,
+                          mb: 2,
+                        }}
+                      >
+                        {t("Select a scan to analyze")}
+                      </FormLabel>
+                      <Grid container spacing={2}>
+                        {paginatedScans.map((scan) => (
+                          <Grid item xs={12} sm={6} md={4} lg={3} key={scan._id}>
+                            <Box
+                              onClick={() => setSelectedScan(scan)}
                               sx={{
+                                p: 2,
+                                borderRadius: "16px",
+                                border: "1px solid",
+                                borderColor:
+                                  selectedScan && selectedScan._id === scan._id
+                                    ? "rgba(236, 72, 153, 0.5)"
+                                    : "rgba(255, 255, 255, 0.1)",
+                                background:
+                                  selectedScan && selectedScan._id === scan._id
+                                    ? "rgba(236, 72, 153, 0.1)"
+                                    : "rgba(255, 255, 255, 0.03)",
+                                cursor: "pointer",
+                                transition: "all 0.2s ease",
                                 "&:hover": {
-                                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                                  borderColor: "rgba(236, 72, 153, 0.3)",
+                                  background: "rgba(236, 72, 153, 0.05)",
+                                  transform: "translateY(-2px)",
                                 },
-                                "& td": {
-                                  borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
-                                  color: "rgba(255, 255, 255, 0.8)",
-                                  py: 2,
-                                },
-                                transition: "background-color 0.2s ease",
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                                textAlign: "center",
+                                height: "100%",
                               }}
                             >
-                              <TableCell>
-                                <Box sx={{ display: "flex", alignItems: "center" }}>
-                                  <Avatar
-                                    variant="rounded"
+                              <Box
+                                sx={{
+                                  width: "100%",
+                                  height: 120,
+                                  borderRadius: "8px",
+                                  overflow: "hidden",
+                                  mb: 2,
+                                  position: "relative",
+                                  backgroundColor: "rgba(0, 0, 0, 0.2)",
+                                }}
+                              >
+                                <Box
+                                  component="img"
+                                  src={`${BASE_URL}${scan.imageURL}`}
+                                  alt={scan.imageURL.split("/").pop()}
+                                  sx={{
+                                    width: "100%",
+                                    height: "100%",
+                                    objectFit: "cover",
+                                  }}
+                                />
+                                {selectedScan && selectedScan._id === scan._id && (
+                                  <Box
                                     sx={{
-                                      bgcolor: "rgba(217, 70, 239, 0.2)",
-                                      color: "#ec4899",
-                                      mr: 2,
-                                      width: 48,
-                                      height: 48,
-                                      borderRadius: "12px",
-                                      boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                                      position: "absolute",
+                                      top: 0,
+                                      left: 0,
+                                      width: "100%",
+                                      height: "100%",
+                                      backgroundColor: "rgba(236, 72, 153, 0.2)",
+                                      display: "flex",
+                                      alignItems: "center",
+                                      justifyContent: "center",
                                     }}
                                   >
-                                    <MedicalServicesIcon />
-                                  </Avatar>
-                                  <Box>
+                                    <CheckCircleOutlineIcon sx={{ color: "white", fontSize: 40 }} />
+                                  </Box>
+                                )}
+                              </Box>
+                              <Typography
+                                variant="body2"
+                                sx={{
+                                  color: "rgba(255, 255, 255, 0.9)",
+                                  fontWeight: 600,
+                                  mb: 0.5,
+                                }}
+                              >
+                                {scan.imageURL.split("/").pop()}
+                              </Typography>
+                              <Typography
+                                variant="caption"
+                                sx={{
+                                  color: "rgba(255, 255, 255, 0.6)",
+                                }}
+                              >
+                                {dayjs(scan.createdAt).format("DD-MM-YY")}
+                              </Typography>
+                              <Chip
+                                icon={getStatusInfo(scan.status || "Processing").icon}
+                                label={t(scan.status || "Processing")}
+                                size="small"
+                                sx={{
+                                  backgroundColor: getStatusInfo(scan.status || "Processing").bgColor,
+                                  color: getStatusInfo(scan.status || "Processing").color,
+                                  border: `1px solid ${getStatusInfo(scan.status || "Processing").borderColor}`,
+                                  fontWeight: 600,
+                                  px: 0.5,
+                                  mt: 1,
+                                }}
+                              />
+                            </Box>
+                          </Grid>
+                        ))}
+                      </Grid>
+                    </FormControl>
+                  </Box>
+
+                  {/* Upload New Scan Section for Premium Users */}
+                  {isPatientPremium && (
+                    <Box sx={{ mb: 4 }}>
+                      <Divider sx={{ borderColor: "rgba(255, 255, 255, 0.1)", my: 3 }} />
+
+                      <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                        <Box
+                          sx={{
+                            width: 40,
+                            height: 40,
+                            borderRadius: "12px",
+                            background: "rgba(245, 158, 11, 0.1)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            mr: 2,
+                          }}
+                        >
+                          <StarIcon sx={{ color: "#f59e0b" }} />
+                        </Box>
+                        <Typography
+                          variant="h6"
+                          sx={{
+                            fontWeight: 600,
+                            color: "#f59e0b",
+                          }}
+                        >
+                          {t("Premium Feature: Upload New Scan")}
+                        </Typography>
+                      </Box>
+
+                      <Box
+                        sx={{
+                          border: "2px dashed rgba(255, 255, 255, 0.2)",
+                          borderRadius: "16px",
+                          p: 3,
+                          textAlign: "center",
+                          backgroundColor: "rgba(255, 255, 255, 0.03)",
+                          transition: "all 0.2s ease",
+                          "&:hover": {
+                            backgroundColor: "rgba(255, 255, 255, 0.05)",
+                            borderColor: "rgba(255, 255, 255, 0.3)",
+                          },
+                        }}
+                      >
+                        {!previewUrl ? (
+                          <Box>
+                            <input
+                              accept="image/*"
+                              style={{ display: "none" }}
+                              id="scan-upload-button-inline"
+                              type="file"
+                              onChange={handleFileChange}
+                            />
+                            <label htmlFor="scan-upload-button-inline">
+                              <Button
+                                component="span"
+                                startIcon={<CloudUploadIcon />}
+                                variant="outlined"
+                                sx={{
+                                  borderRadius: "12px",
+                                  borderColor: "rgba(236, 72, 153, 0.3)",
+                                  color: "#ec4899",
+                                  backgroundColor: "rgba(236, 72, 153, 0.05)",
+                                  px: 3,
+                                  py: 1.2,
+                                  mb: 2,
+                                  "&:hover": {
+                                    borderColor: "#ec4899",
+                                    backgroundColor: "rgba(236, 72, 153, 0.1)",
+                                  },
+                                }}
+                              >
+                                {t("Choose File")}
+                              </Button>
+                            </label>
+                            <Typography
+                              variant="body2"
+                              sx={{
+                                color: "rgba(255, 255, 255, 0.6)",
+                              }}
+                            >
+                              {t("Supported formats: JPEG, PNG, TIFF, DICOM")}
+                            </Typography>
+                          </Box>
+                        ) : (
+                          <Box>
+                            <Box
+                              sx={{
+                                position: "relative",
+                                width: "100%",
+                                maxHeight: "300px",
+                                overflow: "hidden",
+                                borderRadius: "8px",
+                                mb: 2,
+                              }}
+                            >
+                              <Box
+                                component="img"
+                                src={previewUrl}
+                                alt="Scan preview"
+                                sx={{
+                                  width: "100%",
+                                  maxHeight: "300px",
+                                  objectFit: "contain",
+                                }}
+                              />
+                              <IconButton
+                                onClick={() => {
+                                  setUploadedFile(null)
+                                  setPreviewUrl("")
+                                }}
+                                sx={{
+                                  position: "absolute",
+                                  top: 8,
+                                  right: 8,
+                                  backgroundColor: "rgba(0, 0, 0, 0.5)",
+                                  color: "white",
+                                  "&:hover": {
+                                    backgroundColor: "rgba(0, 0, 0, 0.7)",
+                                  },
+                                }}
+                              >
+                                <CloseIcon />
+                              </IconButton>
+                            </Box>
+                            <Typography
+                              variant="body2"
+                              sx={{
+                                color: "rgba(255, 255, 255, 0.9)",
+                                fontWeight: 600,
+                                mb: 2,
+                              }}
+                            >
+                              {uploadedFile?.name}
+                            </Typography>
+                            <Button
+                              variant="contained"
+                              startIcon={
+                                isAnalyzing ? <CircularProgress size={20} color="inherit" /> : <AnalyticsIcon />
+                              }
+                              onClick={handleSubmitScan}
+                              disabled={isAnalyzing}
+                              sx={{
+                                borderRadius: "12px",
+                                backgroundColor: "#d946ef",
+                                color: "white",
+                                "&:hover": {
+                                  backgroundColor: "#c026d3",
+                                  transform: "translateY(-2px)",
+                                  boxShadow: "0 6px 15px rgba(217, 70, 239, 0.3)",
+                                },
+                                "&:disabled": {
+                                  backgroundColor: "rgba(217, 70, 239, 0.3)",
+                                  color: "rgba(255, 255, 255, 0.5)",
+                                },
+                                transition: "all 0.2s ease",
+                                py: 1,
+                                px: 3,
+                              }}
+                            >
+                              {isAnalyzing ? t("Analyzing...") : t("Analyze Now")}
+                            </Button>
+                          </Box>
+                        )}
+                      </Box>
+                    </Box>
+                  )}
+
+                  {/* Analysis Results Table */}
+                  <Box sx={{ mb: 3 }}>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontWeight: 600,
+                        color: "rgba(255, 255, 255, 0.9)",
+                        mb: 2,
+                      }}
+                    >
+                      {t("Analysis History")}
+                    </Typography>
+
+                    <TableContainer
+                      sx={{
+                        borderRadius: "20px",
+                        background: "rgba(255, 255, 255, 0.02)",
+                        backdropFilter: "blur(10px)",
+                        border: "1px solid rgba(255, 255, 255, 0.05)",
+                        mb: 3,
+                        overflow: "hidden",
+                      }}
+                    >
+                      <Table>
+                        <TableHead>
+                          <TableRow
+                            sx={{
+                              background: "linear-gradient(90deg, rgba(236, 72, 153, 0.1), rgba(217, 70, 239, 0.1))",
+                              "& th": {
+                                color: "rgba(255, 255, 255, 0.9)",
+                                fontWeight: 600,
+                                fontSize: "0.9rem",
+                                textTransform: "uppercase",
+                                letterSpacing: "0.05em",
+                                borderBottom: "none",
+                                py: 2.5,
+                              },
+                            }}
+                          >
+                            <TableCell>{t("Scan")}</TableCell>
+                            <TableCell>{t("Submitted")}</TableCell>
+                            <TableCell>{t("Status")}</TableCell>
+                            <TableCell>{t("Result")}</TableCell>
+                            <TableCell align="right">{t("Actions")}</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {paginatedScans.map((scan) => {
+                            const formattedDate = dayjs(scan.createdAt).format("DD-MM-YY HH:mm")
+                            const statusInfo = getStatusInfo(scan.status || "Processing")
+
+                            return (
+                              <TableRow
+                                key={scan._id}
+                                sx={{
+                                  "&:hover": {
+                                    backgroundColor: "rgba(255, 255, 255, 0.05)",
+                                  },
+                                  "& td": {
+                                    borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
+                                    color: "rgba(255, 255, 255, 0.8)",
+                                    py: 2,
+                                  },
+                                  transition: "background-color 0.2s ease",
+                                }}
+                              >
+                                <TableCell>
+                                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                                    <Avatar
+                                      variant="rounded"
+                                      sx={{
+                                        bgcolor: "rgba(217, 70, 239, 0.2)",
+                                        color: "#ec4899",
+                                        mr: 2,
+                                        width: 48,
+                                        height: 48,
+                                        borderRadius: "12px",
+                                        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                                      }}
+                                    >
+                                      <MedicalServicesIcon />
+                                    </Avatar>
+                                    <Box>
+                                      <Typography
+                                        variant="body2"
+                                        sx={{
+                                          fontWeight: 600,
+                                          color: "rgba(255, 255, 255, 0.9)",
+                                        }}
+                                      >
+                                        {scan.imageURL.split("/").pop() || t("Medical Scan")}
+                                      </Typography>
+                                      <Typography
+                                        variant="caption"
+                                        sx={{
+                                          color: "rgba(255, 255, 255, 0.6)",
+                                        }}
+                                      >
+                                        {t("X-Ray")}
+                                      </Typography>
+                                    </Box>
+                                  </Box>
+                                </TableCell>
+                                <TableCell>
+                                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                                    <CalendarMonthIcon
+                                      fontSize="small"
+                                      sx={{ color: "#ec4899", mr: 1, opacity: 0.8 }}
+                                    />
                                     <Typography
                                       variant="body2"
                                       sx={{
-                                        fontWeight: 600,
-                                        color: "rgba(255, 255, 255, 0.9)",
+                                        color: "rgba(255, 255, 255, 0.8)",
                                       }}
                                     >
-                                      {scan.imageURL.split("/").pop() || t("Medical Scan")}
-                                    </Typography>
-                                    <Typography
-                                      variant="caption"
-                                      sx={{
-                                        color: "rgba(255, 255, 255, 0.6)",
-                                      }}
-                                    >
-                                      {t("X-Ray")}
+                                      {formattedDate}
                                     </Typography>
                                   </Box>
-                                </Box>
-                              </TableCell>
-                              <TableCell>
-                                <Box sx={{ display: "flex", alignItems: "center" }}>
-                                  <CalendarMonthIcon fontSize="small" sx={{ color: "#ec4899", mr: 1, opacity: 0.8 }} />
+                                </TableCell>
+                                <TableCell>
+                                  <Chip
+                                    icon={statusInfo.icon}
+                                    label={t(scan.status || "Processing")}
+                                    size="small"
+                                    sx={{
+                                      backgroundColor: statusInfo.bgColor,
+                                      color: statusInfo.color,
+                                      border: `1px solid ${statusInfo.borderColor}`,
+                                      fontWeight: 600,
+                                      px: 0.5,
+                                    }}
+                                  />
+                                </TableCell>
+                                <TableCell>
                                   <Typography
                                     variant="body2"
                                     sx={{
                                       color: "rgba(255, 255, 255, 0.8)",
+                                      fontWeight: "400",
                                     }}
                                   >
-                                    {formattedDate}
+                                    {t("No findings")}
                                   </Typography>
-                                </Box>
-                              </TableCell>
-                              <TableCell>
-                                <Chip
-                                  icon={statusInfo.icon}
-                                  label={t(scan.status || "Processing")}
-                                  size="small"
-                                  sx={{
-                                    backgroundColor: statusInfo.bgColor,
-                                    color: statusInfo.color,
-                                    border: `1px solid ${statusInfo.borderColor}`,
-                                    fontWeight: 600,
-                                    px: 0.5,
-                                  }}
-                                />
-                              </TableCell>
-                              <TableCell>
-                                <Typography
-                                  variant="body2"
-                                  sx={{
-                                    color: "rgba(255, 255, 255, 0.8)",
-                                    fontWeight: "400",
-                                  }}
-                                >
-                                  {t("No findings")}
-                                </Typography>
-                              </TableCell>
-                              <TableCell align="right">
-                                <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}>
-                                  <Tooltip title={t("View details")}>
-                                    <IconButton
-                                      onClick={() => handleGoToDocument(scan._id)}
-                                      size="small"
-                                      sx={{
-                                        color: "#ec4899",
-                                        backgroundColor: "rgba(236, 72, 153, 0.1)",
-                                        borderRadius: "12px",
-                                        p: 1,
-                                        "&:hover": {
-                                          backgroundColor: "rgba(236, 72, 153, 0.2)",
-                                          transform: "translateY(-2px)",
-                                          boxShadow: "0 4px 12px rgba(236, 72, 153, 0.2)",
-                                        },
-                                        transition: "all 0.2s ease",
-                                      }}
-                                    >
-                                      <VisibilityIcon fontSize="small" />
-                                    </IconButton>
-                                  </Tooltip>
-                                  <Tooltip title={t("Download report")}>
-                                    <IconButton
-                                      onClick={() => handleDownload(BASE_URL, scan.imageURL)}
-                                      size="small"
-                                      sx={{
-                                        color: "#ec4899",
-                                        backgroundColor: "rgba(236, 72, 153, 0.1)",
-                                        borderRadius: "12px",
-                                        p: 1,
-                                        "&:hover": {
-                                          backgroundColor: "rgba(236, 72, 153, 0.2)",
-                                          transform: "translateY(-2px)",
-                                          boxShadow: "0 4px 12px rgba(236, 72, 153, 0.2)",
-                                        },
-                                        transition: "all 0.2s ease",
-                                      }}
-                                    >
-                                      <DownloadIcon fontSize="small" />
-                                    </IconButton>
-                                  </Tooltip>
-                                </Box>
-                              </TableCell>
-                            </TableRow>
-                          )
-                        })}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                </>
-              )}
+                                </TableCell>
+                                <TableCell align="right">
+                                  <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}>
+                                    <Tooltip title={t("View details")}>
+                                      <IconButton
+                                        onClick={() => handleGoToDocument(scan._id)}
+                                        size="small"
+                                        sx={{
+                                          color: "#ec4899",
+                                          backgroundColor: "rgba(236, 72, 153, 0.1)",
+                                          borderRadius: "12px",
+                                          p: 1,
+                                          "&:hover": {
+                                            backgroundColor: "rgba(236, 72, 153, 0.2)",
+                                            transform: "translateY(-2px)",
+                                            boxShadow: "0 4px 12px rgba(236, 72, 153, 0.2)",
+                                          },
+                                          transition: "all 0.2s ease",
+                                        }}
+                                      >
+                                        <VisibilityIcon fontSize="small" />
+                                      </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title={t("Download report")}>
+                                      <IconButton
+                                        onClick={() => handleDownload(BASE_URL, scan.imageURL)}
+                                        size="small"
+                                        sx={{
+                                          color: "#ec4899",
+                                          backgroundColor: "rgba(236, 72, 153, 0.1)",
+                                          borderRadius: "12px",
+                                          p: 1,
+                                          "&:hover": {
+                                            backgroundColor: "rgba(236, 72, 153, 0.2)",
+                                            transform: "translateY(-2px)",
+                                            boxShadow: "0 4px 12px rgba(236, 72, 153, 0.2)",
+                                          },
+                                          transition: "all 0.2s ease",
+                                        }}
+                                      >
+                                        <DownloadIcon fontSize="small" />
+                                      </IconButton>
+                                    </Tooltip>
+                                  </Box>
+                                </TableCell>
+                              </TableRow>
+                            )
+                          })}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  </Box>
 
-              {scans.length > 0 && (
-                <TablePagination
-                  labelRowsPerPage={t("Rows per page")}
-                  rowsPerPageOptions={[5, 10, 25]}
-                  component="div"
-                  count={scans.length}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  onPageChange={handleChangePage}
-                  onRowsPerPageChange={handleChangeRowsPerPage}
-                  sx={{
-                    color: "rgba(255, 255, 255, 0.7)",
-                    ".MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows": {
-                      margin: 0,
+                  <TablePagination
+                    labelRowsPerPage={t("Rows per page")}
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component="div"
+                    count={scans.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    sx={{
                       color: "rgba(255, 255, 255, 0.7)",
-                    },
-                    ".MuiTablePagination-select": {
-                      color: "rgba(255, 255, 255, 0.9)",
-                    },
-                    ".MuiTablePagination-selectIcon": {
-                      color: "#ec4899",
-                    },
-                    ".MuiTablePagination-actions": {
-                      "& .MuiIconButton-root": {
+                      ".MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows": {
+                        margin: 0,
                         color: "rgba(255, 255, 255, 0.7)",
-                        "&:hover": {
-                          backgroundColor: "rgba(236, 72, 153, 0.1)",
-                        },
-                        "&.Mui-disabled": {
-                          color: "rgba(255, 255, 255, 0.3)",
+                      },
+                      ".MuiTablePagination-select": {
+                        color: "rgba(255, 255, 255, 0.9)",
+                      },
+                      ".MuiTablePagination-selectIcon": {
+                        color: "#ec4899",
+                      },
+                      ".MuiTablePagination-actions": {
+                        "& .MuiIconButton-root": {
+                          color: "rgba(255, 255, 255, 0.7)",
+                          "&:hover": {
+                            backgroundColor: "rgba(236, 72, 153, 0.1)",
+                          },
+                          "&.Mui-disabled": {
+                            color: "rgba(255, 255, 255, 0.3)",
+                          },
                         },
                       },
-                    },
-                  }}
-                />
+                    }}
+                  />
+                </>
               )}
             </Box>
           </Card>
